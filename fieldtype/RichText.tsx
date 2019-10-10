@@ -11,7 +11,7 @@ constructor(props:any) {
 
 render(){
     return (
-        <div>
+        <div className={'field '+(this.props.definition.required?'required':'')}>
             <label htmlFor={this.props.identifier}>{this.props.definition.name}:</label>
             <textarea id={this.props.identifier} className="form-control" name={this.props.identifier}></textarea>
         </div>

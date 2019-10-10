@@ -60,9 +60,7 @@ constructor(props:any) {
         {
             const typeStr = fieldDef.type;
             const Fieldtype: React.ReactType = this.state.components[Config.fieldtypes[typeStr]];
-            return (<div>
-                {Fieldtype ? <Fieldtype identifier={field} definition={this.state.definition.fields[field]} /> : field+' is not supported.'}
-            </div>)
+            return Fieldtype ? <Fieldtype identifier={field} definition={this.state.definition.fields[field]} /> : field+' is not supported.'            
         }
     }
 
