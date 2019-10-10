@@ -1,21 +1,21 @@
 import * as React from 'react';
 import Config from './config.json';
 
-export default class LoadFields extends React.Component<{type:string},{definition: any,components: {}}> {
+export default class LoadFields extends React.Component<{ type: string }, { definition: any, components: {} }> {
 
-constructor(props:any) {
-      super(props);
-      this.state = {definition: '', components: {}};
+    constructor(props: any) {
+        super(props);
+        this.state = { definition: '', components: {} };
     }
 
     loadFieldtype(type) {
+        const clientType = Config.fieldtypes[type];
         var com: any;
-        import(`./fieldtype/${type}`)
+        import(`./fieldtype/${clientType}`)
             .then(component => {
-                console.log(`${type} is loaded`);
-                if (!this.state.components[type]) {
+                if (!this.state.components[clientType]) {
                     var coms = this.state.components;
-                    coms[type] = component.default;
+                    coms[clientType] = component.default;
                     this.setState({ components: coms });
                 }
             }
@@ -23,24 +23,16 @@ constructor(props:any) {
             .catch(error => {
                 console.error(`"${type}" not yet supported`);
             });
+        return this.state.components[clientType]
     }
 
 
+    //fetch fields definition
     fetchData() {
-        fetch(Config.remote_server + '/contenttype/get/'+this.props.type)
+        fetch(Config.remote_server + '/contenttype/get/' + this.props.type)
             .then(res => res.json())
             .then((data) => {
                 this.setState({ definition: data });
-                for (let identifier in this.state.definition.fields) {
-                    var fieldtype = this.state.definition.fields[identifier].type;
-                    const type = Config.fieldtypes[fieldtype];
-                    if (type) {
-                        this.loadFieldtype(type);
-                    }
-                    else {
-                        console.warn("field type" + fieldtype + " is not defined. Please define it in config.json");
-                    }
-                }
             })
     }
 
@@ -48,30 +40,35 @@ constructor(props:any) {
         this.fetchData();
     }
 
-    renderField( field: string ){
-        const fieldDef = this.state.definition.fields[field];
-        if( fieldDef.is_container )
-        {
-            return (<div className={"field-container "+field}><span className="container-title">{fieldDef.name}</span> {fieldDef.parameters.children.map((subfield)=>{
-                return this.renderField( subfield )
-            })}</div>)
+    renderField(identifier: string, field: any) {
+        if (field.children) {
+            const output = [];
+            {Object.keys(field.children).forEach( (key) => {
+                 output.push(this.renderField( key, field.children[key] )) //todo: improve this.
+            })}
+            return (<div className={"field-container " + identifier}>
+            <span className="container-title">{field.name}</span>
+                {output}
+            </div>)
         }
-        else
-        {
-            const typeStr = fieldDef.type;
-            const Fieldtype: React.ReactType = this.state.components[Config.fieldtypes[typeStr]];
-            return Fieldtype ? <Fieldtype identifier={field} definition={this.state.definition.fields[field]} /> : field+' is not supported.'            
+        else {
+            const typeStr = field.type;
+            const Fieldtype: React.ReactType = this.loadFieldtype(field.type);
+            return Fieldtype ? <Fieldtype identifier={identifier} definition={field} /> : field.type + ' is not supported.'
         }
     }
 
-    render(){
+    render() {
+        if (!this.state.definition) {
+            return (<div className="loading"></div>)
+        }
         return (
             <div>
-            <div>
-                {this.state.definition ? this.state.definition.fields_display.map((key) => {
-                    return this.renderField( key )
-                }) : ''}
-            </div>
+                <div>
+                    {this.state.definition ? this.state.definition.fields_display.map((key) => {
+                        return this.renderField(key, this.state.definition.fields[key])
+                    }) : ''}
+                </div>
             </div>
         )
     }
