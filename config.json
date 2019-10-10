@@ -1,0 +1,8 @@
+{
+    "remote_server": "http://localhost:8089/api",
+    "fieldtypes": {
+        "text": "Text",
+        "richtext": "RichText",
+        "image": "Image"
+    }
+}
