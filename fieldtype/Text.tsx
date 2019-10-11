@@ -14,6 +14,7 @@ constructor(props:any) {
             <div className={'field '+(this.props.definition.required?'required':'')}>
                 <label htmlFor={this.props.identifier}>{this.props.definition.name}:</label>
                 <input type="text" id={this.props.identifier} className="form-control" name={this.props.identifier} />
+                <div className="field-description">{this.props.definition.description}</div>
             </div>
         )
     }

@@ -1,11 +1,11 @@
 import * as React from 'react';
 import Config from './config.json';
 
-export default class LoadFields extends React.Component<{ type: string }, { definition: any, components: {} }> {
+export default class LoadFields extends React.Component<{ type: string }, { definition: any, components: {}, typeArr:string[] }> {
 
     constructor(props: any) {
         super(props);
-        this.state = { definition: '', components: {} };
+        this.state = { definition: '', components: {}, typeArr:[]};
     }
 
     loadFieldtype(type) {
@@ -29,10 +29,10 @@ export default class LoadFields extends React.Component<{ type: string }, { defi
 
     //fetch fields definition
     fetchData() {
-        fetch(Config.remote_server + '/contenttype/get/' + this.props.type)
+        fetch(Config.remote_server + '/contenttype/get/' + this.props.type.split('/')[0])
             .then(res => res.json())
             .then((data) => {
-                this.setState({ definition: data });
+                this.setState({ definition: data, typeArr: this.props.type.split('/') });
             })
     }
 
@@ -42,13 +42,11 @@ export default class LoadFields extends React.Component<{ type: string }, { defi
 
     renderField(identifier: string, field: any) {
         if (field.children) {
-            const output = [];
-            {Object.keys(field.children).forEach( (key) => {
-                 output.push(this.renderField( key, field.children[key] )) //todo: improve this.
-            })}
             return (<div className={"field-container " + identifier}>
             <span className="container-title">{field.name}</span>
-                {output}
+                {Object.keys(field.children).map( (key) => {
+                     return (this.renderField( key, field.children[key] ))
+                })}
             </div>)
         }
         else {
@@ -62,12 +60,22 @@ export default class LoadFields extends React.Component<{ type: string }, { defi
         if (!this.state.definition) {
             return (<div className="loading"></div>)
         }
+        var fields = this.state.definition.fields
+        if(this.state.typeArr.length>1)
+        {
+            var identifier: string;
+            identifier = this.state.typeArr[1];
+            if( !fields[identifier] ){
+                return (<div>{identifier} not found</div>)
+            }
+            fields = fields[identifier].children;
+        }
         return (
             <div>
                 <div>
-                    {this.state.definition ? this.state.definition.fields_display.map((key) => {
-                        return this.renderField(key, this.state.definition.fields[key])
-                    }) : ''}
+                    {Object.keys(fields).map((key) => {
+                        return this.renderField(key, fields[key])
+                    })}
                 </div>
             </div>
         )
