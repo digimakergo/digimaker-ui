@@ -40,19 +40,19 @@ export default class LoadFields extends React.Component<{ type: string }, { defi
         this.fetchData();
     }
 
-    renderField(identifier: string, field: any) {
+    renderField(field: any) {
         if (field.children) {
-            return (<div className={"field-container " + identifier}>
+            return (<div className={"field-container " + field.identifier}>
             <span className="container-title">{field.name}</span>
-                {Object.keys(field.children).map( (key) => {
-                     return (this.renderField( key, field.children[key] ))
+                {field.children.map( (field) => {
+                     return (this.renderField( field ))
                 })}
             </div>)
         }
         else {
             const typeStr = field.type;
             const Fieldtype: React.ReactType = this.loadFieldtype(field.type);
-            return Fieldtype ? <Fieldtype identifier={identifier} definition={field} /> : field.type + ' is not supported.'
+            return Fieldtype ? <Fieldtype definition={field} /> : field.type + ' is not supported.'
         }
     }
 
@@ -65,16 +65,22 @@ export default class LoadFields extends React.Component<{ type: string }, { defi
         {
             var identifier: string;
             identifier = this.state.typeArr[1];
-            if( !fields[identifier] ){
+            var currentField;
+            fields.map((field)=>{
+                if( field.identifier == identifier ){
+                    currentField = field;
+                }
+            })
+            if( !currentField ){
                 return (<div>{identifier} not found</div>)
             }
-            fields = fields[identifier].children;
+            fields = currentField.children;
         }
         return (
             <div>
                 <div>
-                    {Object.keys(fields).map((key) => {
-                        return this.renderField(key, fields[key])
+                    {fields.map((field) => {
+                        return this.renderField(field)
                     })}
                 </div>
             </div>
