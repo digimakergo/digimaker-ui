@@ -2,7 +2,7 @@ import * as React from 'react';
 import Moment from 'react-moment';
 import Config from '../../config.json';
 
-export default class RichText extends React.Component<{definition:any, validation:any},{}> {
+export default class RichText extends React.Component<{definition:any, validation:any, data:any},{}> {
 
 constructor(props:any) {
       super(props);
