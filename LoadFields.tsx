@@ -54,7 +54,7 @@ export default class LoadFields extends React.Component<{ type: string, validati
             const fieldIdentifier = field.identifier;
             const validationResult = this.props.validation;
             const Fieldtype: React.ReactType = this.loadFieldtype(field.type);
-            return Fieldtype ? <Fieldtype definition={field} validation={validationResult&&(fieldIdentifier in validationResult.fields)?validationResult[fieldIdentifier]:''} /> : field.type + ' is not supported.'
+            return Fieldtype ? <Fieldtype definition={field} validation={validationResult&&(fieldIdentifier in validationResult.fields)?validationResult.fields[fieldIdentifier]:''} /> : field.type + ' is not supported.'
         }
     }
 
