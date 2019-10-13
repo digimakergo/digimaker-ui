@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Config from './config.json';
 
-export default class LoadFields extends React.Component<{ type: string }, { definition: any, components: {}, typeArr:string[] }> {
+export default class LoadFields extends React.Component<{ type: string, validation: any }, { definition: any, components: {}, typeArr:string[] }> {
 
     constructor(props: any) {
         super(props);
@@ -51,8 +51,10 @@ export default class LoadFields extends React.Component<{ type: string }, { defi
         }
         else {
             const typeStr = field.type;
+            const fieldIdentifier = field.identifier;
+            const validationResult = this.props.validation;
             const Fieldtype: React.ReactType = this.loadFieldtype(field.type);
-            return Fieldtype ? <Fieldtype definition={field} /> : field.type + ' is not supported.'
+            return Fieldtype ? <Fieldtype definition={field} validation={validationResult&&(fieldIdentifier in validationResult.fields)?validationResult[fieldIdentifier]:''} /> : field.type + ' is not supported.'
         }
     }
 
