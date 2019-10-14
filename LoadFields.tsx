@@ -21,7 +21,7 @@ export default class LoadFields extends React.Component<{ type: string, validati
             }
             )
             .catch(error => {
-                console.error(`"${type}" not yet supported`);
+                console.error(`"${type}" not yet supported ${error}`);
             });
         return this.state.components[clientType]
     }
@@ -43,7 +43,7 @@ export default class LoadFields extends React.Component<{ type: string, validati
     renderField(field: any) {
         if (field.children) {
             return (<div className={"field-container " + field.identifier}>
-            <span className="container-title">{field.name}</span>
+            <div className="container-title"><span>{field.name}</span></div>
                 {field.children.map( (field) => {
                      return (this.renderField( field ))
                 })}
