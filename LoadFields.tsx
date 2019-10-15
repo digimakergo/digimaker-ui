@@ -40,12 +40,13 @@ export default class LoadFields extends React.Component<{ type: string, validati
         this.fetchData();
     }
 
-    renderField(field: any) {
+    renderField(field: any,containerLevel:number=1) {
         if (field.children) {
-            return (<div className={"field-container " + field.identifier}>
+            console.log( field.identifier );
+            return (<div className={`field-container level${containerLevel} ${field.identifier}`}>
             <div className="container-title"><span>{field.name}</span></div>
                 {field.children.map( (field) => {
-                     return (this.renderField( field ))
+                     return (this.renderField( field, containerLevel+1 ))
                 })}
             </div>)
         }

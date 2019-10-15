@@ -3,6 +3,7 @@
     "fieldtypes": {
         "text": "Text",
         "richtext": "RichText",
-        "image": "Image"
+        "image": "Image",
+        "checkbox": "Checkbox"
     }
 }
