@@ -14,7 +14,8 @@ constructor(props:any) {
             <div className={'field checkbox '+(this.props.definition.required?'required':'')+(this.props.validation=='1'?' result-required':'')}>
              <label>
                 <input type="checkbox" id={this.props.definition.identifier} name={this.props.definition.identifier} defaultValue={this.props.data} />
-               <div>{this.props.definition.name}</div></label>
+                <div>{this.props.definition.name}</div>
+               </label>
                 <div className="field-description">{this.props.definition.description}</div>
             </div>
         )
