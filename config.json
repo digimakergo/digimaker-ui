@@ -1,9 +1,10 @@
 {
-    "remote_server": "http://localhost:8089/api",
+    "remote_server": "http://demo.digimaker.no:9300/api",
     "fieldtypes": {
         "text": "Text",
         "richtext": "RichText",
         "image": "Image",
-        "checkbox": "Checkbox"
+        "checkbox": "Checkbox",
+        "eth_indicator": "EthIndicator"
     }
 }
