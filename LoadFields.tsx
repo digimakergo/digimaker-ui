@@ -1,29 +1,12 @@
 import * as React from 'react';
 import Config from './config.json';
+import FieldRegister from './FieldRegister';
 
-export default class LoadFields extends React.Component<{ type: string, validation: any, data: any }, { definition: any, components: {}, typeArr:string[] }> {
+export default class LoadFields extends React.Component<{ type: string, validation: any, data: any }, { definition: any, typeArr:string[] }> {
 
     constructor(props: any) {
         super(props);
-        this.state = { definition: '', components: {}, typeArr:[]};
-    }
-
-    loadFieldtype(type) {
-        const clientType = Config.fieldtypes[type];
-        var com: any;
-        import(`./fieldtype/${clientType}`)
-            .then(component => {
-                if (!this.state.components[clientType]) {
-                    var coms = this.state.components;
-                    coms[clientType] = component.default;
-                    this.setState({ components: coms });
-                }
-            }
-            )
-            .catch(error => {
-                console.error(`"${type}" not yet supported ${error}`);
-            });
-        return this.state.components[clientType]
+        this.state = { definition: '', typeArr:[]};
     }
 
 
@@ -42,11 +25,10 @@ export default class LoadFields extends React.Component<{ type: string, validati
 
     renderField(field: any,containerLevel:number=1) {
         if (field.children) {
-            console.log( field.identifier );
             return (<div className={`field-container level${containerLevel} ${field.identifier}`}>
             <div className="container-title"><a href="#" className="closable"><i className="fas fa-chevron-down"></i></a><span>{field.name}</span></div>
-                {field.children.map( (field) => {
-                     return (this.renderField( field, containerLevel+1 ))
+                {field.children.map( (child) => {
+                     return (this.renderField( child, containerLevel+1 ))
                 })}
             </div>)
         }
@@ -54,7 +36,8 @@ export default class LoadFields extends React.Component<{ type: string, validati
             const typeStr = field.type;
             const fieldIdentifier = field.identifier;
             const validationResult = this.props.validation;
-            const Fieldtype: React.ReactType = this.loadFieldtype(field.type);
+            
+            const Fieldtype: React.ReactType = FieldRegister.getFieldtype(typeStr);
             return Fieldtype ? <Fieldtype definition={field} data={this.props.data&&this.props.data[fieldIdentifier]} validation={validationResult&&(fieldIdentifier in validationResult.fields)?validationResult.fields[fieldIdentifier]:''} /> : field.type + ' is not supported.'
         }
     }
