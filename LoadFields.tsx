@@ -1,5 +1,4 @@
 import * as React from 'react';
-import Config from './config.json';
 import FieldRegister from './FieldRegister';
 
 export default class LoadFields extends React.Component<{ type: string, validation: any, data: any }, { definition: any, typeArr:string[] }> {
@@ -12,7 +11,8 @@ export default class LoadFields extends React.Component<{ type: string, validati
 
     //fetch fields definition
     fetchData() {
-        fetch(Config.remote_server + '/contenttype/get/' + this.props.type.split('/')[0])
+        console.log( "remote:" + process.env.REACT_APP_REMOTE_URL  );
+        fetch(process.env.REACT_APP_REMOTE_URL + '/contenttype/get/' + this.props.type.split('/')[0])
             .then(res => res.json())
             .then((data) => {
                 this.setState({ definition: data, typeArr: this.props.type.split('/') });
@@ -36,7 +36,7 @@ export default class LoadFields extends React.Component<{ type: string, validati
             const typeStr = field.type;
             const fieldIdentifier = field.identifier;
             const validationResult = this.props.validation;
-            
+
             const Fieldtype: React.ReactType = FieldRegister.getFieldtype(typeStr);
             return Fieldtype ? <Fieldtype definition={field} data={this.props.data&&this.props.data[fieldIdentifier]} validation={validationResult&&(fieldIdentifier in validationResult.fields)?validationResult.fields[fieldIdentifier]:''} /> : field.type + ' is not supported.'
         }

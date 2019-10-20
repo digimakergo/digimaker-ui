@@ -3,7 +3,6 @@
         "text": "./fieldtype/Text",
         "richtext": "./fieldtype/RichText",
         "image": "./fieldtype/Image",
-        "checkbox": "./fieldtype/Checkbox",
-        "eth_indicator": "./fieldtype/EthIndicator"
+        "checkbox": "./fieldtype/Checkbox"
     }
 }

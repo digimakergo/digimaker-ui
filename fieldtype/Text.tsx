@@ -1,6 +1,5 @@
 import * as React from 'react';
 import Moment from 'react-moment';
-import Config from '../../config.json';
 import ReactTooltip from 'react-tooltip'
 
 export default class Text extends React.Component<{definition:any, validation:any, data:any},{}> {

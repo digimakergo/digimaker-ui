@@ -1,5 +1,7 @@
 import Fieldtype from './fieldtype.json';
 
+declare module "ui";
+
 export default class FieldRegister{
         static fieldtypeMap = {};
 
