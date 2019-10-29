@@ -19,7 +19,7 @@ export default class LoadFields extends React.Component<{ type: string, validati
             })
     }
 
-    componentWillMount() {
+    componentDidMount() {
         this.fetchData();
     }
 
