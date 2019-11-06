@@ -3,6 +3,7 @@
         "text": "./fieldtype/Text",
         "richtext": "./fieldtype/RichText",
         "image": "./fieldtype/Image",
-        "checkbox": "./fieldtype/Checkbox"
+        "checkbox": "./fieldtype/Checkbox",
+        "file": "./fieldtype/File"
     }
 }
