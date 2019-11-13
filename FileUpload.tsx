@@ -4,7 +4,7 @@ export default class FileUpload extends React.Component<{name: string, service:s
 
 constructor(props:any) {
       super(props);
-      this.state = {uploadState:0,filename: '', error: ''}; // 0 - default, 1 - uploading, 2 - uploaded, 3 - error
+      this.state = {uploadState:0,filename: props.value, error: ''}; // 0 - default, 1 - uploading, 2 - uploaded, 3 - error
     }
 
 
@@ -17,10 +17,13 @@ constructor(props:any) {
       fetch(process.env.REACT_APP_REMOTE_URL + '/util/uploadfile?service='+this.props.service, {
         method: 'POST',
         body: data
-      }).then(
-        //todo: use json if succeeds.
-        response => response.text()
-      ).then(
+      }).then((response)=>{
+        if (!response.ok) {
+            throw response.statusText;
+        }
+        return response.text()
+      })
+      .then(
         (text) => {
           this.setState( {filename: text, uploadState: 2 } );
           if( this.props.onSuccess ){
@@ -30,6 +33,7 @@ constructor(props:any) {
         }
       ).catch(
         (error) => {
+          console.log(error);
           this.setState( {uploadState: 3, error: error } );
         }
       );
@@ -42,7 +46,7 @@ constructor(props:any) {
                   {this.state.uploadState==1&&<span className="loading"></span>}
                   {this.state.uploadState==2&&<span className="success"></span>}
                   {this.state.uploadState==3&&<span className="error">{this.state.error}</span>}
-                  <input name={this.props.name} type="hidden" value={this.state.filename} defaultValue={this.props.value} />
+                  <input name={this.props.name} type="hidden" value={this.state.filename} />
              </span>
         )
     }
