@@ -11,6 +11,9 @@ constructor(props:any) {
     uploadFile(files:any){
       let data = new FormData();
       //todo: support multiple.
+      if( files.length == 0 ){
+        return;
+      }
       let file = files[0];
       data.append( 'file', file );
       this.setState({uploadState: 1});
