@@ -3,7 +3,7 @@ import Moment from 'react-moment';
 import ReactTooltip from 'react-tooltip'
 
 
-export default class RichText extends React.Component<{definition:any, validation:any, data:any},{}> {
+export default class RichText extends React.Component<{definition:any, validation:any, afterField:any, data:any},{}> {
 
 constructor(props:any) {
       super(props);
@@ -11,6 +11,7 @@ constructor(props:any) {
     }
 
 render(){
+    const AfterElement = this.props.afterField(this.props.definition);  
     return (
         <div className={'field '+(this.props.definition.required?'required':'')+(this.props.validation=='1'?' result-required':'')}>
             <label htmlFor={this.props.definition.identifier}>
@@ -19,6 +20,7 @@ render(){
             : </label>
             <ReactTooltip effect="solid" place="right" clickable={true} multiline={true} delayHide={500} className="tip" />
             <textarea id={this.props.definition.identifier} className="form-control" name={this.props.definition.identifier}></textarea>
+            {AfterElement}
         </div>
     )
 }

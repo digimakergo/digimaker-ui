@@ -1,7 +1,7 @@
 import * as React from 'react';
 import FieldRegister from './FieldRegister';
 
-export default class LoadFields extends React.Component<{ type: string, validation: any, data: any }, { definition: any, typeArr:string[] }> {
+export default class LoadFields extends React.Component<{ type: string, validation: any, data: any, afterField?:any, onChange?:void }, { definition: any, typeArr:string[] }> {
 
     constructor(props: any) {
         super(props);
@@ -38,7 +38,12 @@ export default class LoadFields extends React.Component<{ type: string, validati
             const validationResult = this.props.validation;
 
             const Fieldtype: React.ReactType = FieldRegister.getFieldtype(typeStr);
-            return Fieldtype ? <Fieldtype definition={field} data={this.props.data&&this.props.data[fieldIdentifier]} validation={validationResult&&(fieldIdentifier in validationResult.fields)?validationResult.fields[fieldIdentifier]:''} /> : field.type + ' is not supported.'
+            return Fieldtype ? <Fieldtype definition={field}
+                                          data={this.props.data&&this.props.data[fieldIdentifier]}
+                                          validation={validationResult&&(fieldIdentifier in validationResult.fields)?validationResult.fields[fieldIdentifier]:''}
+                                          afterField={()=>this.props.afterField(field, this.props.data, validationResult)}
+                                           />
+                                : field.type + ' is not supported.'
         }
     }
 

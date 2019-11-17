@@ -2,7 +2,7 @@ import * as React from 'react';
 import Moment from 'react-moment';
 import ReactTooltip from 'react-tooltip'
 
-export default class Text extends React.Component<{definition:any, validation:any, data:any},{}> {
+export default class Text extends React.Component<{definition:any, validation:any, afterField:any, data:any},{}> {
 
 constructor(props:any) {
       super(props);
@@ -10,6 +10,7 @@ constructor(props:any) {
     }
 
     render(){
+        const AfterElement = this.props.afterField();
         return (
             <div className={'field '+(this.props.definition.required?'required':'')+(this.props.validation=='1'?' result-required':'')}>
                 <label htmlFor={this.props.definition.identifier}>{this.props.definition.name}
@@ -18,6 +19,7 @@ constructor(props:any) {
                 <ReactTooltip effect="solid" place="right" clickable={true} multiline={true} delayHide={500} className="tip" />
                 <input type="text" id={this.props.definition.identifier} className="form-control" name={this.props.definition.identifier} defaultValue={this.props.data} />
                 <div className="field-description">{this.props.definition.description}</div>
+                {AfterElement}
             </div>
         )
     }
