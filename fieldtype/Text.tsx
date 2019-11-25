@@ -2,7 +2,7 @@ import * as React from 'react';
 import Moment from 'react-moment';
 import ReactTooltip from 'react-tooltip'
 
-export default class Text extends React.Component<{definition:any, validation:any, afterField:any, data:any, mode:string},{}> {
+export default class Text extends React.Component<{definition:any, validation:any, beforeField:any, afterField:any, data:any, mode:string},{}> {
 
 constructor(props:any) {
       super(props);
@@ -10,16 +10,22 @@ constructor(props:any) {
     }
 
     view(){
+      const BeforeElement:React.ReactType = this.props.beforeField();
+      const AfterElement:React.ReactType = this.props.afterField();
       return (<div className={'view field ' + this.props.definition.type }>
+              {BeforeElement}
               <label>{this.props.definition.name}: </label>
               <div className="field-value">{this.props.data&&this.props.data.Raw}</div>
+              {AfterElement}
               </div>)
     }
 
     edit(){
-      const AfterElement = this.props.afterField();
+      const BeforeElement:React.ReactType = this.props.beforeField();
+      const AfterElement:React.ReactType = this.props.afterField();
       return (
           <div className={'edit field '+(this.props.definition.required?'required':'')+(this.props.validation=='1'?' result-required':'')}>
+              {BeforeElement}
               <label htmlFor={this.props.definition.identifier}>{this.props.definition.name}
                   {this.props.definition.description&&<i className="icon-info" data-tip={this.props.definition.description}></i>}
               :</label>

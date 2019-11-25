@@ -3,7 +3,7 @@ import Moment from 'react-moment';
 import ReactTooltip from 'react-tooltip'
 
 
-export default class RichText extends React.Component<{ definition: any, validation: any, afterField: any, data: any, mode: string }, {}> {
+export default class RichText extends React.Component<{ definition: any, validation: any, beforeField:any, afterField: any, data: any, mode: string }, {}> {
 
   constructor(props: any) {
     super(props);
@@ -11,9 +11,11 @@ export default class RichText extends React.Component<{ definition: any, validat
   }
 
   edit() {
-    const AfterElement = this.props.afterField(this.props.definition);
+    const BeforeElement:React.ReactType = this.props.beforeField();
+    const AfterElement:React.ReactType = this.props.afterField();
     return (
       <div className={'field ' + (this.props.definition.required ? 'required' : '') + (this.props.validation == '1' ? ' result-required' : '')}>
+        {BeforeElement}
         <label htmlFor={this.props.definition.identifier}>
           {this.props.definition.name}
           {this.props.definition.description && <i className="icon-info" data-tip={this.props.definition.description}></i>}
@@ -26,9 +28,13 @@ export default class RichText extends React.Component<{ definition: any, validat
   }
 
   view(){
+    const BeforeElement:React.ReactType = this.props.beforeField();
+    const AfterElement:React.ReactType = this.props.afterField();
     return (<div className={'view field ' + this.props.definition.type }>
-            <label>{this.props.definition.name}: </label>
-            <div  className="field-value">{this.props.data&&this.props.data.Raw}</div>
+            {BeforeElement}
+              <label>{this.props.definition.name}: </label>
+              <div  className="field-value">{this.props.data&&this.props.data.Raw}</div>
+            {AfterElement}
             </div>)
   }
 

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import FieldRegister from './FieldRegister';
 
-export default class LoadFields extends React.Component<{ type: string, validation: any, data: any, mode?:string, afterField?:any, onChange?:void }, { definition: any, typeArr:string[] }> {
+export default class LoadFields extends React.Component<{ type: string, validation: any, data: any, mode?:string, beforeField?:any, afterField?:any, onChange?:void }, { definition: any, typeArr:string[] }> {
 
     constructor(props: any) {
         super(props);
@@ -15,6 +15,8 @@ export default class LoadFields extends React.Component<{ type: string, validati
         fetch(process.env.REACT_APP_REMOTE_URL + '/contenttype/get/' + this.props.type.split('/')[0])
             .then(res => res.json())
             .then((data) => {
+                console.log( 'ffff' );
+                console.log( data );
                 this.setState({ definition: data, typeArr: this.props.type.split('/') });
             })
     }
@@ -38,11 +40,13 @@ export default class LoadFields extends React.Component<{ type: string, validati
             const validationResult = this.props.validation;
 
             const Fieldtype: React.ReactType = FieldRegister.getFieldtype(typeStr);
+
             return Fieldtype ? <Fieldtype definition={field}
                                           data={this.props.data&&this.props.data[fieldIdentifier]}
                                           validation={validationResult&&(fieldIdentifier in validationResult.fields)?validationResult.fields[fieldIdentifier]:''}
                                           mode = {this.props.mode}
-                                          afterField={()=>this.props.afterField(field, this.props.data, validationResult)}
+                                          beforeField={()=>this.props.beforeField&&this.props.beforeField(field, this.props.data, validationResult)}
+                                          afterField={()=>this.props.afterField&&this.props.afterField(field, this.props.data, validationResult)}
                                            />
                                 : field.type + ' is not supported.'
         }

@@ -1,19 +1,12 @@
 import Fieldtype from './fieldtype.json';
+import Checkbox  from './fieldtype/Checkbox'
+import File  from './fieldtype/File'
+import Image  from './fieldtype/Image'
+import RichText  from './fieldtype/RichText'
+import Text  from './fieldtype/Text'
 
 export default class FieldRegister{
-        static fieldtypeMap = {};
-
-        static register( fieldtype: string, path: string ){
-            console.debug( "Will import " + path );
-            import(''+path)
-                .then(mod => {
-                    FieldRegister.registerComponent( fieldtype, mod.default );
-                }
-                )
-                .catch(error => {
-                    console.error(`"${fieldtype}" is not supported ${error}`);
-                });
-        }
+        static fieldtypeMap = {};      
 
         static registerComponent( fieldtype: string, component:any ){
             console.debug( "Registering field type:" + fieldtype )
@@ -35,9 +28,9 @@ export default class FieldRegister{
 
 //Register all from config.json
 (()=>{
-    for( let fieldtype in Fieldtype.fieldtypes )
-    {
-        let fieldtypePath = Fieldtype.fieldtypes[fieldtype];
-        FieldRegister.register( fieldtype, fieldtypePath );
-    }
+    FieldRegister.registerComponent( 'checkbox', Checkbox );
+    FieldRegister.registerComponent( 'file', File );
+    FieldRegister.registerComponent( 'image', Image );
+    FieldRegister.registerComponent( 'richtext', RichText );
+    FieldRegister.registerComponent( 'text', Text );
 })()
