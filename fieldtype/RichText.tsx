@@ -21,7 +21,7 @@ export default class RichText extends React.Component<{ definition: any, validat
           {this.props.definition.description && <i className="icon-info" data-tip={this.props.definition.description}></i>}
           : </label>
         <ReactTooltip effect="solid" place="right" clickable={true} multiline={true} delayHide={500} className="tip" />
-        <textarea id={this.props.definition.identifier} className="form-control" name={this.props.definition.identifier}></textarea>
+        <textarea id={this.props.definition.identifier} className="form-control" name={this.props.definition.identifier} defaultValue={this.props.data}></textarea>
         {AfterElement}
       </div>
     )
