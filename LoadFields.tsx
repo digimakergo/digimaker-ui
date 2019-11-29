@@ -56,6 +56,7 @@ export default class LoadFields extends React.Component<{ type: string, validati
         if (!this.state.definition) {
             return (<div className="loading"></div>)
         }
+        let parent:any = '';
         var fields = this.state.definition.fields
         if(this.state.typeArr.length>1)
         {
@@ -70,10 +71,15 @@ export default class LoadFields extends React.Component<{ type: string, validati
             if( !currentField ){
                 return (<div>{identifier} not found</div>)
             }
+            parent = currentField;
             fields = currentField.children;
         }
         return (
             <div>
+                {parent&&<div className="fields-parent">
+                  {parent.parameters&&parent.parameters.fullname&&<div className="field-title">{parent.parameters.fullname}</div>}
+                  {parent.description&&<div className="field-description">{parent.description}</div>}
+                  </div>}
                 <div>
                     {fields.map((field) => {
                         return this.renderField(field)
