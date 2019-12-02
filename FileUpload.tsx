@@ -49,6 +49,7 @@ constructor(props:any) {
                   {this.state.uploadState==1&&<span className="loading"></span>}
                   {this.state.uploadState==2&&<span className="success"></span>}
                   {this.state.uploadState==3&&<span className="error">{this.state.error}</span>}
+                  {this.props.value&&<span>{this.props.value}</span>}
                   <input name={this.props.name} type="hidden" value={this.state.filename} />
              </span>
         )
