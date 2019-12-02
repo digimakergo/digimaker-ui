@@ -4,9 +4,14 @@ export default class FileUpload extends React.Component<{name: string, service:s
 
 constructor(props:any) {
       super(props);
-      this.state = {uploadState:0,filename: props.value, error: ''}; // 0 - default, 1 - uploading, 2 - uploaded, 3 - error
+      this.state = {uploadState:0,filename: '', error: ''}; // 0 - default, 1 - uploading, 2 - uploaded, 3 - error
     }
 
+    componentDidUpdate(prevProps){
+      if( this.props.value != prevProps.value ){
+        this.setState( {filename:this.props.value} );
+      }
+    }
 
     uploadFile(files:any){
       let data = new FormData();
