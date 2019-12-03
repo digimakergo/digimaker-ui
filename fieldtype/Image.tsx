@@ -25,7 +25,7 @@ constructor(props:any) {
 
                 <FileUpload name={this.props.definition.identifier}
                                               service="content"
-                                              format="png,jpg,gif"
+                                              format="image/*"
                                               value={this.props.data} />
                 <div className="field-description">{this.props.definition.description}</div>
             </div>
