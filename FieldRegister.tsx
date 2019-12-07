@@ -4,9 +4,11 @@ import File  from './fieldtype/File'
 import Image  from './fieldtype/Image'
 import RichText  from './fieldtype/RichText'
 import Text  from './fieldtype/Text'
+import Number from './fieldtype/Number'
+import Radio from './fieldtype/Radio'
 
 export default class FieldRegister{
-        static fieldtypeMap = {};      
+        static fieldtypeMap = {};
 
         static registerComponent( fieldtype: string, component:any ){
             console.debug( "Registering field type:" + fieldtype )
@@ -33,4 +35,7 @@ export default class FieldRegister{
     FieldRegister.registerComponent( 'image', Image );
     FieldRegister.registerComponent( 'richtext', RichText );
     FieldRegister.registerComponent( 'text', Text );
+    FieldRegister.registerComponent( 'number', Number );
+    FieldRegister.registerComponent( 'radio', Radio );
+
 })()

@@ -28,7 +28,10 @@ export default class LoadFields extends React.Component<{ type: string, validati
     renderField(field: any,containerLevel:number=1) {
         if (field.children) {
             return (<div className={`field-container level${containerLevel} ${field.identifier}`}>
-            <div className="container-title"><a href="#" className="closable"><i className="fas fa-chevron-down"></i></a><span>{field.name}</span></div>
+            <div className="container-title">
+              <a href="#" className="closable">
+                <i className="fas fa-chevron-down"></i>
+              </a><span>{field.name}</span>{field.description&&<i className="icon-info" data-tip={field.description} />}</div>
                 {field.children.map( (child) => {
                      return (this.renderField( child, containerLevel+1 ))
                 })}
