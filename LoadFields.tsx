@@ -15,7 +15,7 @@ export default class LoadFields extends React.Component<{ type: string, validati
         fetch(process.env.REACT_APP_REMOTE_URL + '/contenttype/get/' + this.props.type.split('/')[0])
             .then(res => res.json())
             .then((data) => {
-                console.log( 'ffff' );
+                console.log( 'fetched data:' );
                 console.log( data );
                 this.setState({ definition: data, typeArr: this.props.type.split('/') });
             })
@@ -78,8 +78,12 @@ export default class LoadFields extends React.Component<{ type: string, validati
         return (
             <div>
                 {parent&&<div className="fields-parent">
-                  {parent.parameters&&parent.parameters.fullname&&<div className="field-title">{parent.parameters.fullname}</div>}
-                  {parent.description&&<div className="field-description">{parent.description}</div>}
+                  {parent.parameters&&parent.parameters.fullname&&
+
+                    <div className="field-title">{parent.parameters.fullname}
+                    {parent.description&&<i className="icon-info" data-tip={parent.description}></i>}
+                  </div>}
+
                   </div>}
                 <div>
                     {fields.map((field) => {
