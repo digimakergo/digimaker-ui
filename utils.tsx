@@ -9,7 +9,7 @@ export function buildObject(form:any){
     let objectStr = arr.join('&');
 
     var qs = require('qs');
-    let dataObject = qs.parse( objectStr );
+    let dataObject = qs.parse( objectStr, {parameterLimit:1000000} );
     console.log( objectStr );
     return dataObject;
   };
