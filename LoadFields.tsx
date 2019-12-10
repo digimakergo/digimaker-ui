@@ -1,7 +1,7 @@
 import * as React from 'react';
 import FieldRegister from './FieldRegister';
 
-export default class LoadFields extends React.Component<{ type: string, validation: any, data: any, mode?:string, beforeField?:any, afterField?:any, onChange?:void }, { definition: any, typeArr:string[] }> {
+export default class LoadFields extends React.Component<{ type: string, validation: any, data: any, language?:string, mode?:string, beforeField?:any, afterField?:any, onChange?:void }, { definition: any, typeArr:string[] }> {
 
     constructor(props: any) {
         super(props);
@@ -12,7 +12,8 @@ export default class LoadFields extends React.Component<{ type: string, validati
     //fetch fields definition
     fetchData() {
         console.log( "remote:" + process.env.REACT_APP_REMOTE_URL  );
-        fetch(process.env.REACT_APP_REMOTE_URL + '/contenttype/get/' + this.props.type.split('/')[0])
+        let languageParams = this.props.language?'?langauge='+this.props.language:'';
+        fetch(process.env.REACT_APP_REMOTE_URL + '/contenttype/get/' + this.props.type.split('/')[0]+languageParams)
             .then(res => res.json())
             .then((data) => {
                 console.log( 'fetched data:' );
