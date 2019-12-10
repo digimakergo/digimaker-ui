@@ -12,7 +12,7 @@ export default class LoadFields extends React.Component<{ type: string, validati
     //fetch fields definition
     fetchData() {
         console.log( "remote:" + process.env.REACT_APP_REMOTE_URL  );
-        let languageParams = this.props.language?'?langauge='+this.props.language:'';
+        let languageParams = this.props.language?'?language='+this.props.language:'';
         fetch(process.env.REACT_APP_REMOTE_URL + '/contenttype/get/' + this.props.type.split('/')[0]+languageParams)
             .then(res => res.json())
             .then((data) => {
@@ -20,6 +20,13 @@ export default class LoadFields extends React.Component<{ type: string, validati
                 console.log( data );
                 this.setState({ definition: data, typeArr: this.props.type.split('/') });
             })
+    }
+
+    componentDidUpdate(prevProps){
+      //todo: fix why it sends twice
+        if( prevProps.language != this.props.language ){
+            this.fetchData();
+        }
     }
 
     componentDidMount() {
