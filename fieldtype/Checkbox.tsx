@@ -26,9 +26,9 @@ constructor(props:any) {
                     value="1"
                     onChange={this.changeChecked.bind(this)}
                     defaultChecked={this.props.data==1} />
-                <div>{this.props.definition.name}</div>
+                <div>{this.props.definition.name}
+                {this.props.definition.description&&<i className="icon-info" data-tip={this.props.definition.description}></i>}</div>
                </label>
-                <div className="field-description">{this.props.definition.description}</div>
                 {AfterElement}
             </div>
         )

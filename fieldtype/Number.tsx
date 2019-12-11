@@ -49,7 +49,6 @@ constructor(props:any) {
               :</label>
               {this.props.validation&&<div className="error">{this.props.validation}</div>}
               <input type="text" value={this.state.value} onChange={(e)=>this.onChange(e)} id={this.props.definition.identifier} className="form-control" name={this.props.definition.identifier} />
-              <div className="field-description">{this.props.definition.description}</div>
               {AfterElement}
           </div>
       )

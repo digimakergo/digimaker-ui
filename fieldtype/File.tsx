@@ -29,7 +29,6 @@ constructor(props:any) {
                                               service="content"
                                               format="*"
                                               value="" />
-                <div className="field-description">{this.props.definition.description}</div>
             </div>
         )
     }
