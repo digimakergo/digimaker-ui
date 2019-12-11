@@ -27,7 +27,6 @@ constructor(props:any) {
                                               service="content"
                                               format="image/*"
                                               value={this.props.data} />
-                <div className="field-description">{this.props.definition.description}</div>
             </div>
         )
     }
