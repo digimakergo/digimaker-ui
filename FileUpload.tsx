@@ -7,7 +7,11 @@ constructor(props:any) {
       this.state = {uploadState:0,filename: '', error: ''}; // 0 - default, 1 - uploading, 2 - uploaded, 3 - error
     }
 
-    componentDidUpdate(prevProps){
+    componentDidMount(){
+      this.setState( {filename:this.props.value} );
+    }
+
+    componentDidUpdate(prevProps:any){
       if( this.props.value != prevProps.value ){
         this.setState( {filename:this.props.value} );
       }
