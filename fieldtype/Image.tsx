@@ -13,7 +13,7 @@ constructor(props:any) {
       return (<div className={'view field ' + this.props.definition.type }>
               <label>{this.props.definition.name}: </label>
               <div className="field-value">
-                {this.props.data&&this.props.data.Raw&&<img src={"/var/uploaded/"+this.props.data&&this.props.data.Raw} />}
+                {this.props.data&&this.props.data.Raw&&<img src={"/var/uploaded/"+this.props.data.Raw} />}
               </div>
               </div>)
     }
