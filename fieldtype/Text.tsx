@@ -26,7 +26,7 @@ constructor(props:any) {
       const def = this.props.definition;
       const name = def.identifier;
       return (
-          <div className={'edit field '+def.type+ ' '+(this.props.definition.required?'required':'')+(this.props.validation=='1'?' result-required':'')}>
+          <div className={'edit field '+def.type+ ' field-' +  def.identifier + ' '+(this.props.definition.required?'required':'')+(this.props.validation=='1'?' result-required':'')}>
               {BeforeElement}
               <label htmlFor={this.props.definition.identifier}>{this.props.definition.name}
                   {this.props.definition.description&&<i className="icon-info" data-tip={this.props.definition.description}></i>}
