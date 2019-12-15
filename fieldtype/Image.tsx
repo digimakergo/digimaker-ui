@@ -29,7 +29,6 @@ constructor(props:any) {
                                               service="content"
                                               format="image/*"
                                               value={this.props.data} />
-                {this.props.data&&<img src={"/var/uploaded/"+this.props.data} />}
             </div>
         )
     }
