@@ -6,6 +6,7 @@ import RichText  from './fieldtype/RichText'
 import Text  from './fieldtype/Text'
 import Number from './fieldtype/Number'
 import Radio from './fieldtype/Radio'
+import Password from './fieldtype/Password'
 
 export default class FieldRegister{
         static fieldtypeMap = {};
@@ -37,5 +38,6 @@ export default class FieldRegister{
     FieldRegister.registerComponent( 'text', Text );
     FieldRegister.registerComponent( 'number', Number );
     FieldRegister.registerComponent( 'radio', Radio );
+    FieldRegister.registerComponent( 'password', Password );
 
 })()
