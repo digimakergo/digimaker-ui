@@ -1,5 +1,6 @@
 import * as React from 'react';
 import Moment from 'react-moment';
+import ReactTooltip from 'react-tooltip';
 
 export default class Checkbox extends React.Component<{definition:any, beforeField:any, afterField:any, validation:any, data:any, mode?:string},{checked:boolean}> {
 
@@ -27,7 +28,8 @@ constructor(props:any) {
                     onChange={this.changeChecked.bind(this)}
                     defaultChecked={this.props.data==1} />
                 <div>{this.props.definition.name}
-                {this.props.definition.description&&<i className="icon-info" data-tip={this.props.definition.description}></i>}</div>
+                {this.props.definition.description&&<i className="icon-info" data-for={this.props.definition.identifier+'-desciption'} data-tip=""></i>}</div>
+                {this.props.definition.description&&<ReactTooltip id={this.props.definition.identifier+'-desciption'} effect="solid" place="right" html={true} clickable={true} multiline={true} delayHide={500} className="tip">{this.props.definition.description}</ReactTooltip>}
                </label>
                 {AfterElement}
             </div>

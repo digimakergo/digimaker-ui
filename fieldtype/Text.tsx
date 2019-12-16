@@ -29,9 +29,9 @@ constructor(props:any) {
           <div className={'edit field '+def.type+ ' field-' +  def.identifier + ' '+(this.props.definition.required?'required':'')+(this.props.validation=='1'?' result-required':'')}>
               {BeforeElement}
               <label htmlFor={this.props.definition.identifier}>{this.props.definition.name}
-                  {this.props.definition.description&&<i className="icon-info" data-tip={this.props.definition.description}></i>}
+                  {this.props.definition.description&&<i className="icon-info" data-for={this.props.definition.identifier+'-desciption'} data-tip=""></i>}
+                  {this.props.definition.description&&<ReactTooltip id={this.props.definition.identifier+'-desciption'} effect="solid" place="right" html={true} clickable={true} multiline={true} delayHide={500} className="tip">{this.props.definition.description}</ReactTooltip>}
               :</label>
-              <ReactTooltip effect="solid" place="right" clickable={true} multiline={true} delayHide={500} className="tip" />
               <input type="text" id={name} className="form-control" name={name} defaultValue={this.props.data} />
               {AfterElement}
           </div>

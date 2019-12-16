@@ -14,13 +14,13 @@ export default class RichText extends React.Component<{ definition: any, validat
     const BeforeElement:React.ReactType = this.props.beforeField();
     const AfterElement:React.ReactType = this.props.afterField();
     return (
-      <div className={'field ' + (this.props.definition.required ? 'required' : '') + (this.props.validation == '1' ? ' result-required' : '')}>
+      <div className={'edit field '+this.props.definition.type+ ' ' + (this.props.definition.required ? 'required' : '') + (this.props.validation == '1' ? ' result-required' : '')}>
         {BeforeElement}
         <label htmlFor={this.props.definition.identifier}>
           {this.props.definition.name}
-          {this.props.definition.description && <i className="icon-info" data-tip={this.props.definition.description}></i>}
+          {this.props.definition.description && <i className="icon-info" data-for={this.props.definition.identifier+'-desciption'} data-tip=""></i>}
+          {this.props.definition.description&&<ReactTooltip id={this.props.definition.identifier+'-desciption'} effect="solid" place="right" html={true} clickable={true} multiline={true} delayHide={500} className="tip">{this.props.definition.description}</ReactTooltip>}
           : </label>
-        <ReactTooltip effect="solid" place="right" clickable={true} multiline={true} delayHide={500} className="tip" />
         <textarea id={this.props.definition.identifier} className="form-control" name={this.props.definition.identifier} defaultValue={this.props.data}></textarea>
         {AfterElement}
       </div>
