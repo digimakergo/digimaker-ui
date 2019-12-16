@@ -1,5 +1,6 @@
 import * as React from 'react';
 import FieldRegister from './FieldRegister';
+import ReactTooltip from 'react-tooltip';
 
 export default class LoadFields extends React.Component<{ type: string, validation: any, data: any, language?:string, mode?:string, beforeField?:any, afterField?:any, onChange?:void }, { definition: any, typeArr:string[] }> {
 
@@ -39,7 +40,10 @@ export default class LoadFields extends React.Component<{ type: string, validati
             <div className="container-title">
               <a href="#" className="closable">
                 <i className="fas fa-chevron-down"></i>
-              </a><span>{field.name}</span>{field.description&&<i className="icon-info" data-tip={field.description} />}</div>
+              </a><span>{field.name}</span>
+              {field.description&&<i className="icon-info" data-for={field.identifier+'-description'} data-tip="" />}
+              {field.description&&<ReactTooltip id={field.identifier+'-description'} effect="solid" place="right" html={true} clickable={true} multiline={true} delayHide={500} className="tip">{field.description}</ReactTooltip>}
+              </div>
                 {field.children.map( (child) => {
                      return (this.renderField( child, containerLevel+1 ))
                 })}
@@ -92,7 +96,8 @@ export default class LoadFields extends React.Component<{ type: string, validati
                   {parent.parameters&&parent.parameters.fullname&&
 
                     <div className="field-title">{parent.parameters.fullname}
-                    {parent.description&&<i className="icon-info" data-tip={parent.description}></i>}
+                    {parent.description&&<i className="icon-info" data-for={parent.identifier+'-description'} data-tip=""></i>}
+                    {parent.description&&<ReactTooltip id={parent.identifier+'-description'} effect="solid" place="right" html={true} clickable={true} multiline={true} delayHide={500} className="tip">{parent.description}</ReactTooltip>}
                   </div>}
 
                   </div>}
