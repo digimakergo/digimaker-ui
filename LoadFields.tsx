@@ -60,6 +60,7 @@ export default class LoadFields extends React.Component<{ type: string, validati
                                           data={this.props.data&&this.props.data[fieldIdentifier]}
                                           formdata = {this.props.data}
                                           validation={validationResult&&(fieldIdentifier in validationResult.fields)?validationResult.fields[fieldIdentifier]:''}
+                                          formValidation={validationResult}
                                           mode = {this.props.mode}
                                           beforeField={()=>this.props.beforeField&&this.props.beforeField(field, this.props.data, validationResult)}
                                           afterField={()=>this.props.afterField&&this.props.afterField(field, this.props.data, validationResult)}
