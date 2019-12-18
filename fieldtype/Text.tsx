@@ -15,7 +15,7 @@ constructor(props:any) {
       return (<div className={'view field ' + this.props.definition.type }>
               {BeforeElement}
               <label>{this.props.definition.name}: </label>
-              <div className="field-value">{this.props.data&&this.props.data.Raw}</div>
+              <div className="field-value">{this.props.data}</div>
               {AfterElement}
               </div>)
     }
