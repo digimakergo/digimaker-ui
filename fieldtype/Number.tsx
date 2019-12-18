@@ -15,7 +15,7 @@ constructor(props:any) {
       return (<div className={'view field ' + this.props.definition.type }>
               {BeforeElement}
               <label>{this.props.definition.name}: </label>
-              <div className="field-value">{this.props.data&&this.props.data.Raw}</div>
+              <div className="field-value">{this.props.data}</div>
               {AfterElement}
               </div>)
     }
@@ -40,8 +40,6 @@ constructor(props:any) {
       const AfterElement:React.ReactType = this.props.afterField();
       const def = this.props.definition;
       const name = def.identifier;
-      console.log('number');
-      console.log( this.props.data );
       return (
           <div className={'edit field '+def.type+ ' '+(this.props.definition.required?'required':'')+(this.props.validation=='1'?' result-required':'')}>
               {BeforeElement}
