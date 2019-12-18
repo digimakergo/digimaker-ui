@@ -33,7 +33,7 @@ export default class RichText extends React.Component<{ definition: any, validat
     return (<div className={'view field ' + this.props.definition.type }>
             {BeforeElement}
               <label>{this.props.definition.name}: </label>
-              <div className="field-value">{this.props.data&&this.props.data.replace(/\n/g, "<br />")}</div>
+              <div className="field-value">{this.props.data}</div>
             {AfterElement}
             </div>)
   }
