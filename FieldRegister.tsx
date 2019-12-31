@@ -6,6 +6,7 @@ import RichText  from './fieldtype/RichText'
 import Text  from './fieldtype/Text'
 import Number from './fieldtype/Number'
 import Radio from './fieldtype/Radio'
+import OutputH from './fieldtype/OutputH'
 import Password from './fieldtype/Password'
 
 export default class FieldRegister{
@@ -39,5 +40,6 @@ export default class FieldRegister{
     FieldRegister.registerComponent( 'number', Number );
     FieldRegister.registerComponent( 'radio', Radio );
     FieldRegister.registerComponent( 'password', Password );
+    FieldRegister.registerComponent( 'output_h', OutputH );
 
 })()
