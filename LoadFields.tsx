@@ -38,11 +38,13 @@ export default class LoadFields extends React.Component<{ type: string, validati
         if (field.children) {
             return (<div className={`field-container level${containerLevel} ${field.identifier}`}>
             <div className="container-title">
+              {this.props.beforeField&&this.props.beforeField(field, this.props.data, null)}
               <a href="#" className="closable">
                 <i className="fas fa-chevron-down"></i>
               </a><span>{field.name}</span>
               {field.description&&<i className="icon-info" data-for={field.identifier+'-description'} data-tip="" />}
               {field.description&&<ReactTooltip id={field.identifier+'-description'} effect="solid" place="right" html={true} clickable={true} multiline={true} delayHide={500} className="tip">{field.description}</ReactTooltip>}
+              {this.props.afterField&&this.props.afterField(field, this.props.data, null)}
               </div>
                 {field.children.map( (child) => {
                      return (this.renderField( child, containerLevel+1 ))
