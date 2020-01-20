@@ -1,4 +1,5 @@
 export function buildObject(form:any){
+    require('formdata-polyfill');
     const formData = new FormData(form);
     var map:any = {};
 
