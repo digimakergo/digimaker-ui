@@ -30,6 +30,17 @@ export default class LoadFields extends React.Component<{ type: string, validati
         }
     }
 
+    fold(e){
+      e.preventDefault();
+      var target = e.target;
+      if( target.classList.contains( 'container-close' ) ){
+          target.classList.remove('container-close');
+      }else{
+          target.classList.add('container-close');
+      }
+      console.log(target.classList);
+    }
+
     componentDidMount() {
         this.fetchData();
     }
@@ -37,7 +48,7 @@ export default class LoadFields extends React.Component<{ type: string, validati
     renderField(field: any,containerLevel:number=1) {
         if (field.children) {
             return (<div className={`field-container level${containerLevel} ${field.identifier}`}>
-            <div className="container-title">
+            <div className="container-title" onClick={(e)=>this.fold(e)}>
               {this.props.beforeField&&this.props.beforeField(field, this.props.data, null)}
               <a href="#" className="closable">
                 <i className="fas fa-chevron-down"></i>
@@ -46,9 +57,11 @@ export default class LoadFields extends React.Component<{ type: string, validati
               {field.description&&<ReactTooltip id={field.identifier+'-description'} effect="solid" place="right" html={true} clickable={true} multiline={true} delayHide={500} className="tip">{field.description}</ReactTooltip>}
               {this.props.afterField&&this.props.afterField(field, this.props.data, null)}
               </div>
+              <div className="children">
                 {field.children.map( (child) => {
                      return (this.renderField( child, containerLevel+1 ))
                 })}
+              </div>
             </div>)
         }
         else {
