@@ -11,7 +11,7 @@ function TreeNode(props:{data:any, renderItem?:any}) {
   </ul>
 }
 
-class TreeNodeItem extends React.Component<{ data: any, renderItem?:any }, { open: boolean }> {
+class TreeNodeItem extends React.Component<{ data: any, renderItem?:any, open?:any }, { open: boolean }> {
   constructor(props: any) {
     super(props);
     this.state = { open: false };
@@ -24,6 +24,26 @@ class TreeNodeItem extends React.Component<{ data: any, renderItem?:any }, { ope
     this.setState({ open: !this.state.open });
   }
 
+  componentDidMount(){
+    //todo: use better way to get parameters
+    let path = window.location.pathname;
+    let currentID = path.substr(path.lastIndexOf('/')+1,);
+    let node = this.props.data;
+    let hierarchy = node.hierarchy.split('/');
+    if( hierarchy.includes(currentID) ){
+      this.setState({open: true});
+    }
+  }
+
+  componentDidUpdate(prevProps, prevState, snapshot){
+    if(!prevState.open&&this.state.open){
+      //Trigger chain that open parent which open parent's parent also...
+      if( this.props.open ){
+          this.props.open(true);
+      }
+    }
+  }
+
   clickContainer() {
     this.setState({ open: true });
   }
@@ -31,19 +51,24 @@ class TreeNodeItem extends React.Component<{ data: any, renderItem?:any }, { ope
   render() {
     let node = this.props.data;
     let url = `/main/${node.id}`;
+    let open = this.state.open;
 
     let subtype = (node.fields && node.fields['subtype']) ? ('icon-subtype-' + node.fields['subtype']) : '';
-    return <li className={this.state.open ? 'tree-open' : 'tree-close'} onClick={() => this.clickContainer()}>
+    return <li className={open ? 'tree-open' : 'tree-close'} onClick={() => this.clickContainer()}>
       <NavLink to={url} activeClassName="selected">
         <span className={node.children ? 'foldable space' : 'space'} onClick={(e) => this.openclose(e)}>
-          {node.children ? <i className={"fas " + (this.state.open ? 'icon-open' : 'icon-close')}></i> : ''}
+          {node.children ? <i className={"fas " + (open ? 'icon-open' : 'icon-close')}></i> : ''}
        </span>
-        {this.props.renderItem?(this.props.renderItem(node)):([<i className={"nodeicon far icon-" + node.content_type + " " + subtype}></i>,node.name])}
+        {this.props.renderItem?(this.props.renderItem(node)):(<span className="tree-text"><i className={"nodeicon far icon-" + node.content_type + " " + subtype}></i>{node.name}</span>)}
       </NavLink>
 
       {node.children && <ul>{
         node.children.map(value => {
-          return (<TreeNodeItem data={value} renderItem={this.props.renderItem} />)
+          return (<TreeNodeItem data={value} renderItem={this.props.renderItem} open={(open:boolean)=>{
+            if(open){
+              this.setState({open:true});
+            }
+          }} />)
         })}</ul>}
     </li>
   }
