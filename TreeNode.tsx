@@ -29,8 +29,7 @@ class TreeNodeItem extends React.Component<{ data: any, renderItem?:any, open?:a
     let path = window.location.pathname;
     let currentID = path.substr(path.lastIndexOf('/')+1,);
     let node = this.props.data;
-    let hierarchy = node.hierarchy.split('/');
-    if( hierarchy.includes(currentID) ){
+    if( node.id == currentID ){
       this.setState({open: true});
     }
   }
