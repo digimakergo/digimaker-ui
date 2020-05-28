@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { BrowserRouter as Router, Route, Link, NavLink } from "react-router-dom";
-import { Accordion, Button } from 'react-bootstrap';
-import {IconToggle} from './IconToggle';
+import Collapse from 'react-bootstrap/Collapse'
 
 //TreeNode which render tree based on data from server.
 //renderItem is to render what's inside(eg. if you want to remove icon or output node id, or additional link ).
@@ -45,9 +44,6 @@ class TreeNodeItem extends React.Component<{ data: any, renderItem?:any, open?:a
     }
   }
 
-  clickContainer() {
-    this.setState({ open: true });
-  }
 
   render() {
     let node = this.props.data;
@@ -55,24 +51,23 @@ class TreeNodeItem extends React.Component<{ data: any, renderItem?:any, open?:a
     let open = this.state.open;
 
     let subtype = (node.fields && node.fields['subtype']) ? ('icon-subtype-' + node.fields['subtype']) : '';
-    return <li className={open ? 'tree-open' : 'tree-close'} onClick={() => this.clickContainer()}>
-    <Accordion defaultActiveKey="0">
+    return <li className={open ? 'tree-open' : 'tree-close'}>
       <NavLink to={url} activeClassName="selected">
         <span className={node.children ? 'foldable space' : 'space'} onClick={(e) => this.openclose(e)}>
-          {node.children ? <IconToggle className="fas fa-chevron-right" />: ''}
+          {node.children&&<i className={"foldable fas fa-chevron-right" + (open ? ' open' : '')}></i>}
        </span>
         {this.props.renderItem?(this.props.renderItem(node)):(<span className="tree-text"><i className={"nodeicon far icon-" + node.content_type + " " + subtype}></i>{node.name}</span>)}
       </NavLink>
 
-      {node.children && <Accordion.Collapse eventKey="0"><ul>{
+      {node.children &&<Collapse in={open}><ul>{
         node.children.map(value => {
           return (<TreeNodeItem data={value} renderItem={this.props.renderItem} open={(open:boolean)=>{
             if(open){
               this.setState({open:true});
             }
           }} />)
-        })}</ul></Accordion.Collapse>}
-    </Accordion>
+        })}</ul>
+        </Collapse>}
     </li>
   }
 }
