@@ -59,6 +59,7 @@ class TreeNodeItem extends React.Component<{ data: any, renderItem?:any, open?:a
         {this.props.renderItem?(this.props.renderItem(node)):(<span className="tree-text"><i className={"nodeicon far icon-" + node.content_type + " " + subtype}></i>{node.name}</span>)}
       </NavLink>
 
+      {/*todo: load it without sliding*/}
       {node.children &&<Collapse in={open}><ul>{
         node.children.map(value => {
           return (<TreeNodeItem data={value} renderItem={this.props.renderItem} open={(open:boolean)=>{
