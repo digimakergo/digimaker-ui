@@ -8,6 +8,9 @@ export default class Registry{
         Registry.components[path] = component;
     }
 
+    //Use example:
+    //let Com:React.ReactType = Registry.getComponent( '<type:identifier>' );
+    //return <Com content={content}/>
     static getComponent(path:string){
         let com = Registry.components[path];
         if( !com ){
