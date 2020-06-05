@@ -10,11 +10,15 @@ constructor(props:any) {
       this.state = {};
     }
 
+    inline(){
+      return this.props.data?<img className="fieldtype-image" src={process.env.REACT_APP_ASSET_URL+"/"+this.props.data} />:'';
+    }
+
     view(){
       return (<div className={'view field ' + this.props.definition.type }>
               <label>{this.props.definition.name}: </label>
               <div className="field-value">
-                {this.props.data&&<img src={"/var/uploaded/"+this.props.data} />}
+                  {this.inline()}
               </div>
               </div>)
     }
@@ -38,6 +42,8 @@ constructor(props:any) {
     render(){
       if(this.props.mode=='view'){
           return this.view();
+      }else if(this.props.mode=='inline'){
+          return this.inline();
       }else{
           return this.edit();
       }
