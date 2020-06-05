@@ -11,7 +11,7 @@ constructor(props:any) {
     }
 
     inline(){
-      return this.props.data?<img className="fieldtype-image" src={process.env.REACT_APP_ASSET_URL+"/"+this.props.data} />:'';
+      return this.props.data?<div className="fieldtype-image"><img src={process.env.REACT_APP_ASSET_URL+"/"+this.props.data} /></div>:'';
     }
 
     view(){
