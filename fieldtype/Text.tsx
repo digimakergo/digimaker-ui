@@ -2,11 +2,15 @@ import * as React from 'react';
 import Moment from 'react-moment';
 import ReactTooltip from 'react-tooltip'
 
-export default class Text extends React.Component<{definition:any, validation:any, beforeField:any, afterField:any, data:any, mode:string},{}> {
+export default class Text extends React.Component<{definition:any, validation:any, beforeField?:any, afterField?:any, data:any, mode:string},{}> {
 
 constructor(props:any) {
       super(props);
       this.state = {};
+    }
+
+    inline(){
+      return (<span className="fieldtype-text">{this.props.data}</span>)
     }
 
     view(){
@@ -21,8 +25,8 @@ constructor(props:any) {
     }
 
     edit(){
-      const BeforeElement:React.ReactType = this.props.beforeField();
-      const AfterElement:React.ReactType = this.props.afterField();
+      const BeforeElement:React.ReactType = this.props.beforeField?this.props.beforeField():null;
+      const AfterElement:React.ReactType = this.props.afterField?this.props.afterField():null;
       const def = this.props.definition;
       const name = def.identifier;
       return (
@@ -41,6 +45,8 @@ constructor(props:any) {
     render(){
       if(this.props.mode=='view'){
           return this.view();
+      }else if(this.props.mode=='inline'){
+        return this.inline();
       }else{
           return this.edit();
       }
