@@ -3,15 +3,19 @@ import Moment from 'react-moment';
 import FileUpload from '../FileUpload'
 import ReactTooltip from 'react-tooltip';
 
-export default class Image extends React.Component<{definition:any, validation:any, mode: string, data:any},{}> {
+export default class Image extends React.Component<{definition:any, validation:any, mode: string, data:any},{data:any}> {
 
 constructor(props:any) {
       super(props);
-      this.state = {};
+      this.state = {data:props.data};
+    }
+
+    updated(data){
+      this.setState({data:data.nameUploaded});
     }
 
     inline(){
-      return this.props.data?<div className="fieldtype-image"><img src={process.env.REACT_APP_ASSET_URL+"/"+this.props.data} /></div>:'';
+      return this.props.data?<div className="fieldtype-image"><img src={process.env.REACT_APP_ASSET_URL+"/"+this.state.data} /></div>:'';
     }
 
     view(){
@@ -31,10 +35,14 @@ constructor(props:any) {
                     {this.props.definition.description&&<ReactTooltip id={this.props.definition.identifier+'-desciption'} effect="solid" place="right" html={true} clickable={true} multiline={true} delayHide={500} className="tip">{this.props.definition.description}</ReactTooltip>}
                 :</label>
 
+                <div className="edit-input">
                 <FileUpload name={this.props.definition.identifier}
                                               service="content"
                                               format="image/*"
-                                              value={this.props.data} />
+                                              value={this.props.data}
+                                              onSuccess={(data)=>{this.updated(data)}} />
+                {this.inline()}
+                </div>
             </div>
         )
     }
