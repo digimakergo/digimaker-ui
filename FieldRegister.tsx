@@ -8,6 +8,7 @@ import Number from './fieldtype/Number'
 import Radio from './fieldtype/Radio'
 import OutputH from './fieldtype/OutputH'
 import Password from './fieldtype/Password'
+import RelationList from './fieldtype/RelationList'
 
 export default class FieldRegister{
         static fieldtypeMap = {};
@@ -39,6 +40,7 @@ export default class FieldRegister{
     FieldRegister.registerComponent( 'text', Text );
     FieldRegister.registerComponent( 'number', Number );
     FieldRegister.registerComponent( 'radio', Radio );
+    FieldRegister.registerComponent( 'relationlist', RelationList );
     FieldRegister.registerComponent( 'password', Password );
     FieldRegister.registerComponent( 'output_h', OutputH );
 
