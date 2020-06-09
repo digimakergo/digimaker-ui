@@ -21,6 +21,8 @@ export default class RelationList extends React.Component<{definition:any, valid
       return this.edit();
     }else if(this.props.mode=='view'){
       return this.view();
+    }else{
+      return this.view();
     }
   }
 }
