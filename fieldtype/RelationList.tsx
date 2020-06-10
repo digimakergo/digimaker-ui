@@ -1,13 +1,27 @@
 import * as React from 'react';
 import Moment from 'react-moment';
 import ReactTooltip from 'react-tooltip';
+import Browse from '../Browse';
+import { Link } from "react-router-dom";
 
-export default class RelationList extends React.Component<{definition:any, validation:any, beforeField:any, afterField:any, data:any, mode:string},{}> {
+export default class RelationList extends React.Component<{definition:any, validation:any, beforeField:any, afterField:any, data:any, mode:string},{list:Array<any>}> {
+  constructor(props: any) {
+      super(props);
+      this.state = {list: []};
+  }
+
+
+  confirmDialog(selected:Array<any>){
+    this.setState({list:selected});
+  }
 
   edit(){
-    return <div>{this.props.definition.name}:
-              <button className="btn btn-link btn-sm"><i className="fas fa-plus-circle"></i>&nbsp;Add</button>
-           </div>
+    return <ul>{this.props.definition.name}:
+              {this.state.list.map((item:any)=>{
+                  return <li><Link to={'/main/'+item.id}>{item.name}</Link></li>
+              })}
+              <Browse onConfirm={(selected:Array<any>)=>this.confirmDialog(selected)} selected={this.state.list} />
+           </ul>
   }
 
   view(){

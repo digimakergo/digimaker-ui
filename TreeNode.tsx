@@ -4,15 +4,15 @@ import Collapse from 'react-bootstrap/Collapse'
 
 //TreeNode which render tree based on data from server.
 //renderItem is to render what's inside(eg. if you want to remove icon or output node id, or additional link ).
-function TreeNode(props:{data:any, renderItem?:any}) {
+function TreeNode(props:{data:any, renderItem?:any, onClick?:any}) {
   return <ul className="treemenu">
     {props.data.children && props.data.children.map(
-      value => { return (<TreeNodeItem data={value} renderItem={props.renderItem} />
+      value => { return (<TreeNodeItem data={value} renderItem={props.renderItem} onClick={props.onClick}/>
       )})}
   </ul>
 }
 
-class TreeNodeItem extends React.Component<{ data: any, renderItem?:any, open?:any }, { open: boolean }> {
+class TreeNodeItem extends React.Component<{ data: any, onClick?:any, renderItem?:any, open?:any }, { open: boolean }> {
   constructor(props: any) {
     super(props);
     this.state = { open: false };
@@ -45,6 +45,13 @@ class TreeNodeItem extends React.Component<{ data: any, renderItem?:any, open?:a
   }
 
 
+  onClick(e){
+    if(this.props.onClick){
+      e.preventDefault();
+      this.props.onClick(this.props.data);
+    }
+  }
+
   render() {
     let node = this.props.data;
     let url = `/main/${node.id}`;
@@ -52,7 +59,7 @@ class TreeNodeItem extends React.Component<{ data: any, renderItem?:any, open?:a
 
     let subtype = (node.fields && node.fields['subtype']) ? ('icon-subtype-' + node.fields['subtype']) : '';
     return <li className={open ? 'tree-open' : 'tree-close'}>
-      <NavLink to={url} activeClassName="selected">
+      <NavLink to={url} activeClassName="selected" onClick={(e)=>{this.onClick(e)}}>
         <span className={node.children ? 'foldable space' : 'space'} onClick={(e) => this.openclose(e)}>
           {node.children&&<i className={"foldable fas fa-chevron-right" + (open ? ' open' : '')}></i>}
        </span>
@@ -66,7 +73,8 @@ class TreeNodeItem extends React.Component<{ data: any, renderItem?:any, open?:a
             if(open){
               this.setState({open:true});
             }
-          }} />)
+          }}
+          onClick={this.props.onClick} />)
         })}</ul>
         </Collapse>}
     </li>
