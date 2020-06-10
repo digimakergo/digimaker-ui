@@ -16,12 +16,15 @@ export default class RelationList extends React.Component<{definition:any, valid
   }
 
   edit(){
-    return <ul>{this.props.definition.name}:
+    let def = this.props.definition;
+    return <div className={'edit field '+def.type}>
+            {this.props.definition.name}:
+            <Browse onConfirm={(selected:Array<any>)=>this.confirmDialog(selected)} selected={this.state.list} />
+          <ul>
               {this.state.list.map((item:any)=>{
                   return <li><Link to={'/main/'+item.id}>{item.name}</Link></li>
               })}
-              <Browse onConfirm={(selected:Array<any>)=>this.confirmDialog(selected)} selected={this.state.list} />
-           </ul>
+           </ul></div>
   }
 
   view(){
