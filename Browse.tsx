@@ -3,7 +3,7 @@ import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import TreeNode from './TreeNode';
 import { FetchWithAuth } from '../ui/util';
-import List from '../main/List';
+import List from './List';
 
 //todo: make id based on context(site?)
 //todo: add contenttype prop. (and show it in the title)
