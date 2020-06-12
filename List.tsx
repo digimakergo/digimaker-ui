@@ -1,6 +1,5 @@
 import * as React from 'react';
 import Moment from 'react-moment';
-import Config from '../dm.json';
 import Create from '../actions/Create';
 import {FetchWithAuth, getDefinition, getFields, getCommonFieldName} from '../ui/util';
 import ListRowActions from './ListRowActions';
@@ -9,7 +8,7 @@ import FieldRegister from '../ui/FieldRegister';
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import ReactTooltip from "react-tooltip";
 
-export default class List extends React.Component<{ id: number, contenttype: string, listtype?:string, onLinkClick?:any }, {def:any, loading:boolean, list: any, actionNew: boolean, currentPage:number, sortby: Array<Array<string>>, selected: Array<number> }> {
+export default class List extends React.Component<{ id: number, contenttype: string, config:any, onLinkClick?:any }, {def:any, loading:boolean, list: any, actionNew: boolean, currentPage:number, sortby: Array<Array<string>>, selected: Array<number> }> {
 
    private config: any
 
@@ -21,11 +20,7 @@ export default class List extends React.Component<{ id: number, contenttype: str
     }
 
     setConfig(){
-      if( this.props.listtype ){
-          this.config = Config.list["_"+this.props.listtype][this.props.contenttype];
-      }else{
-          this.config = Config.list[this.props.contenttype];
-      }
+      this.config = this.props.config;
       if( !this.config['sort_default'] ){
         this.config['sort_default'] = [['id', 'desc']];
       }

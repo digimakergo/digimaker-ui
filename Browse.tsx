@@ -86,7 +86,8 @@ export default class Browse extends React.Component<{ onConfirm: any, selected: 
               <TreeNode data={this.state.data} renderItem={(content: any) => { return this.renderNode(content) }} onClick={(content: any) => { this.clickTree(content) }} />
             </div>
             <div className="col-8">
-              <List id={this.state.id} contenttype="article" listtype="browse" onLinkClick={(content) => this.select(content)} />
+              {/*todo: set config from props */}
+              <List id={this.state.id} contenttype="article" config={{}} onLinkClick={(content) => this.select(content)} />
             </div>
           </div>
         </div>

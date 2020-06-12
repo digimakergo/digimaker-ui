@@ -1,5 +1,4 @@
 import * as React from 'react';
-import Config from '../dm.json';
 import Moment from 'react-moment';
 import { Link } from "react-router-dom";
 import ReactTooltip from "react-tooltip";
