@@ -5,6 +5,7 @@ import {FetchWithAuth, getDefinition, getFields, getCommonFieldName} from '../ui
 import ListRowActions from './ListRowActions';
 import Actions from './Actions';
 import FieldRegister from '../ui/FieldRegister';
+import RenderField from '../ui/RenderField';
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import ReactTooltip from "react-tooltip";
 
@@ -20,7 +21,7 @@ export default class List extends React.Component<{ id: number, contenttype: str
     }
 
     setConfig(){
-      this.config = this.props.config;
+      this.config = this.props.config?this.props.config:{};
       if( !this.config['sort_default'] ){
         this.config['sort_default'] = [['id', 'desc']];
       }
@@ -41,6 +42,12 @@ export default class List extends React.Component<{ id: number, contenttype: str
       }
       if( this.config['columns'] == undefined ){
         this.config['columns'] = [];
+      }
+      if( this.config['viewmode'] == undefined ){
+        this.config['viewmode'] = "list";
+      }
+      if( this.config['blockview_columns'] == undefined ){
+        this.config['blockview_columns'] = [];
       }
     }
 
@@ -170,6 +177,40 @@ export default class List extends React.Component<{ id: number, contenttype: str
       }
     }
 
+    renderTable(data){
+      let fieldsDef = getFields(this.state.def);
+      return <table className="table"><tbody>
+        {this.config['show_table_header']&&<tr>
+          {this.config.can_select&&<th className="center" onClick={()=>this.selectAll()}>
+            <a href="#"><i className="far fa-check-square"></i></a>
+          </th>}
+          <th><a href="#" onClick={(e)=>{this.sort(e, 'id');}} className={'column-sortable '+(this.state.sortby[0][0] == 'id'? this.state.sortby[0][1]:'')}>ID</a></th>
+          {this.config.columns.map( (column)=>{
+            let sortable = this.config.sort[column]?true:false;
+            let sortby = this.state.sortby;
+            let sortOrder = ''
+            if( sortby[0][0] == column ){
+              sortOrder = sortby[0][1];
+            }else if( sortby[1] && sortby[1][0] == column ){
+              sortOrder = 'sort-second ' + sortby[1][1];
+            }
+            let columnName = fieldsDef[column]?(fieldsDef[column].name):getCommonFieldName(column);
+            return (<th>
+              {sortable?
+                <a href="#" onClick={(e)=>{this.sort(e, column);}} className={"column-sortable "+sortOrder}>
+                {columnName}
+                </a>
+                :columnName}
+                </th>) //todo: use name from definition.
+          } )}
+          {this.config['row_actions'].length>0&&<th></th>}
+          </tr>}
+        {this.renderRows(data)}
+        {this.state.currentPage>0&&this.renderEmpties(this.config.pagination-data.length)}
+        </tbody>
+      </table>
+    }
+
     renderRows(list) {
         let rows: Array<any> = [];
         let fieldsDef = getFields(this.state.def);
@@ -182,16 +223,17 @@ export default class List extends React.Component<{ id: number, contenttype: str
                   {/*render fields, todo: use lazy load*/}
                   if( fieldsDef[column] ){
                     const fieldtype = fieldsDef[column].type;
-                    const Fieldtype: React.ReactType = FieldRegister.getFieldtype(fieldtype);
-                    let output = (<Fieldtype definition={fieldsDef[column]} data={content[column]}  mode='inline' />);
                     if( fieldtype == 'image' ){
                       return <td className="td-fieldtype-image">
-                            <Link to={"/main/"+content.id}><div data-tip data-for={"image"+content.id}>{output}</div></Link>
+                            <Link to={"/main/"+content.id}><div data-tip data-for={"image"+content.id}>
+                                <RenderField identifier={column} def={fieldsDef[column]} data={content[column]} mode='inline' />
+                            </div>
+                            </Link>
                               <ReactTooltip border={true} borderColor='#000000' className="tooltip" id={'image'+content.id} clickable={true} place="right" effect='float' type='light'>
-                              {output}
+                              <RenderField identifier={column} def={fieldsDef[column]} data={content[column]} mode='inline' />
                             </ReactTooltip></td>
                     }
-                    return <td>{output}</td>
+                    return <td><RenderField identifier={column} def={fieldsDef[column]} data={content[column]} mode='inline' /></td>
                   }
                   {/*render common fields*/}
                   switch(column){
@@ -220,41 +262,38 @@ export default class List extends React.Component<{ id: number, contenttype: str
         return rows;
     }
 
+    renderBlocks(list){
+        let blocks:Array<any> = [];
+        let rows:Array<any> = [];
+        let fieldsDef = getFields(this.state.def);
+        let cells:Array<any> = [];
+        for (let item of list ){
+            let columns = this.config['blockview_columns'];
+            cells.push(<div className="blockview-cell">
+                {columns.map((column)=>{
+                  return <RenderField identifier={column} def={fieldsDef[column]} data={item[column]} mode='inline' />
+                })}
+            </div>);
+        }
+        return (<div className="blockview-grid">{cells}</div>)
+    }
+
+
+
     renderList(data) {
         let totalPage = Math.ceil( this.state.list.count/this.config.pagination);
-        let fieldsDef = getFields(this.state.def);
         return (<div>
             {this.config.show_header&&<h3>{this.state.def.name}({this.state.list.count})</h3>}
-            <table className="table"><tbody>
-              {this.config['show_table_header']&&<tr>
-                {this.config.can_select&&<th className="center" onClick={()=>this.selectAll()}>
-                  <a href="#"><i className="far fa-check-square"></i></a>
-                </th>}
-                <th><a href="#" onClick={(e)=>{this.sort(e, 'id');}} className={'column-sortable '+(this.state.sortby[0][0] == 'id'? this.state.sortby[0][1]:'')}>ID</a></th>
-                {this.config.columns.map( (column)=>{
-                  let sortable = this.config.sort[column]?true:false;
-                  let sortby = this.state.sortby;
-                  let sortOrder = ''
-                  if( sortby[0][0] == column ){
-                    sortOrder = sortby[0][1];
-                  }else if( sortby[1] && sortby[1][0] == column ){
-                    sortOrder = 'sort-second ' + sortby[1][1];
-                  }
-                  let columnName = fieldsDef[column]?(fieldsDef[column].name):getCommonFieldName(column);
-                  return (<th>
-                    {sortable?
-                      <a href="#" onClick={(e)=>{this.sort(e, column);}} className={"column-sortable "+sortOrder}>
-                      {columnName}
-                      </a>
-                      :columnName}
-                      </th>) //todo: use name from definition.
-                } )}
-                {this.config['row_actions'].length>0&&<th></th>}
-                </tr>}
-              {this.renderRows(data)}
-              {this.state.currentPage>0&&this.renderEmpties(this.config.pagination-data.length)}
-              </tbody>
-            </table>
+            {(()=>{
+              switch(this.config.viewmode){
+                case "block":
+                  return this.renderBlocks(data);
+                case "list":
+                  return this.renderTable(data);
+                default:
+                  return '';
+              }
+            })()}
             <div className="text-right">
             {totalPage>1&&<span className="dm-pagination">
               {this.state.loading&&<span className="loading"></span>}
@@ -293,7 +332,7 @@ export default class List extends React.Component<{ id: number, contenttype: str
         }
 
         return (
-            <div>
+            <div className={"listmode-"+this.config.viewmode}>
                 <div className="content-list-tools">
                      {!this.config.show_table_header&&
                           <a href="#" onClick={(e)=>{e.preventDefault();this.selectAll()}}>
