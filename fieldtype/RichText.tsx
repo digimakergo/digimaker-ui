@@ -2,7 +2,6 @@ import * as React from 'react';
 import Moment from 'react-moment';
 import ReactTooltip from 'react-tooltip'
 
-
 export default class RichText extends React.Component<{ definition: any, validation: any, beforeField:any, afterField: any, data: any, mode: string }, {}> {
 
   constructor(props: any) {
