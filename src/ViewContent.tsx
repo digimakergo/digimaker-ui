@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Moment from 'react-moment';
-import LoadFields from '../ui/LoadFields';
+import LoadFields from './LoadFields';
 
 export default class ViewContent extends React.Component<{content:any},{}> {
 

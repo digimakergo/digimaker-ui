@@ -1,11 +1,10 @@
 import * as React from 'react';
 import Moment from 'react-moment';
-import Create from '../actions/Create';
-import {FetchWithAuth, getDefinition, getFields, getCommonFieldName} from '../ui/util';
+import {FetchWithAuth, getDefinition, getFields, getCommonFieldName} from './util';
 import ListRowActions from './ListRowActions';
 import Actions from './Actions';
-import FieldRegister from '../ui/FieldRegister';
-import RenderField from '../ui/RenderField';
+import FieldRegister from './FieldRegister';
+import RenderField from './RenderField';
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import ReactTooltip from "react-tooltip";
 
