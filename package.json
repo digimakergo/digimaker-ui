@@ -4,7 +4,7 @@
   "description": "UI components for Digimaker CMF, including displaying, editing, field, content and related utils.",
   "main": "dist/index.js",
   "files": [
-    "*.js"
+    "**/*.js"
   ],
   "scripts": {
     "build": "rm -rf dist/* && cp ./package.json ./dist && tsc",
