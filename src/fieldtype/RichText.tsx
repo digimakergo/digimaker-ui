@@ -3,22 +3,43 @@ import tinymce from "tinymce";
 import Moment from 'react-moment';
 import ReactTooltip from 'react-tooltip'
 import "tinymce/themes/modern";
+import Fieldtype from '../fieldtype.json'
+import "tinymce/plugins/table";
+import "tinymce/plugins/image" 
+import "tinymce/plugins/code"
+import "tinymce/plugins/media"
+import "tinymce/plugins/preview"
+import "tinymce/plugins/textcolor"
 
-export default class RichText extends React.Component<{ definition: any, validation: any, beforeField:any, afterField: any, data: any, mode: string }, {data:''}> {
+
+  var defaultToolbar = Fieldtype.richtext.mode.standard
+
+export default class RichText extends React.Component<{ definition: any, validation: any, beforeField:any, afterField: any, data: any, mode: string }, {data:'',toolbar}> {
 
   constructor(props: any) {
     super(props);
-    this.state = {data:''};
+    this.state = {
+      data:'',
+      toolbar:'standard'
+    };
   }
-
+ 
   componentDidMount() {
-
+    //TODO:Use Parameters.mode.standard.
+    if(this.state.toolbar == 'standard')
+    { defaultToolbar = Fieldtype.richtext.mode.standard
+    }
+    else
+    {defaultToolbar = Fieldtype.richtext.mode.compact
+    }
+    
     tinymce.init({
       menubar:false,
-      // toolbar: defaultToolbar,
+      toolbar: defaultToolbar,
       selector: `textarea`,
       skin_url: `${process.env.PUBLIC_URL}/skins/lightgray`,
-      // plugins: defaultPlugin,
+      plugins: Fieldtype.richtext.plugins,
+      branding: false,
       setup: editor => {
         editor.on("keyup change", () => {
           const content = editor.getContent();
@@ -54,7 +75,7 @@ export default class RichText extends React.Component<{ definition: any, validat
             <div className={'view field ' + this.props.definition.type}>
             {BeforeElement}
               <label>{this.props.definition.name}: </label>
-              <div className="field-value" dangerouslySetInnerHTML={{__html:this.props.data}} />
+              <div className="field-value">{this.props.data}</div>
             {AfterElement}
             </div>
             )
