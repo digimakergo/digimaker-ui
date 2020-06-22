@@ -12,7 +12,7 @@ export default class RichText extends React.Component<{ definition: any, validat
   }
 
   componentDidMount() {
-    
+
     tinymce.init({
       menubar:false,
       // toolbar: defaultToolbar,
@@ -54,7 +54,7 @@ export default class RichText extends React.Component<{ definition: any, validat
             <div className={'view field ' + this.props.definition.type}>
             {BeforeElement}
               <label>{this.props.definition.name}: </label>
-              <div className="field-value">{this.props.data}</div>
+              <div className="field-value" dangerouslySetInnerHTML={{__html:this.props.data}} />
             {AfterElement}
             </div>
             )
