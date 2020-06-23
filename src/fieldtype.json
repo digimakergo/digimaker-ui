@@ -5,5 +5,16 @@
         "image": "./fieldtype/Image",
         "checkbox": "./fieldtype/Checkbox",
         "file": "./fieldtype/File"
+    },
+    "richtext":{
+       "plugins":[
+            "advlist autolink link image lists charmap print preview hr anchor pagebreak",
+            "searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime media nonbreaking",
+            "save table contextmenu directionality emoticons template paste textcolor code"
+      ],
+      "mode":{
+        "compact":[" undo redo | formatselect fontselect fontsizeselect | bold italic strikethrough blockquote subscript superscript | forecolor backcolor | alignleft aligncenter alignright alignjustify | ullist numlist outdent indent  | image  media | table | code preview | removeformat "],
+        "standard":["undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify |outdent indent |code link"]
+      }
     }
 }
