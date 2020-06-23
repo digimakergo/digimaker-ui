@@ -1,13 +1,14 @@
 {
   "name": "digimaker-ui",
-  "version": "0.1.0-alpha.3",
+  "version": "0.1.0-alpha.4",
   "description": "UI components for Digimaker CMF, including displaying, editing, field, content and related utils.",
   "main": "dist/index.js",
   "files": [
-    "**/*.js"
+    "**/*.js",
+    "fieldtype.json"
   ],
   "scripts": {
-    "dist": "rm -rf dist/* && cp ./package.json README.md ./dist && tsc",
+    "dist": "rm -rf dist/* && cp ./package.json ./src/fieldtype.json README.md ./dist && tsc",
     "prepare": "npm build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -44,12 +45,12 @@
     "react-tooltip": "^3.11.6",
     "source-map-loader": "^1.0.0",
     "tinymce": "^4.9.3",
-    "ts-loader": "^7.0.5",
     "typescript": "^3.6.3",
     "universal-cookie": "^4.0.3"
   },
   "devDependencies": {
     "webpack": "^4.43.0",
+    "ts-loader": "^7.0.5",
     "webpack-cli": "^3.3.12"
   }
 }
