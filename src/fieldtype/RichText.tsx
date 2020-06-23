@@ -12,30 +12,29 @@ import "tinymce/plugins/preview"
 import "tinymce/plugins/textcolor"
 
 
-  var defaultToolbar = Fieldtype.richtext.mode.standard
+  var mode = Fieldtype.richtext.mode.standard
 
-export default class RichText extends React.Component<{ definition: any, validation: any, beforeField:any, afterField: any, data: any, mode: string }, {data:'',toolbar}> {
+export default class RichText extends React.Component<{ definition: any, validation: any, beforeField:any, afterField: any, data: any, mode: string }, {data:''}> {
 
   constructor(props: any) {
     super(props);
     this.state = {
       data:'',
-      toolbar:'standard'
     };
   }
 
   componentDidMount() {
-    //TODO:Use Parameters.mode.standard.
-    if(this.state.toolbar == 'standard')
-    { defaultToolbar = Fieldtype.richtext.mode.standard
-    }
-    else
-    {defaultToolbar = Fieldtype.richtext.mode.compact
+    if(this.props.definition.parameters &&this.props.definition.parameters.mode)
+    {
+      mode= this.props.definition.parameter.mode;
+    } else
+    {
+      mode=Fieldtype.richtext.mode.standard;
     }
 
     tinymce.init({
       menubar:false,
-      toolbar: defaultToolbar,
+      toolbar: mode,
       selector: `textarea#`+this.props.definition.identifier,
       skin_url: `${process.env.PUBLIC_URL}/skins/lightgray`,
       plugins: Fieldtype.richtext.plugins,
