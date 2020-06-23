@@ -5,5 +5,12 @@
         "image": "./fieldtype/Image",
         "checkbox": "./fieldtype/Checkbox",
         "file": "./fieldtype/File"
+    },
+    "richtext":{
+      "mode":{
+        "compact":"",
+        "standard":""
+      },
+      "plugins":[]
     }
 }

@@ -3,9 +3,9 @@ import tinymce from "tinymce";
 import Moment from 'react-moment';
 import ReactTooltip from 'react-tooltip'
 import "tinymce/themes/modern";
-import Fieldtype from '../fieldtype.json'
+import Fieldtype from '../fieldtype.json';
 import "tinymce/plugins/table";
-import "tinymce/plugins/image" 
+import "tinymce/plugins/image"
 import "tinymce/plugins/code"
 import "tinymce/plugins/media"
 import "tinymce/plugins/preview"
@@ -23,7 +23,7 @@ export default class RichText extends React.Component<{ definition: any, validat
       toolbar:'standard'
     };
   }
- 
+
   componentDidMount() {
     //TODO:Use Parameters.mode.standard.
     if(this.state.toolbar == 'standard')
@@ -32,11 +32,11 @@ export default class RichText extends React.Component<{ definition: any, validat
     else
     {defaultToolbar = Fieldtype.richtext.mode.compact
     }
-    
+
     tinymce.init({
       menubar:false,
       toolbar: defaultToolbar,
-      selector: `textarea`,
+      selector: `textarea#`+this.props.definition.identifier,
       skin_url: `${process.env.PUBLIC_URL}/skins/lightgray`,
       plugins: Fieldtype.richtext.plugins,
       branding: false,
@@ -45,6 +45,10 @@ export default class RichText extends React.Component<{ definition: any, validat
           const content = editor.getContent();
           console.log(content);
           this.setState({data:content})
+        });
+
+        editor.on("init", () => {
+          editor.setContent(this.props.data);
         });
       },
     });
@@ -62,7 +66,7 @@ export default class RichText extends React.Component<{ definition: any, validat
           {this.props.definition.description && <i className="icon-info" data-for={this.props.definition.identifier+'-desciption'} data-tip=""></i>}
           {this.props.definition.description&&<ReactTooltip id={this.props.definition.identifier+'-desciption'} effect="solid" place="right" html={true} clickable={true} multiline={true} delayHide={500} className="tip">{this.props.definition.description}</ReactTooltip>}
           : </label>
-          <textarea id={this.props.definition.identifier} className="form-control" name={this.props.definition.identifier} value={this.state.data} defaultValue={this.props.data}></textarea>
+          <textarea id={this.props.definition.identifier} className="form-control" name={this.props.definition.identifier} value={this.state.data}></textarea>
         {AfterElement}
       </div>
     )
