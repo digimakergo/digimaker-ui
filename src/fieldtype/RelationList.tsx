@@ -22,15 +22,21 @@ export default class RelationList extends React.Component<{definition:any, valid
       return <div className="alert alert-warning">Wrong setting on {def.name}</div>
     }
     let relatedType = def.parameters.type;
+    let ids = [];
     //todo: make config from outside.
     return <div className={'edit field '+def.type}>
             {this.props.definition.name}:
             <Browse config={{"treetype":["folder"],"list":{"columns":["name"]}}} contenttype={relatedType} onConfirm={(selected:Array<any>)=>this.confirmDialog(selected)} selected={this.state.list} />
-          {this.state.list.length>0&&<ul>
+            {this.state.list.length>0&&
+              <ul>
               {this.state.list.map((item:any)=>{
-                  return <li><Link to={'/main/'+item.id}>{item.name}</Link></li>
+                  ids.push(item.id);
+                  return <li>
+                  <Link target="_blank" to={'/main/'+item.id}>{item.name}</Link></li>
               })}
-           </ul>}</div>
+           </ul>}
+              <input type="hidden" name={def.identifier} value={ids.join(',')} />
+           </div>
   }
 
   view(){
