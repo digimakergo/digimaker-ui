@@ -6,13 +6,17 @@ import { FetchWithAuth } from './util';
 import List from './List';
 
 //todo: make id based on context(site?)
-//todo: add contenttype prop. (and show it in the title)
 //todo: remove id in the list
+//todo: support * in contenttype(depending on implementation of list on *)
 //todo: latest article(for instance) when root is selected.
 //todo: make treemenu based on context(eg. site/configuration)
 //todo: style clicked node
 //todo: make button as prop(eg. <Browse button={<button>Add</button>} ... />)
-export default class Browse extends React.Component<{ onConfirm: any, selected: Array<any> }, { shown: boolean, data: any, list: any, id: number, selected: Array<any> }> {
+
+//config:
+// treetype: ["folder"]
+// list:{columns, sort....} like standard list config
+export default class Browse extends React.Component<{ config:any, contenttype:string, onConfirm: any, selected: Array<any> }, { shown: boolean, data: any, list: any, id: number, selected: Array<any> }> {
   constructor(props: any) {
     super(props);
     this.state = { shown: false, data: '', list: '', id: 1, selected: props.selected };
@@ -23,7 +27,7 @@ export default class Browse extends React.Component<{ onConfirm: any, selected: 
   }
 
   fetchData() {
-    FetchWithAuth(process.env.REACT_APP_REMOTE_URL + '/content/treemenu/1?type=folder')
+    FetchWithAuth(process.env.REACT_APP_REMOTE_URL + '/content/treemenu/1?type='+this.props.config.treetype.join(','))
       .then(res => res.json())
       .then((data) => {
         this.setState({ data: data });
@@ -86,8 +90,7 @@ export default class Browse extends React.Component<{ onConfirm: any, selected: 
               <TreeNode data={this.state.data} renderItem={(content: any) => { return this.renderNode(content) }} onClick={(content: any) => { this.clickTree(content) }} />
             </div>
             <div className="col-8">
-              {/*todo: set config from props */}
-              <List id={this.state.id} contenttype="article" config={{}} onLinkClick={(content) => this.select(content)} />
+              <List id={this.state.id} contenttype={this.props.contenttype} config={this.props.config.list} onLinkClick={(content) => this.select(content)} />
             </div>
           </div>
         </div>

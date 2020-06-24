@@ -17,9 +17,15 @@ export default class RelationList extends React.Component<{definition:any, valid
 
   edit(){
     let def = this.props.definition;
+    if( !def.parameters || !def.parameters.type ){
+      console.error("No type defined in relationlist " + def.identifier);
+      return <div className="alert alert-warning">Wrong setting on {def.name}</div>
+    }
+    let relatedType = def.parameters.type;
+    //todo: make config from outside.
     return <div className={'edit field '+def.type}>
             {this.props.definition.name}:
-            <Browse onConfirm={(selected:Array<any>)=>this.confirmDialog(selected)} selected={this.state.list} />
+            <Browse config={{"treetype":["folder"],"list":{"columns":["name"]}}} contenttype={relatedType} onConfirm={(selected:Array<any>)=>this.confirmDialog(selected)} selected={this.state.list} />
           {this.state.list.length>0&&<ul>
               {this.state.list.map((item:any)=>{
                   return <li><Link to={'/main/'+item.id}>{item.name}</Link></li>
