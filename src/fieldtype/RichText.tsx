@@ -26,8 +26,9 @@ export default class RichText extends React.Component<{ definition: any, validat
   componentDidMount() {
     if(this.props.definition.parameters &&this.props.definition.parameters.mode)
     {
-      mode= this.props.definition.parameter.mode;
-    } else
+      mode= Fieldtype.richtext.mode[this.props.definition.parameters.mode];
+    }
+    else
     {
       mode=Fieldtype.richtext.mode.standard;
     }
