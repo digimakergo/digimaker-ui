@@ -25,17 +25,14 @@ export default class RelationList extends React.Component<{definition:any, valid
     }
 
     let ids = [];
-    let list = [];
     for( let item of data ){
       ids.push(item.from_content_id);
-      list.push({id: item.from_content_id, name: item.from_content_id});
     }
-    this.setState({list: list});
-    // FetchWithAuth(process.env.REACT_APP_REMOTE_URL + '/content/list?cid='+ids.join(','))
-    //     .then(res => res.json())
-    //     .then((data) => {
-    //         this.setState({list: data });
-    //     })
+    FetchWithAuth(process.env.REACT_APP_REMOTE_URL + '/content/list/3/'+this.props.definition.parameters.type+'?cid='+ids.join(','))
+        .then(res => res.json())
+        .then((data) => {
+            this.setState({list: data.list });
+        })
   }
 
   confirmDialog(selected:Array<any>){
@@ -51,7 +48,8 @@ export default class RelationList extends React.Component<{definition:any, valid
     let relatedType = def.parameters.type;
     let ids = [];
     for( let item of this.state.list ){
-        ids.push(item.id);
+        console.log(item);
+        ids.push(item.cid);
     }
     //todo: make config from outside.
     return <div className={'edit field '+def.type}>

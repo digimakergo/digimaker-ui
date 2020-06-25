@@ -152,7 +152,7 @@ export default class List extends React.Component<{ id: number, contenttype: str
           delete selected[id];
       }else{
         let content = this.state.list.list.find((value)=>{return value.id==id});
-        selected[id]=content.name;
+        selected[id]=content;
       }
       this.setState({selected:selected});
     }
@@ -172,7 +172,7 @@ export default class List extends React.Component<{ id: number, contenttype: str
     linkClick(e, content){
       if( this.props.onLinkClick ){
         e.preventDefault();
-        this.props.onLinkClick({id:content.id, name:content.name});
+        this.props.onLinkClick({id:content.id, cid:content.cid, name:content.name});
       }
     }
 
