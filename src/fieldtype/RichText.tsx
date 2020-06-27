@@ -55,6 +55,10 @@ export default class RichText extends React.Component<{ definition: any, validat
     this.setState({data:this.props.data});
   }
 
+  componentWillUnmount() {
+    tinymce.remove(`textarea#`+this.props.definition.identifier);
+  }
+
   edit() {
     const BeforeElement:React.ReactType = this.props.beforeField();
     const AfterElement:React.ReactType = this.props.afterField();
