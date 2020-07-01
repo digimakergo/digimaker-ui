@@ -48,6 +48,9 @@ export default class List extends React.Component<{ id: number, contenttype: str
       if( this.config['blockview_columns'] == undefined ){
         this.config['blockview_columns'] = [];
       }
+      if( this.config['level'] == undefined ){
+        this.config['level'] = 1;
+      }
     }
 
 
@@ -75,7 +78,7 @@ export default class List extends React.Component<{ id: number, contenttype: str
             limit = "&limit="+pagination+"&offset="+pagination*this.state.currentPage
         }
         this.setState({loading: true});
-        FetchWithAuth(process.env.REACT_APP_REMOTE_URL + '/content/list/' + id+'/'+this.props.contenttype+'?'+sortby+limit)
+        FetchWithAuth(process.env.REACT_APP_REMOTE_URL + '/content/list/'+this.props.contenttype+'?parent='+id+"&level="+this.config.level+"&"+sortby+limit)
             .then(res => res.json())
             .then((data) => {
                 this.resetActionState();

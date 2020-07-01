@@ -4,9 +4,10 @@ import Collapse from 'react-bootstrap/Collapse'
 
 //TreeNode which render tree based on data from server.
 //renderItem is to render what's inside(eg. if you want to remove icon or output node id, or additional link ).
-function TreeNode(props:{data:any, renderItem?:any, onClick?:any}) {
+function TreeNode(props:{data:any, showRoot?:boolean, renderItem?:any, onClick?:any}) {
   return <ul className="treemenu">
-    {props.data.children && props.data.children.map(
+    {props.showRoot&&<TreeNodeItem data={props.data} renderItem={props.renderItem} onClick={props.onClick}/>}
+    {(!props.showRoot && props.data.children) && props.data.children.map(
       value => { return (<TreeNodeItem data={value} renderItem={props.renderItem} onClick={props.onClick}/>
       )})}
   </ul>

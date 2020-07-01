@@ -16,10 +16,10 @@ import List from './List';
 //config:
 // treetype: ["folder"]
 // list:{columns, sort....} like standard list config
-export default class Browse extends React.Component<{ config:any, contenttype:string, onConfirm: any, selected: Array<any> }, { shown: boolean, data: any, list: any, id: number, selected: Array<any> }> {
+export default class Browse extends React.Component<{ config:any, contenttype:string, onConfirm: any, selected: Array<any> }, { shown: boolean, showTree:boolean, data: any, list: any, id: number, selected: Array<any> }> {
   constructor(props: any) {
     super(props);
-    this.state = { shown: false, data: '', list: '', id: 1, selected: props.selected };
+    this.state = { shown: false, showTree:false, data: '', list: '', id: 1, selected: props.selected };
   }
 
   componentDidMount() {
@@ -60,7 +60,14 @@ export default class Browse extends React.Component<{ config:any, contenttype:st
 
   select(content: any) {
     let list = this.state.selected;
-    list.push(content);
+    let existing = list.find(
+      (item)=>{
+        return item.id == content.id;
+      }
+    );
+    if( !existing ){
+        list.push(content);
+    }
     this.setState({ selected: list });
   }
 
@@ -86,10 +93,13 @@ export default class Browse extends React.Component<{ config:any, contenttype:st
         })}</div>
         <div className="container">
           <div className="row">
-            <div className="col-4">
-              <TreeNode data={this.state.data} renderItem={(content: any) => { return this.renderNode(content) }} onClick={(content: any) => { this.clickTree(content) }} />
-            </div>
-            <div className="col-8">
+            {this.state.showTree&&<div className="col-4">
+              <TreeNode data={this.state.data} showRoot={true} renderItem={(content: any) => { return this.renderNode(content) }} onClick={(content: any) => { this.clickTree(content) }} />
+            </div>}
+            <div className={this.state.showTree?"col-8":"col"}>
+              <a href="#" onClick={(e:any)=>{e.preventDefault();this.setState({showTree:!this.state.showTree});}}>
+                <i className={this.state.showTree?"fas fa-chevron-left":"fas fa-chevron-right"}></i>
+              </a>
               <List id={this.state.id} contenttype={this.props.contenttype} config={this.props.config.list} onLinkClick={(content) => this.select(content)} />
             </div>
           </div>

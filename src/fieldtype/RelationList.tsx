@@ -14,10 +14,10 @@ export default class RelationList extends React.Component<{definition:any, valid
   //todo: maybe better visit data instead of form data?
   //todo: show name/picture of reference field(invoke another component mode)
   componentDidMount(){
-    this.fetchRelatedContent();
+    this.fetchExisting();
   }
 
-  fetchRelatedContent(){
+  fetchExisting(){
     let identifier = this.props.definition.identifier;
     if( !this.props.formdata["relations"] ){
       return
@@ -34,7 +34,16 @@ export default class RelationList extends React.Component<{definition:any, valid
     FetchWithAuth(process.env.REACT_APP_REMOTE_URL + '/content/list/'+this.props.definition.parameters.type+'?cid='+ids.join(','))
         .then(res => res.json())
         .then((data) => {
-            this.setState({list: data.list });
+            let sortedList = [];
+            for( let cid of ids ){
+              for(let item of data.list ){
+                  if( item.cid==cid ){
+                    sortedList.push(item)
+                    continue;
+                  }
+              }
+            }
+            this.setState({list: sortedList });
         })
   }
 
@@ -42,7 +51,7 @@ export default class RelationList extends React.Component<{definition:any, valid
     this.setState({list:selected});
   }
 
-  edit(){
+  edit(){    
     let def = this.props.definition;
     if( !def.parameters || !def.parameters.type ){
       console.error("No type defined in relationlist " + def.identifier);
@@ -50,16 +59,22 @@ export default class RelationList extends React.Component<{definition:any, valid
     }
     let relatedType = def.parameters.type;
     let ids = [];
+    let types = [];
     for( let item of this.state.list ){
-        console.log(item);
         ids.push(item.cid);
+        types.push(relatedType);
     }
+
     //todo: make config from outside.
     return <div className={'edit field '+def.type}>
             {this.props.definition.name}:
-            <Browse config={{"treetype":["folder"],"list":{"columns":["name"]}}} contenttype={relatedType} onConfirm={(selected:Array<any>)=>this.confirmDialog(selected)} selected={this.state.list} />
+            {this.state.list.length>0&&<Browse config={{"treetype":["folder"],
+            "list":{"columns":["name","modified"],
+            "sort":{"modified":"desc"},
+            "level": 0,
+            "pagination":10}}} contenttype={relatedType} onConfirm={(selected:Array<any>)=>this.confirmDialog(selected)} selected={this.state.list} />}
               {this.raw()}
-              <input type="hidden" name={def.identifier} value={ids.join(',')} />
+              <input type="hidden" name={def.identifier} value={ids.join(',')+';'+types.join(',')} />
            </div>
   }
 
