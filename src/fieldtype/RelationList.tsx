@@ -4,6 +4,8 @@ import ReactTooltip from 'react-tooltip';
 import Browse from '../Browse';
 import { Link } from "react-router-dom";
 import {FetchWithAuth} from '../util';
+import { ReactSortable } from "react-sortablejs";
+
 
 export default class RelationList extends React.Component<{definition:any, validation:any, beforeField:any, afterField:any, data:any, formdata:any, mode:string},{list:Array<any>}> {
   constructor(props: any) {
@@ -51,7 +53,7 @@ export default class RelationList extends React.Component<{definition:any, valid
     this.setState({list:selected});
   }
 
-  edit(){    
+  edit(){
     let def = this.props.definition;
     if( !def.parameters || !def.parameters.type ){
       console.error("No type defined in relationlist " + def.identifier);
@@ -73,7 +75,15 @@ export default class RelationList extends React.Component<{definition:any, valid
             "sort":{"modified":"desc"},
             "level": 0,
             "pagination":10}}} contenttype={relatedType} onConfirm={(selected:Array<any>)=>this.confirmDialog(selected)} selected={this.state.list} />}
-              {this.raw()}
+              <ReactSortable
+                 className="list"
+                 list={this.state.list}
+                 setList={sortedList => this.setState({ list: sortedList })}>
+               {this.state.list.map((item:any)=>{
+                   return <div className="list-item"><Link target="_blank" to={'/main/'+item.id}>{item.name}</Link></div>
+               })}
+                </ReactSortable>
+
               <input type="hidden" name={def.identifier} value={ids.join(',')+';'+types.join(',')} />
            </div>
   }
