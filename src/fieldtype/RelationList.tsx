@@ -53,6 +53,12 @@ export default class RelationList extends React.Component<{definition:any, valid
     this.setState({list:selected});
   }
 
+  remove(i:number){
+    let list = this.state.list;
+    list.splice(i,1);
+    this.setState({list:list});
+  }
+
   edit(){
     let def = this.props.definition;
     if( !def.parameters || !def.parameters.type ){
@@ -79,8 +85,10 @@ export default class RelationList extends React.Component<{definition:any, valid
                  className="list"
                  list={this.state.list}
                  setList={sortedList => this.setState({ list: sortedList })}>
-               {this.state.list.map((item:any)=>{
-                   return <div className="list-item"><Link target="_blank" to={'/main/'+item.id}>{item.name}</Link></div>
+               {this.state.list.map((item:any, i:number)=>{
+                   return <div className="list-item"><Link target="_blank" to={'/main/'+item.id}>{item.name}</Link> &nbsp;
+                              <a href="#" className="float-right" title="Remove" onClick={(e:any)=>{e.preventDefault();this.remove(i)}}><i className="far fa-trash-alt"></i></a>
+                           </div>
                })}
                 </ReactSortable>
 
