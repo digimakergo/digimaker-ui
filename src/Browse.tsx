@@ -18,7 +18,7 @@ import List from './List';
 const Browse = (props:any)=>{
   const [trigger, setTrigger] = useState(false);
 
-  return (<><button className="btn btn-link btn-sm" onClick={(e) => {e.preventDefault(); console.log('outside'); console.log(props.selected); setTrigger(!trigger);}}>
+  return (<><button className="btn btn-link btn-sm" onClick={(e) => {e.preventDefault();setTrigger(!trigger);}}>
             <i className="fas fa-search"></i>&nbsp;Browse
           </button>
           <Dialog {...props} trigger={trigger} />
@@ -37,7 +37,6 @@ class Dialog extends React.Component<{config:any, contenttype:string, trigger:bo
 
   componentDidUpdate(prevProps){
     if(this.props.trigger != prevProps.trigger){
-      console.log( this.props.selected );
       this.setState({shown: true, selected:this.props.selected});
     }
   }

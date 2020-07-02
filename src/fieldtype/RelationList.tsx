@@ -76,12 +76,12 @@ export default class RelationList extends React.Component<{definition:any, valid
     //todo: make config from outside.
     return <div className={'edit field '+def.type}>
             {this.props.definition.name}:
-            {this.state.list.length>0&&<Browse config={{"treetype":["folder"],
+            <Browse config={{"treetype":["folder"],
             "list":{"columns":["name","modified"],
             "sort":{"modified":"desc", "name":"asc"},
             "sort_default":[["modified","desc"]],
             "level": 0,
-            "pagination":10}}} contenttype={relatedType} onConfirm={(selected:Array<any>)=>this.confirmDialog(selected)} selected={this.state.list} />}
+            "pagination":10}}} contenttype={relatedType} onConfirm={(selected:Array<any>)=>this.confirmDialog(selected)} selected={this.state.list} />
               <ReactSortable
                  className="list"
                  list={this.state.list}
