@@ -8,7 +8,7 @@ import RenderField from './RenderField';
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import ReactTooltip from "react-tooltip";
 
-export default class List extends React.Component<{ id: number, contenttype: string, config:any, onLinkClick?:any }, {def:any, loading:boolean, list: any, actionNew: boolean, currentPage:number, sortby: Array<Array<string>>, selected: Array<number> }> {
+export default class List extends React.Component<{ id: number, contenttype: string, config:any, onLinkClick?:any, onRenderRow?:any }, {def:any, loading:boolean, list: any, actionNew: boolean, currentPage:number, sortby: Array<Array<string>>, selected: Array<number> }> {
 
    private config: any
 
@@ -217,8 +217,9 @@ export default class List extends React.Component<{ id: number, contenttype: str
         let rows: Array<any> = [];
         let fieldsDef = getFields(this.state.def);
         for (let i = 0; i < list.length; i++) {
-            let content = list[i]
-            rows.push(<tr>
+            let content = list[i];
+            let rowClasses = this.props.onRenderRow?this.props.onRenderRow(content):'';
+            rows.push(<tr className={rowClasses}>
               {this.config.can_select&&<td onClick={()=>this.select(content.id)} className="td-check center"><input type="checkbox" checked={this.state.selected[content.id]?true:false} value="1" /></td>}
               <td onClick={()=>this.select(content.id)} className="td-id">{content.id}</td>
               {this.config.columns.map((column)=>{
