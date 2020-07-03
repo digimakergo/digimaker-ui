@@ -3,6 +3,7 @@ import Moment from 'react-moment';
 import ReactTooltip from 'react-tooltip';
 import Browse from '../Browse';
 import { Link } from "react-router-dom";
+import util from '../util';
 import {FetchWithAuth} from '../util';
 import { ReactSortable } from "react-sortablejs";
 
@@ -66,6 +67,12 @@ export default class RelationList extends React.Component<{definition:any, valid
       return <div className="alert alert-warning">Wrong setting on {def.name}</div>
     }
     let relatedType = def.parameters.type;
+
+    let browseConfig = util.getConfig().browse;
+    if( !browseConfig[relatedType] ){
+      console.log( "Not browse setting for " + relatedType );
+    }
+
     let ids = [];
     let types = [];
     for( let item of this.state.list ){
@@ -76,12 +83,7 @@ export default class RelationList extends React.Component<{definition:any, valid
     //todo: make config from outside.
     return <div className={'edit field '+def.type}>
             {this.props.definition.name}:
-            <Browse config={{"treetype":["folder"],
-            "list":{"columns":["name","modified"],
-            "sort":{"modified":"desc", "name":"asc"},
-            "sort_default":[["modified","desc"]],
-            "level": 0,
-            "pagination":10}}} contenttype={relatedType} onConfirm={(selected:Array<any>)=>this.confirmDialog(selected)} selected={this.state.list} />
+            <Browse config={browseConfig[relatedType]} contenttype={relatedType} onConfirm={(selected:Array<any>)=>this.confirmDialog(selected)} selected={this.state.list} />
               <ReactSortable
                  className="list"
                  list={this.state.list}

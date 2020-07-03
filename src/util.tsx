@@ -96,6 +96,7 @@ export function getCommonFieldName(identifier:string) {
   return result;
 }
 
+let config:any = null;
 //util for general operations
 const util = {
   //put replace variable with real value.eg. "this is {id}" with {'id': 5} will be "this is 5"
@@ -111,6 +112,14 @@ const util = {
      });
    }
    return result;
+ },
+
+ setConfig:(conf:any)=>{
+   config = conf;
+ },
+
+ getConfig:()=>{
+   return config;
  },
 
  //get allowed type under the parent content. condition example: "article:3 or article:images"
