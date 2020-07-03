@@ -48,9 +48,9 @@ const RenderProperties = (props:{content:any, mode:string, fields?:Array<string>
 
   return <>{fields.map((field:any)=>{
     if( props.as == 'td' ){
-        return <td className={"field-mode-"+props.mode}>{renderField(field)}</td>;
+        return <td className={"field-"+field+" field-mode-"+props.mode}>{renderField(field)}</td>;
     }else{
-        return <div className={"field-mode-"+props.mode}>{renderField(field)}</div>;
+        return <div className={"field-"+field+" field-mode-"+props.mode}>{renderField(field)}</div>;
     }
   })}</>
 
