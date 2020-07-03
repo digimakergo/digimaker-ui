@@ -238,7 +238,8 @@ export default class List extends React.Component<{ id: number, contenttype: str
         let cells:Array<any> = [];
         for (let item of list ){
             let fields = this.config['block_fields'];
-            cells.push(<div className="blockview-cell" onClick={(e)=>this.linkClick(e, item)}>
+            let rowClasses = this.props.onRenderRow?this.props.onRenderRow(item):'';
+            cells.push(<div className={"blockview-cell "+rowClasses} onClick={(e)=>this.linkClick(e, item)}>
                 <RenderProperties content={item} contenttype={this.props.contenttype} mode="inline" fields={fields} />
             </div>);
         }
