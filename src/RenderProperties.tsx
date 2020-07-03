@@ -6,11 +6,11 @@ import util from './util';
 import RenderField from './RenderField';
 import Moment from 'react-moment';
 
-const RenderProperties = (props:{content:any, mode:string, fields?:Array<string>, as?:string}) => {
+const RenderProperties = (props:{content:any, contenttype:string, mode:string, fields?:Array<string>, as?:string}) => {
   const [def, setDef] = useState('');
 
   const loadDef = ()=>{
-    getDefinition(props.content.content_type).then((data:any)=>{
+    getDefinition(props.contenttype).then((data:any)=>{
       setDef( data );
     })
   };
@@ -21,7 +21,12 @@ const RenderProperties = (props:{content:any, mode:string, fields?:Array<string>
   }
   let config = util.getConfig();
   let content = props.content;
-  let fields = props.fields?props.fields:config.viewmode[props.mode][content.content_type];
+  let fields = [];
+  if( props.fields ){
+    fields = props.fields;
+  }else{
+    fields = config.viewmode[props.mode][props.contenttype]  
+  }
 
   const renderField = (field:any)=>{
       let contentFields = getFields(def);

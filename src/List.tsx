@@ -46,8 +46,8 @@ export default class List extends React.Component<{ id: number, contenttype: str
       if( this.config['viewmode'] == undefined ){
         this.config['viewmode'] = "list";
       }
-      if( this.config['blockview_columns'] == undefined ){
-        this.config['blockview_columns'] = [];
+      if( this.config['block_fields'] == undefined ){
+        this.config['block_fields'] = [];
       }
       if( this.config['level'] == undefined ){
         this.config['level'] = 1;
@@ -222,7 +222,7 @@ export default class List extends React.Component<{ id: number, contenttype: str
             rows.push(<tr className={rowClasses} onClick={(e)=>this.linkClick(e, content)}>
               {this.config.can_select&&<td onClick={()=>this.select(content.id)} className="td-check center"><input type="checkbox" checked={this.state.selected[content.id]?true:false} value="1" /></td>}
               <td onClick={()=>this.select(content.id)} className="td-id">{content.id}</td>
-              <RenderProperties content={content} fields={this.config.columns} mode="inline" as="td" />
+              <RenderProperties content={content} contenttype={this.props.contenttype} fields={this.config.columns} mode="inline" as="td" />
                 {this.config['row_actions'].length>0&&<td className="list-row-tool">
                       <ListRowActions content={content} config={this.config['row_actions']} />
                   </td>}
@@ -237,9 +237,9 @@ export default class List extends React.Component<{ id: number, contenttype: str
         let fieldsDef = getFields(this.state.def);
         let cells:Array<any> = [];
         for (let item of list ){
-            let columns = this.config['blockview_columns'];
+            let fields = this.config['block_fields'];
             cells.push(<div className="blockview-cell" onClick={(e)=>this.linkClick(e, item)}>
-                <RenderProperties content={item} mode="inline" fields={columns} />
+                <RenderProperties content={item} contenttype={this.props.contenttype} mode="inline" fields={fields} />
             </div>);
         }
         return (<div className="blockview-grid">{cells}</div>)

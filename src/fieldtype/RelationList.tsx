@@ -91,7 +91,7 @@ export default class RelationList extends React.Component<{definition:any, valid
                  setList={sortedList => this.setState({ list: sortedList })}>
                {this.state.list.map((item:any, i:number)=>{
                    return <div className="list-item">
-                            <RenderProperties content={item} mode="inline" />
+                            <RenderProperties content={item} contenttype={relatedType} mode="inline" />
                               <a href="#" className="float-right" title="Remove" onClick={(e:any)=>{e.preventDefault();this.remove(i)}}><i className="far fa-trash-alt"></i></a>
                            </div>
                })}

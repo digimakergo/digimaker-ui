@@ -120,7 +120,7 @@ class Dialog extends React.Component<{config:any, contenttype:string, trigger:bo
       </Modal.Header>
       <Modal.Body className="browse">
         <div className="selected">{this.state.selected.map((content: any) => {
-          return <span><RenderProperties content={content} mode="inline" /></span>
+          return <span><RenderProperties content={content} contenttype={this.props.contenttype} mode="inline" /></span>
         })}</div>
         <div className="container">
           <div className="row">
