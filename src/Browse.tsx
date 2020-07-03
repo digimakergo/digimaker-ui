@@ -3,6 +3,7 @@ import { useState } from "react";
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import TreeNode from './TreeNode';
+import RenderProperties from './RenderProperties';
 import { FetchWithAuth } from './util';
 import List from './List';
 
@@ -119,7 +120,7 @@ class Dialog extends React.Component<{config:any, contenttype:string, trigger:bo
       </Modal.Header>
       <Modal.Body className="browse">
         <div className="selected">{this.state.selected.map((content: any) => {
-          return <span>{content.name} &nbsp;</span>
+          return <span><RenderProperties content={content} mode="inline" /></span>
         })}</div>
         <div className="container">
           <div className="row">

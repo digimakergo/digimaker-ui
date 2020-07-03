@@ -5,6 +5,7 @@ import ListRowActions from './ListRowActions';
 import Actions from './Actions';
 import FieldRegister from './FieldRegister';
 import RenderField from './RenderField';
+import RenderProperties from './RenderProperties';
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import ReactTooltip from "react-tooltip";
 
@@ -129,7 +130,6 @@ export default class List extends React.Component<{ id: number, contenttype: str
         this.fetchData();
 
         getDefinition(this.props.contenttype)
-        .then(res=>res.json())
         .then((data)=>{
             this.setState({def:data});
         });
@@ -175,7 +175,7 @@ export default class List extends React.Component<{ id: number, contenttype: str
     linkClick(e, content){
       if( this.props.onLinkClick ){
         e.preventDefault();
-        this.props.onLinkClick({id:content.id, cid:content.cid, name:content.name});
+        this.props.onLinkClick(content);
       }
     }
 
@@ -222,41 +222,7 @@ export default class List extends React.Component<{ id: number, contenttype: str
             rows.push(<tr className={rowClasses}>
               {this.config.can_select&&<td onClick={()=>this.select(content.id)} className="td-check center"><input type="checkbox" checked={this.state.selected[content.id]?true:false} value="1" /></td>}
               <td onClick={()=>this.select(content.id)} className="td-id">{content.id}</td>
-              {this.config.columns.map((column)=>{
-                  {/*render fields, todo: use lazy load*/}
-                  if( fieldsDef[column] ){
-                    const fieldtype = fieldsDef[column].type;
-                    if( fieldtype == 'image' ){
-                      return <td className="td-fieldtype-image">
-                            <Link to={"/main/"+content.id}><div data-tip data-for={"image"+content.id}>
-                                <RenderField identifier={column} def={fieldsDef[column]} data={content[column]} mode='inline' />
-                            </div>
-                            </Link>
-                              <ReactTooltip border={true} borderColor='#000000' className="tooltip" id={'image'+content.id} clickable={true} place="right" effect='float' type='light'>
-                              <RenderField identifier={column} def={fieldsDef[column]} data={content[column]} mode='inline' />
-                            </ReactTooltip></td>
-                    }
-                    return <td><RenderField identifier={column} def={fieldsDef[column]} data={content[column]} mode='inline' /></td>
-                  }
-                  {/*render common fields*/}
-                  switch(column){
-                    case 'name':
-                      return (<td className="content-name"><span><Link to={"/main/"+content.id} onClick={(e)=>this.linkClick(e, content)}>{content.name}</Link></span></td>);
-                    case 'author':
-                      return (<td>{content.author}</td>)
-                    case 'published':
-                      return (<td><Moment unix format="DD.MM.YYYY HH:mm">{content.published}</Moment></td>)
-                    case 'modified':
-                      return <td><Moment unix format="DD.MM.YYYY HH:mm">{content.modified}</Moment></td>
-                    case 'priority':
-                      return (<td title="Priority">{content[column]?content[column]:''}</td>)
-                    case 'status':
-                        return (<td><span className={"workflow-status status-"+content.status}></span></td>)
-                    default:
-                      return <td className={"column-"+column}>{content[column]?content[column]:''}</td>
-                    break;
-                  }
-              })}
+              <RenderProperties content={content} fields={this.config.columns} mode="inline" as="td" />
                 {this.config['row_actions'].length>0&&<td className="list-row-tool">
                       <ListRowActions content={content} config={this.config['row_actions']} />
                   </td>}
@@ -272,10 +238,8 @@ export default class List extends React.Component<{ id: number, contenttype: str
         let cells:Array<any> = [];
         for (let item of list ){
             let columns = this.config['blockview_columns'];
-            cells.push(<div className="blockview-cell">
-                {columns.map((column)=>{
-                  return <RenderField identifier={column} def={fieldsDef[column]} data={item[column]} mode='inline' />
-                })}
+            cells.push(<div className="blockview-cell" onClick={(e)=>this.linkClick(e, item)}>
+                <RenderProperties content={item} mode="inline" fields={columns} />
             </div>);
         }
         return (<div className="blockview-grid">{cells}</div>)

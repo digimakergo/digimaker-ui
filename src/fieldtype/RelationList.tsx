@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import util from '../util';
 import {FetchWithAuth} from '../util';
 import { ReactSortable } from "react-sortablejs";
+import RenderProperties from '../RenderProperties';
 
 
 export default class RelationList extends React.Component<{definition:any, validation:any, beforeField:any, afterField:any, data:any, formdata:any, mode:string},{list:Array<any>}> {
@@ -89,7 +90,8 @@ export default class RelationList extends React.Component<{definition:any, valid
                  list={this.state.list}
                  setList={sortedList => this.setState({ list: sortedList })}>
                {this.state.list.map((item:any, i:number)=>{
-                   return <div className="list-item"><Link target="_blank" to={'/main/'+item.id}>{item.name}</Link> &nbsp;
+                   return <div className="list-item">
+                            <RenderProperties content={item} mode="inline" />
                               <a href="#" className="float-right" title="Remove" onClick={(e:any)=>{e.preventDefault();this.remove(i)}}><i className="far fa-trash-alt"></i></a>
                            </div>
                })}

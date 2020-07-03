@@ -2,6 +2,8 @@ import * as React from 'react';
 import Moment from 'react-moment';
 import ReactTooltip from 'react-tooltip'
 
+
+//Support mode: view, edit, inline(no definition needed).
 export default class Text extends React.Component<{definition:any, validation:any, beforeField?:any, afterField?:any, data:any, mode:string},{}> {
 
 constructor(props:any) {
@@ -9,7 +11,7 @@ constructor(props:any) {
       this.state = {};
     }
 
-    inline(){
+    raw(){
       return (<span className="fieldtype-text">{this.props.data}</span>)
     }
 
@@ -45,10 +47,10 @@ constructor(props:any) {
     render(){
       if(this.props.mode=='view'){
           return this.view();
-      }else if(this.props.mode=='inline'){
-        return this.inline();
-      }else{
+      }else if(this.props.mode=='edit'){
           return this.edit();
+      }else{
+        return this.raw();
       }
     }
 }

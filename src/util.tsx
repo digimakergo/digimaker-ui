@@ -60,12 +60,19 @@ export function SetAccessToken(token: string) {
 }
 
 //todo: make sure it only fetch once for one content type.
+
+let definitionList:any = {}
+
 export function getDefinition(contenttype: string){
-  return FetchWithAuth(process.env.REACT_APP_REMOTE_URL+'/contenttype/get/'+contenttype)
+  if( !definitionList[contenttype] ){
+    definitionList[contenttype] = FetchWithAuth(process.env.REACT_APP_REMOTE_URL+'/contenttype/get/'+contenttype).then(res=>res.json())
+  }
+  return definitionList[contenttype];
 }
 
 export function getFields(definition:any){
   let result:any = {};
+  //todo: support nested.
   definition.fields.forEach((field)=>{
     result[field.identifier] = field;
   })
