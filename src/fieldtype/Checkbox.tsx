@@ -15,7 +15,7 @@ constructor(props:any) {
 
     edit(){
       return (
-          <div className={'field checkbox '+this.props.mode+' '+(this.props.definition.required?'required':'')+(this.props.validation=='1'?' result-required':'')}>
+          <div className={(this.props.definition.required?'required':'')+(this.props.validation=='1'?' result-required':'')}>
            <label>
               {this.props.mode=='edit'&&!this.state.checked&&<input type="hidden" value="0" name={this.props.definition.identifier} />}
               <input type="checkbox" disabled={this.props.mode!='edit'}
@@ -32,19 +32,26 @@ constructor(props:any) {
       )
     }
 
+    view(){
+      return  <><label className="field-label">{this.props.definition.name}</label>
+                <div className="field-value"><input type="checkbox" disabled={true} defaultChecked={this.props.data==1} /></div>
+              </>;
+    }
+
+    //todo: use yes/no/empty for this.
     raw(){
       return (
-          <span className={'field checkbox'}>
             <input type="checkbox" disabled={true}
                    value="1"
                    defaultChecked={this.props.data==1} />
-          </span>
       )
     }
 
     render(){
-        if( this.props.mode == 'edit' || this.props.mode == 'view' ){
-          return this.edit();
+        if( this.props.mode == 'edit' ){
+            return this.edit();
+        }else if( this.props.mode == 'view' ){
+            return this.view();
         }else{
           return this.raw();
         }

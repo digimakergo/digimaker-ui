@@ -1,3 +1,5 @@
+import './digimaker-ui.css';
+
 import * as React from 'react';
 import FieldRegister from './FieldRegister';
 import ReactTooltip from 'react-tooltip';
@@ -119,22 +121,20 @@ export default class LoadFields extends React.Component<{ type: string, validati
             fields = currentField.children;
         }
         return (
-            <div>
+            <>
                 {parent&&<div className="fields-parent">
                   {parent.parameters&&parent.parameters.fullname&&
-
                     <div className="field-title">{parent.parameters.fullname}
                     {parent.description&&<i className="icon-info" data-for={parent.identifier+'-description'} data-tip=""></i>}
                     {parent.description&&<ReactTooltip id={parent.identifier+'-description'} effect="solid" place="right" html={true} clickable={true} multiline={true} delayHide={500} className="tip">{parent.description}</ReactTooltip>}
                   </div>}
-
                   </div>}
-                <div>
+                <div className="content-fields">
                     {fields.map((field) => {
                         return this.renderField(field)
                     })}
                 </div>
-            </div>
+            </>
         )
     }
 }

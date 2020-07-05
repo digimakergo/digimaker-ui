@@ -1,3 +1,5 @@
+import './digimaker-ui.css';
+
 import * as React from 'react';
 import { useState } from "react";
 import { Link } from "react-router-dom";
@@ -7,6 +9,7 @@ import Moment from 'react-moment';
 import FieldRegister from './FieldRegister';
 
 //Render properties which renders field's inline mode.
+//This is same as like render-content when it's not invoked in a table list(as='td').
 const RenderProperties = (props:{content:any, contenttype:string, mode:string, fields?:Array<string>, as?:string}) => {
   const [def, setDef] = useState('');
 

@@ -10,8 +10,8 @@ constructor(props:any) {
     }
 
     view(){
-      return (<div className={'view field ' + this.props.definition.type }>
-              <label>{this.props.definition.name}: </label>
+      return (<>
+              <label className="field-label">{this.props.definition.name}: </label>
               <div className="field-value">
               <label>
                 <input type="radio" disabled={true} defaultChecked={this.props.data=="1"} />
@@ -20,8 +20,11 @@ constructor(props:any) {
                 <input type="radio" disabled={true} defaultChecked={this.props.data=="0"} />
                 <span>{this.props.definition.parameters.options[1]}</span>
               </label>
-              </div>
-              </div>)
+              </div></>)
+    }
+
+    raw(){
+      return this.props.data=="1"?this.props.definition.parameters.options[0]:this.props.definition.parameters.options[1];
     }
 
     componentDidMount() {
@@ -40,7 +43,7 @@ constructor(props:any) {
       const def = this.props.definition;
       const name = def.identifier;
       return (
-          <div className={'edit field '+def.type+ ' ' +(this.props.definition.required?'required':'')+(this.props.validation=='1'?' result-required':'')}>
+          <div className={(this.props.definition.required?'required':'')+(this.props.validation=='1'?' result-required':'')}>
               <label htmlFor={this.props.definition.identifier}>{this.props.definition.name}
                   {this.props.definition.description&&<i className="icon-info" data-for={this.props.definition.identifier+'-desciption'} data-tip=""></i>}
                   {this.props.definition.description&&<ReactTooltip id={this.props.definition.identifier+'-desciption'} effect="solid" place="right" html={true} clickable={true} multiline={true} delayHide={500} className="tip">{this.props.definition.description}</ReactTooltip>}
@@ -65,8 +68,10 @@ constructor(props:any) {
     render(){
       if(this.props.mode=='view'){
           return this.view();
-      }else{
+      }else if( this.props.mode=='edit' ){
           return this.edit();
+      }else{
+        return this.raw();
       }
     }
 }

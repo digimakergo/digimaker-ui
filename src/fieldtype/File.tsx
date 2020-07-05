@@ -13,8 +13,12 @@ constructor(props:any) {
     view(){
       return (<div className={'view field ' + this.props.definition.type }>
               <label>{this.props.definition.name}: </label>
-              <div className="field-value">{this.props.data&&this.props.data.Raw}</div>
+              <div className="field-value">{this.raw()}</div>
               </div>)
+    }
+
+    raw(){
+      return this.props.data;
     }
 
     edit(){
@@ -36,8 +40,10 @@ constructor(props:any) {
     render(){
       if(this.props.mode=='view'){
           return this.view();
-      }else{
+      }else if(this.props.mode=='edit'){
           return this.edit();
+      }else{
+        return this.raw();
       }
     }
 }

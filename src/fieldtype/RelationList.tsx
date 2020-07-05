@@ -82,11 +82,12 @@ export default class RelationList extends React.Component<{definition:any, valid
     }
 
     //todo: make config from outside.
-    return <div className={'edit field '+def.type}>
-            {this.props.definition.name}:
+    return  <>
+            <label className="field-label">{this.props.definition.name}:</label>
+            <div className="field-value">
             <Browse config={browseConfig[relatedType]} contenttype={relatedType} onConfirm={(selected:Array<any>)=>this.confirmDialog(selected)} selected={this.state.list} />
               <ReactSortable
-                 className="list relationlist-value"
+                 className="list"
                  list={this.state.list}
                  setList={sortedList => this.setState({ list: sortedList })}>
                {this.state.list.map((item:any, i:number)=>{
@@ -98,14 +99,15 @@ export default class RelationList extends React.Component<{definition:any, valid
                 </ReactSortable>
 
               <input type="hidden" name={def.identifier} value={ids.join(',')+';'+types.join(',')} />
-           </div>
+              </div>
+              </>
   }
 
   view(){
-    return <div>
+    return <>
             {this.props.definition.name}:
             {this.raw()}
-           </div>
+           </>
   }
 
   raw(){

@@ -12,21 +12,21 @@ constructor(props:any) {
     }
 
     raw(){
-      return (<span className="fieldtype-text">{this.props.data}</span>)
+      return this.props.data;
     }
 
     view(){
-      return (<div className={'view field ' + this.props.definition.type }>
-              <label>{this.props.definition.name}: </label>
+      return <>
+              <label className="field-label">{this.props.definition.name}: </label>
               <div className="field-value">{this.props.data}</div>
-              </div>)
+              </>
     }
 
     edit(){
       const def = this.props.definition;
       const name = def.identifier;
       return (
-          <div className={'edit field '+def.type+ ' field-' +  def.identifier + ' '+(this.props.definition.required?'required':'')+(this.props.validation=='1'?' result-required':'')}>
+          <div className={(this.props.definition.required?'required':'')+(this.props.validation=='1'?' result-required':'')}>
               <label htmlFor={this.props.definition.identifier}>{this.props.definition.name}
                   {this.props.definition.description&&<i className="icon-info" data-for={this.props.definition.identifier+'-desciption'} data-tip=""></i>}
                   {this.props.definition.description&&<ReactTooltip id={this.props.definition.identifier+'-desciption'} effect="solid" place="right" html={true} clickable={true} multiline={true} delayHide={500} className="tip">{this.props.definition.description}</ReactTooltip>}

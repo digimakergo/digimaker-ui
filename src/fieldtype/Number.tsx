@@ -16,6 +16,10 @@ constructor(props:any) {
               </div>)
     }
 
+    raw(){
+      return this.props.data;
+    }
+
     componentDidMount() {
       if (this.props.data) {
         this.setState({ value: this.props.data });
@@ -35,7 +39,7 @@ constructor(props:any) {
       const def = this.props.definition;
       const name = def.identifier;
       return (
-          <div className={'edit field '+def.type+ ' '+(this.props.definition.required?'required':'')+(this.props.validation=='1'?' result-required':'')}>
+          <div className={(this.props.definition.required?'required':'')+(this.props.validation=='1'?' result-required':'')}>
               <label htmlFor={this.props.definition.identifier}>{this.props.definition.name}
                   {this.props.definition.description&&<i className="icon-info" data-for={this.props.definition.identifier+'-desciption'} data-tip=''></i>}
                   {this.props.definition.description&&<ReactTooltip id={this.props.definition.identifier+'-desciption'} effect="solid" place="right" html={true} clickable={true} multiline={true} delayHide={500} className="tip">{this.props.definition.description}</ReactTooltip>}
@@ -49,8 +53,10 @@ constructor(props:any) {
     render(){
       if(this.props.mode=='view'){
           return this.view();
-      }else{
+      }else if( this.props.mode=='edit' ){
           return this.edit();
+      }else{
+        return this.raw();
       }
     }
 }

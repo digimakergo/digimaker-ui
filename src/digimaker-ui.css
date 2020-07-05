@@ -1,0 +1,18 @@
+.field-label, .field-value{
+  display: inline-block
+}
+
+
+.fieldtype-relationlist .field-value{
+  display: block;
+  padding: 0px 2rem;
+}
+
+.fieldtype-relationlist .list-item{
+  border: 1px dotted #999999;
+  max-width: 50%;
+  background: #fcfcfc;
+  cursor: pointer;
+  padding: 5px 10px;
+  margin-top: 5px;
+}

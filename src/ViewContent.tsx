@@ -1,3 +1,5 @@
+import './digimaker-ui.css';
+
 import * as React from 'react';
 import { useState } from "react";
 import { Link } from "react-router-dom";
@@ -10,7 +12,7 @@ import LoadFields from './LoadFields';
 const ViewContent = (props:{content:any}) => {
     let data:any = {};
     let content = props.content;
-    return <div>
+    return <div className="content-view">
               <LoadFields type={content.content_type} validation='' mode='view' data={content} afterField={()=>{}} />
        </div>;
 }

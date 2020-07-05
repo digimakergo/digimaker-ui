@@ -30,12 +30,13 @@ export default class Password extends React.Component<{ definition: any, validat
   }
 
   render() {
-    if( this.props.mode =='view' ){
+    if( this.props.mode =='view' || this.props.mode =='inline' ){
       return '';
     }
     let def = this.props.definition;
-    return (<div className={"field password " + def.identifier}>
-          <label>{def.name}</label>
+    return (<>
+          <label className="field-label">{def.name}</label>
+          <div className="field-value">
           {def.description&&<div className="field-desc">{def.description}</div>}
           {this.props.validation&&<div className="block alert alert-warning">{this.props.validation}</div>}
           <input type="password" className="form-control" value={this.state.input[0]} onChange={(e)=>{this.input(e)}} />
@@ -43,6 +44,7 @@ export default class Password extends React.Component<{ definition: any, validat
           <label>Password repeat</label>
           <input type="password"  className="form-control" value={this.state.input[1]} onChange={(e)=>{this.repeatInput(e)}} />
           {this.state.error&&<div className="error">{this.state.error}</div>}
-    </div>);
+          </div>
+         </>);
   }
 }
