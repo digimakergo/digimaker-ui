@@ -4,7 +4,6 @@ import {FetchWithAuth, getDefinition, getFields, getCommonFieldName} from './uti
 import ListRowActions from './ListRowActions';
 import Actions from './Actions';
 import FieldRegister from './FieldRegister';
-import RenderField from './RenderField';
 import RenderProperties from './RenderProperties';
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import ReactTooltip from "react-tooltip";
@@ -240,7 +239,7 @@ export default class List extends React.Component<{ id: number, contenttype: str
             let fields = this.config['block_fields'];
             let rowClasses = this.props.onRenderRow?this.props.onRenderRow(item):'';
             cells.push(<div className={"blockview-cell "+rowClasses} onClick={(e)=>this.linkClick(e, item)}>
-                <RenderProperties content={item} contenttype={this.props.contenttype} mode="inline" fields={fields} />
+                <RenderProperties content={item} contenttype={this.props.contenttype} mode="block" fields={fields} />
             </div>);
         }
         return (<div className="blockview-grid">{cells}</div>)
@@ -319,7 +318,6 @@ export default class List extends React.Component<{ id: number, contenttype: str
                         </select>
                     </span>
                   }
-                  &nbsp;&nbsp;<a href="#" title="Thumbnail"><i className="fas fa-th"></i></a>
 
                 </div>
                 {this.renderList(this.state.list.list)}

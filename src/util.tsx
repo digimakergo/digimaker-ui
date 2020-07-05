@@ -72,7 +72,7 @@ export function getDefinition(contenttype: string){
 
 export function getFields(definition:any){
   let result:any = {};
-  //todo: support nested.
+  //todo: extract nested
   definition.fields.forEach((field)=>{
     result[field.identifier] = field;
   })

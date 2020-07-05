@@ -122,7 +122,7 @@ class Dialog extends React.Component<{config:any, contenttype:string, trigger:bo
         <div className="selected">{this.state.selected.map((content: any) => {
           return <span><RenderProperties content={content} contenttype={this.props.contenttype} mode="inline" /></span>
         })}</div>
-        <div className="container">
+        <div className="container browse-list">
           <div className="row">
             {this.state.showTree&&<div className="col-4">
               <TreeNode data={this.state.data} showRoot={true} renderItem={(content: any) => { return this.renderNode(content) }} onClick={(content: any) => { this.clickTree(content) }} />

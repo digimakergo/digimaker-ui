@@ -2,7 +2,7 @@ import * as React from 'react';
 import Moment from 'react-moment';
 import ReactTooltip from 'react-tooltip';
 
-export default class Checkbox extends React.Component<{definition:any, beforeField:any, afterField:any, validation:any, data:any, mode?:string},{checked:boolean}> {
+export default class Checkbox extends React.Component<{definition:any, validation:any, data:any, mode?:string},{checked:boolean}> {
 
 constructor(props:any) {
       super(props);
@@ -14,11 +14,8 @@ constructor(props:any) {
     }
 
     edit(){
-      const BeforeElement:React.ReactType = this.props.beforeField();
-      const AfterElement:React.ReactType = this.props.afterField();
       return (
           <div className={'field checkbox '+this.props.mode+' '+(this.props.definition.required?'required':'')+(this.props.validation=='1'?' result-required':'')}>
-            {BeforeElement}
            <label>
               {this.props.mode=='edit'&&!this.state.checked&&<input type="hidden" value="0" name={this.props.definition.identifier} />}
               <input type="checkbox" disabled={this.props.mode!='edit'}
@@ -31,7 +28,6 @@ constructor(props:any) {
               {this.props.definition.description&&<i className="icon-info" data-for={this.props.definition.identifier+'-desciption'} data-tip=""></i>}</div>
               {this.props.definition.description&&<ReactTooltip id={this.props.definition.identifier+'-desciption'} effect="solid" place="right" html={true} clickable={true} multiline={true} delayHide={500} className="tip">{this.props.definition.description}</ReactTooltip>}
              </label>
-              {AfterElement}
           </div>
       )
     }

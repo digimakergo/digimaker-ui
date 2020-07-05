@@ -47,7 +47,7 @@ export default class LoadFields extends React.Component<{ type: string, validati
 
     renderField(field: any,containerLevel:number=1) {
         if (field.children) {
-            return (<div className={`field-container level${containerLevel} ${field.identifier}`}>
+            return (<div className={`field-container level${containerLevel} field-${field.identifier}`}>
             <div className="container-title" onClick={(e)=>this.fold(e)}>
               {this.props.beforeField&&this.props.beforeField(field, this.props.data, null)}
               <a href="#" className="closable">
@@ -74,17 +74,25 @@ export default class LoadFields extends React.Component<{ type: string, validati
             // }
 
             const Fieldtype: React.ReactType = FieldRegister.getFieldtype(typeStr);
-
-            return Fieldtype ? <Fieldtype definition={field}
-                                          data={this.props.data&&this.props.data[fieldIdentifier]}
-                                          formdata = {this.props.data}
-                                          validation={validationResult&&(fieldIdentifier in validationResult.fields)?validationResult.fields[fieldIdentifier]:''}
-                                          formValidation={validationResult}
-                                          mode = {this.props.mode}
-                                          beforeField={()=>this.props.beforeField&&this.props.beforeField(field, this.props.data, validationResult)}
-                                          afterField={()=>this.props.afterField&&this.props.afterField(field, this.props.data, validationResult)}
-                                           />
-                                : field.type + ' is not supported.'
+            if( Fieldtype){
+              const BeforeElement:React.ReactType = this.props.beforeField?this.props.beforeField():null;
+              const AfterElement:React.ReactType = this.props.afterField?this.props.afterField():null;
+              return <>
+              {BeforeElement}
+              <div className={"field-"+field.identifier+" field-mode-"+this.props.mode+" fieldtype-"+typeStr}>
+              <Fieldtype definition={field}
+                         data={this.props.data&&this.props.data[fieldIdentifier]}
+                         formdata = {this.props.data}
+                         validation={validationResult&&(fieldIdentifier in validationResult.fields)?validationResult.fields[fieldIdentifier]:''}
+                         formValidation={validationResult}
+                         mode = {this.props.mode}
+                          />
+              {AfterElement}
+              </div>
+                          </>;
+            }else{
+                return field.type + ' is not supported.';
+            }
         }
     }
 

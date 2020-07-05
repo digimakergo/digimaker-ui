@@ -86,7 +86,7 @@ export default class RelationList extends React.Component<{definition:any, valid
             {this.props.definition.name}:
             <Browse config={browseConfig[relatedType]} contenttype={relatedType} onConfirm={(selected:Array<any>)=>this.confirmDialog(selected)} selected={this.state.list} />
               <ReactSortable
-                 className="list"
+                 className="list relationlist-value"
                  list={this.state.list}
                  setList={sortedList => this.setState({ list: sortedList })}>
                {this.state.list.map((item:any, i:number)=>{
@@ -110,12 +110,11 @@ export default class RelationList extends React.Component<{definition:any, valid
 
   raw(){
     return (this.state.list.length>0&&
-      <ul>
+      <div className={"fieldtype-relationlist field-mode-view field-relationlist-"+this.props.definition.parameters.type+" field-"+this.props.definition.identifier}>
       {this.state.list.map((item:any)=>{
-          return <li>
-          <Link target="_blank" to={'/main/'+item.id}>{item.name}</Link></li>
+          return <RenderProperties content={item} contenttype={this.props.definition.parameters.type} mode="inline" />
       })}
-   </ul>)
+   </div>)
   }
 
   render(){
