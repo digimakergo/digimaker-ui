@@ -3,6 +3,24 @@
 }
 
 
+
+.fieldtype-datetime-date {
+    width: 125px;
+    display: inline-block;
+  }
+
+.fieldtype-datetime-time {
+    text-align: center;
+    color: #736e6e;
+    display: inline-block;
+    width: 3rem;
+}
+
+.fieldtype-datetime > div{
+    padding-top: 1%;
+    width: 450px;
+}
+
 .fieldtype-relationlist .field-value{
   display: block;
   padding: 0px 2rem;
@@ -70,4 +88,13 @@
 
 .browse-list .content-view{
   cursor: pointer
+}
+
+.required .field-label::after{
+  content: "*";
+  color:red;
+}
+
+.field-password .field-value{
+  display: block;
 }

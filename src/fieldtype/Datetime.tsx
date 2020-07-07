@@ -2,15 +2,14 @@ import * as React from 'react';
 import {useState} from 'react';
 import DateTime from 'react-datetime';
 import 'react-datetime/css/react-datetime.css'
-import './Datetime.css'
 import moment from 'moment';
 import { timeStamp } from 'console';
 
 let defaultValue = 0;
 
-export default class Datetime extends React.Component<{definition: any, validation: any, beforeField:any, afterField: any, data: any, mode: string },{date, hour, minute,datetime,disabled}> {
-    
-    
+export default class Datetime extends React.Component<{definition: any, validation: any, data: any, mode: string },{date, hour, minute,datetime,disabled}> {
+
+
     constructor(props:any) {
         super(props);
         this.state = {
@@ -21,7 +20,7 @@ export default class Datetime extends React.Component<{definition: any, validati
             disabled: false
           };
       }
-      
+
         setdate(Date){
             let value = (moment(Date).format('L'))
             console.log("momment",value)
@@ -39,13 +38,13 @@ export default class Datetime extends React.Component<{definition: any, validati
             this.setState({
               minute: event.target.value
             });
-        };  
+        };
 
         combineValue(){
           let hour = ''
-          if(this.state.hour <= '9') 
+          if(this.state.hour <= '9')
           {
-             hour = ('00' + this.state.hour).slice(-2); 
+             hour = ('00' + this.state.hour).slice(-2);
           }
           var dateTime = moment(this.state.date + ' ' +hour+''+this.state.minute, 'DD/MM/YYYY HH:mm');
           let final = (moment(dateTime).format('DD/MM/YYYY HH:mm'));
@@ -55,39 +54,45 @@ export default class Datetime extends React.Component<{definition: any, validati
         }
 
       inline(){
-        return (<span className="fieldtype-text"></span>)
+        return this.state.datetime
       }
-  
+
       view(){
+        return <><label className="field-label">{this.props.definition.name}</label>
+                <div className="field-value">{this.inline()}</div>
+              </>;
       }
-  
+
       edit(){
-        const BeforeElement:React.ReactType = this.props.beforeField();
-        const AfterElement:React.ReactType = this.props.afterField();
         return (
-            <div  className="div">
-              {BeforeElement}
-                <label className='text'>Date</label> 
-                <DateTime className='date' timeFormat={false} dateFormat="DD-MM-YYYY" onChange={value => this.setdate(value)}/>
-                
+            <div>
+            <label className="field-label">{this.props.definition.name}</label>
+            <div className="field-value">
+                <span>Date</span>&nbsp;
+                <DateTime className='fieldtype-datetime-date' timeFormat={false} dateFormat="DD-MM-YYYY" onChange={value => this.setdate(value)}/>
+
                 {this.state.disabled == true ? (
                   <span></span>
-                  ) : (<span>
-                      <label className="text">Hour</label>
-                      <input className="time" type = "text" maxLength={2} onChange={this.setHour.bind(this)}/>
-                      <label className="text">: Minutes</label>
-                      <input className="time" type="text" maxLength={2} onChange={this.setMinute.bind(this)}/>
+                ) : (<span> &nbsp;
+                      <input className="fieldtype-datetime-time form-control" type = "text" maxLength={2} onChange={this.setHour.bind(this)}/>
+                      :<input className="fieldtype-datetime-time form-control" type="text" maxLength={2} onChange={this.setMinute.bind(this)}/>
                   </span>
                 )}
-              {AfterElement}
+                </div>
             </div>
         )
       }
       componentWillUnmount(){
         this.combineValue();
       }
-  
+
       render() {
-          return this.edit();
-      }  
+          if( this.props.mode == 'edit' ){
+              return this.edit();
+          }else if( this.props.mode == 'view' ){
+              return this.view();
+          }else{
+              return this.inline();
+          }
+      }
 }
