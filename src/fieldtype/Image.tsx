@@ -34,7 +34,7 @@ constructor(props:any) {
 
     edit(){
         return (
-            <div className={(this.props.definition.required?'required':'')+(this.props.validation=='1'?' result-required':'')}>
+            <>
                 <label className="field-label" htmlFor={this.props.definition.identifier}>{this.props.definition.name}
                     {this.props.definition.description&&<i className="icon-info" data-for={this.props.definition.identifier+'-desciption'} data-tip=""></i>}
                     {this.props.definition.description&&<ReactTooltip id={this.props.definition.identifier+'-desciption'} effect="solid" place="right" html={true} clickable={true} multiline={true} delayHide={500} className="tip">{this.props.definition.description}</ReactTooltip>}
@@ -49,7 +49,7 @@ constructor(props:any) {
                 {(this.state.data==this.props.data) && this.inline()}
                 {(this.state.data!=this.props.data) && <img src={process.env.REACT_APP_ASSET_URL + "/"+this.state.data} /> }
                 </div>
-            </div>
+            </>
         )
     }
 

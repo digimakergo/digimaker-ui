@@ -79,9 +79,20 @@ export default class LoadFields extends React.Component<{ type: string, validati
             if( Fieldtype){
               const BeforeElement:React.ReactType = this.props.beforeField?this.props.beforeField():null;
               const AfterElement:React.ReactType = this.props.afterField?this.props.afterField():null;
+              let required = false;
+              if( field.required && this.props.mode == 'edit' ){
+                required = true;
+              }
+
+              let resultRequired = false;
+              if( this.props.mode == 'edit' && validationResult && validationResult.fields && validationResult.fields[fieldIdentifier] ){
+                if( validationResult.fields[fieldIdentifier] == "1" ){
+                  resultRequired = true;
+                }
+              }
               return <>
               {BeforeElement}
-              <div className={"field-"+field.identifier+" field-mode-"+this.props.mode+" fieldtype-"+typeStr}>
+              <div className={"field-id-"+field.identifier+" field-mode-"+this.props.mode+" fieldtype-"+typeStr + (required?" required":"") +(resultRequired?" field-validation-result-required":" ")}>
               <Fieldtype definition={field}
                          data={this.props.data&&this.props.data[fieldIdentifier]}
                          formdata = {this.props.data}

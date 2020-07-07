@@ -60,24 +60,22 @@ export default class RichText extends React.Component<{ definition: any, validat
   }
 
   edit() {
-    return (
-      <div className={'edit field '+this.props.definition.type+ ' ' + (this.props.definition.required ? 'required' : '') + (this.props.validation == '1' ? ' result-required' : '')}>
+    return (<>
         <label className="field-label" htmlFor={this.props.definition.identifier}>
           {this.props.definition.name}
           {this.props.definition.description && <i className="icon-info" data-for={this.props.definition.identifier+'-desciption'} data-tip=""></i>}
           {this.props.definition.description&&<ReactTooltip id={this.props.definition.identifier+'-desciption'} effect="solid" place="right" html={true} clickable={true} multiline={true} delayHide={500} className="tip">{this.props.definition.description}</ReactTooltip>}
           : </label>
           <textarea id={this.props.definition.identifier} className="field-value form-control" name={this.props.definition.identifier} value={this.state.data}></textarea>
-      </div>
+          </>
     )
   }
 
   view(){
-    return (
-            <div className={'view field ' + this.props.definition.type}>
-              <label>{this.props.definition.name}: </label>
+    return (  <>
+              <label className="field-label">{this.props.definition.name}: </label>
               <div className="field-value">{this.raw()}</div>
-            </div>
+              </>
             )
   }
 

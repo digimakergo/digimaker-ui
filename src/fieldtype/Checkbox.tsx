@@ -15,10 +15,9 @@ constructor(props:any) {
 
     edit(){
       return (
-          <div className={(this.props.definition.required?'required':'')+(this.props.validation=='1'?' result-required':'')}>
            <label>
-              {this.props.mode=='edit'&&!this.state.checked&&<input type="hidden" value="0" name={this.props.definition.identifier} />}
-              <input type="checkbox" disabled={this.props.mode!='edit'}
+              {!this.state.checked&&<input type="hidden" value="0" name={this.props.definition.identifier} />}
+              <input type="checkbox"
                   id={this.props.definition.identifier}
                   name={this.props.definition.identifier}
                   value="1"
@@ -28,7 +27,6 @@ constructor(props:any) {
               {this.props.definition.description&&<i className="icon-info" data-for={this.props.definition.identifier+'-desciption'} data-tip=""></i>}</div>
               {this.props.definition.description&&<ReactTooltip id={this.props.definition.identifier+'-desciption'} effect="solid" place="right" html={true} clickable={true} multiline={true} delayHide={500} className="tip">{this.props.definition.description}</ReactTooltip>}
              </label>
-          </div>
       )
     }
 

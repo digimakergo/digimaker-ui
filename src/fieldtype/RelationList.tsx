@@ -105,14 +105,14 @@ export default class RelationList extends React.Component<{definition:any, valid
 
   view(){
     return <>
-            {this.props.definition.name}:
-            {this.raw()}
+            <label className="field-label">{this.props.definition.name}:</label>
+            <div className="field-value">{this.raw()}</div>
            </>
   }
 
   raw(){
     return (this.state.list.length>0&&
-      <div className={"fieldtype-relationlist field-mode-view field-relationlist-"+this.props.definition.parameters.type+" field-"+this.props.definition.identifier}>
+      <div className={"field-relationlist-"+this.props.definition.parameters.type}>
       {this.state.list.map((item:any)=>{
           return <RenderProperties content={item} contenttype={this.props.definition.parameters.type} mode="inline" />
       })}

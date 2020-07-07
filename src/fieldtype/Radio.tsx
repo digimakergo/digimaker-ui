@@ -42,13 +42,12 @@ constructor(props:any) {
     edit(){
       const def = this.props.definition;
       const name = def.identifier;
-      return (
-          <div className={(this.props.definition.required?'required':'')+(this.props.validation=='1'?' result-required':'')}>
-              <label htmlFor={this.props.definition.identifier}>{this.props.definition.name}
+      return (<>
+              <label className="field-label" htmlFor={this.props.definition.identifier}>{this.props.definition.name}
                   {this.props.definition.description&&<i className="icon-info" data-for={this.props.definition.identifier+'-desciption'} data-tip=""></i>}
                   {this.props.definition.description&&<ReactTooltip id={this.props.definition.identifier+'-desciption'} effect="solid" place="right" html={true} clickable={true} multiline={true} delayHide={500} className="tip">{this.props.definition.description}</ReactTooltip>}
               :</label>
-              <div>
+              <div className="field-value">
               {this.props.validation&&<div className="error">{this.props.validation}</div>}
                 <label>
                   <input type="radio" defaultChecked={this.props.data=="1"} name={name} onChange={(e)=>this.onChange(e)} value="1" />
@@ -60,8 +59,8 @@ constructor(props:any) {
                 {!this.state.selected&&
                   <input type="hidden" name={name} value="-1" />
                 }
-              </div>
-          </div>
+                </div>
+            </>
       )
     }
 
