@@ -96,3 +96,7 @@
 .field-password .field-value{
   display: block;
 }
+
+.fieldtype-relation-select{
+  width: 200px;
+}

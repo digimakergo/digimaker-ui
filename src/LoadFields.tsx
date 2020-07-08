@@ -70,10 +70,6 @@ export default class LoadFields extends React.Component<{ type: string, validati
             const typeStr = field.type;
             const fieldIdentifier = field.identifier;
             const validationResult = this.props.validation;
-            // let data = this.props.data;
-            // if( typeStr == 'relationlist' ){
-            //    data = this.props.data[fieldIdentifier]
-            // }
 
             const Fieldtype: React.ReactType = FieldRegister.getFieldtype(typeStr);
             if( Fieldtype){
@@ -96,6 +92,7 @@ export default class LoadFields extends React.Component<{ type: string, validati
               <Fieldtype definition={field}
                          data={this.props.data&&this.props.data[fieldIdentifier]}
                          formdata = {this.props.data}
+                         contenttype = {this.props.type}
                          validation={validationResult&&(fieldIdentifier in validationResult.fields)?validationResult.fields[fieldIdentifier]:''}
                          formValidation={validationResult}
                          mode = {this.props.mode}

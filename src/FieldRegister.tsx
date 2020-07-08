@@ -10,6 +10,8 @@ import OutputH from './fieldtype/OutputH'
 import Password from './fieldtype/Password'
 import RelationList from './fieldtype/RelationList'
 import Datetime from './fieldtype/Datetime';
+import Relation from './fieldtype/Relation';
+
 export default class FieldRegister{
         static fieldtypeMap = {};
 
@@ -44,5 +46,5 @@ export default class FieldRegister{
     FieldRegister.registerComponent( 'password', Password );
     FieldRegister.registerComponent( 'output_h', OutputH );
     FieldRegister.registerComponent( 'datetime', Datetime);
-
+    FieldRegister.registerComponent( 'relation', Relation);
 })()
