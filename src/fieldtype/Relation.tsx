@@ -31,6 +31,9 @@ export default class RelationList extends React.Component<{definition:any, valid
   fetchExisting(){
     let def = this.props.definition;
     //todo: change to use content/get/<type>/cid to get content
+    if(!this.props.data){
+      return;
+    }
     FetchWithAuth(process.env.REACT_APP_REMOTE_URL + '/content/list/'+def.parameters.type+'?cid='+this.props.data)
         .then(res => res.json())
         .then((data) => {
@@ -40,7 +43,7 @@ export default class RelationList extends React.Component<{definition:any, valid
 
   edit(){
     let options = [];
-    let defaultValue = {};
+    let defaultValue = null;
     let valueField = 'id';
     if( this.props.definition.parameters.value ){
        valueField = this.props.definition.parameters.value;
@@ -55,8 +58,7 @@ export default class RelationList extends React.Component<{definition:any, valid
     return  <>
             <label className="field-label">{this.props.definition.name}:</label>
             <div className="field-value">
-                <Select className="fieldtype-relation-select" options={options} value={defaultValue} onChange={(data:any)=>{this.setState({selected:data.value})}} />
-                <input type="hidden" name={this.props.definition.identifier} value={this.state.selected} />
+                <Select className="fieldtype-relation-select" name={this.props.definition.identifier} options={options} value={defaultValue} onChange={(data:any)=>{this.setState({selected:data.value})}} />
             </div>
             </>
   }
@@ -70,7 +72,7 @@ export default class RelationList extends React.Component<{definition:any, valid
 
   inline(){
     //todo: use RenderProperties to render in inline mode.
-    return this.state.content.name;
+    return this.state.content?this.state.content.name:'';
   }
 
   render(){
