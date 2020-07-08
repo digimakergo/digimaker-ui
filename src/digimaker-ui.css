@@ -24,7 +24,7 @@
   padding: 0px 2rem;
 }
 
-.fieldtype-relationlist .list-item{
+.field-mode-edit.fieldtype-relationlist .list-item{
   border: 1px dotted #999999;
   max-width: 50%;
   background: #fcfcfc;

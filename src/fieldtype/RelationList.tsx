@@ -112,9 +112,9 @@ export default class RelationList extends React.Component<{definition:any, valid
 
   raw(){
     return (this.state.list.length>0&&
-      <div className={"field-relationlist-"+this.props.definition.parameters.type}>
+      <div className={"list field-relationlist-"+this.props.definition.parameters.type}>
       {this.state.list.map((item:any)=>{
-          return <RenderProperties content={item} contenttype={this.props.definition.parameters.type} mode="inline" />
+          return <div className="list-item"><RenderProperties content={item} contenttype={this.props.definition.parameters.type} mode="inline" /></div>
       })}
    </div>)
   }

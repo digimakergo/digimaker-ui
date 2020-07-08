@@ -18,7 +18,7 @@ constructor(props:any) {
       if(this.state.data){
         let thumbnailPath = process.env.REACT_APP_THUMB_PATH.replace("{imagepath}", this.state.data);
         thumbnailPath = process.env.REACT_APP_ASSET_URL + "/"+thumbnailPath;
-        return <img src={thumbnailPath} />;
+        return <img className="fieldtype-image-img" src={thumbnailPath} />;
       }else{
         return '';
       }
