@@ -11,33 +11,41 @@ constructor(props:any) {
     }
 
     view(){
-      return (<div className={'view field ' + this.props.definition.type }>
-              <label>{this.props.definition.name}: </label>
-              <div className="field-value">{this.props.data&&this.props.data.Raw}</div>
-              </div>)
+      return (<>
+              <label className="field-label">{this.props.definition.name}: </label>
+              <div className="field-value">{this.raw()}</div>
+              </>)
+    }
+
+    raw(){
+      return this.props.data;
     }
 
     edit(){
         return (
-            <div className={'field file'+(this.props.definition.required?'required':'')+(this.props.validation=='1'?' result-required':'')}>
-                <label htmlFor={this.props.definition.identifier}>{this.props.definition.name}
+            <>
+                <label className="field-label" htmlFor={this.props.definition.identifier}>{this.props.definition.name}
                     {this.props.definition.description&&<i className="icon-info" data-tip={this.props.definition.description}></i>}
                 :</label>
                 <ReactTooltip effect="solid" place="right" clickable={true} multiline={true} delayHide={500} className="tip" />
 
+                <div className="field-value">
                 <FileUpload name={this.props.definition.identifier}
                                               service="content"
                                               format="*"
                                               value="" />
-            </div>
+                </div>
+            </>
         )
     }
 
     render(){
       if(this.props.mode=='view'){
           return this.view();
-      }else{
+      }else if(this.props.mode=='edit'){
           return this.edit();
+      }else{
+        return this.raw();
       }
     }
 }

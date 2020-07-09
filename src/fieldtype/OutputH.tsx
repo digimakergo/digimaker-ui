@@ -13,7 +13,7 @@ export default class OutputH extends React.Component<{ definition: any, validati
     let identifier = def.identifier;
     let parameters = def.parameters;
     let className = parameters&&parameters['class']?parameters['class']:'';
-    return <div className={"field "+def.type+" field-"+identifier+ ' '+className}><div dangerouslySetInnerHTML={{__html: def.name}} />
+    return <div className={className}><div dangerouslySetInnerHTML={{__html: def.name}} />
     {def.description && <i className="icon-info" data-for={def.identifier+'-description'} data-tip="" />}
     {def.description &&<ReactTooltip id={def.identifier+'-description'} html={true} effect="solid" place="right" clickable={true} multiline={true} delayHide={500} className="tip">{def.description}</ReactTooltip>}
     </div>

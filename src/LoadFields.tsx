@@ -1,3 +1,5 @@
+import './digimaker-ui.css';
+
 import * as React from 'react';
 import FieldRegister from './FieldRegister';
 import ReactTooltip from 'react-tooltip';
@@ -47,7 +49,7 @@ export default class LoadFields extends React.Component<{ type: string, validati
 
     renderField(field: any,containerLevel:number=1) {
         if (field.children) {
-            return (<div className={`field-container level${containerLevel} ${field.identifier}`}>
+            return (<div className={`field-container level${containerLevel} field-${field.identifier}`}>
             <div className="container-title" onClick={(e)=>this.fold(e)}>
               {this.props.beforeField&&this.props.beforeField(field, this.props.data, null)}
               <a href="#" className="closable">
@@ -70,17 +72,37 @@ export default class LoadFields extends React.Component<{ type: string, validati
             const validationResult = this.props.validation;
 
             const Fieldtype: React.ReactType = FieldRegister.getFieldtype(typeStr);
+            if( Fieldtype){
+              const BeforeElement:React.ReactType = this.props.beforeField?this.props.beforeField():null;
+              const AfterElement:React.ReactType = this.props.afterField?this.props.afterField():null;
+              let required = false;
+              if( field.required && this.props.mode == 'edit' ){
+                required = true;
+              }
 
-            return Fieldtype ? <Fieldtype definition={field}
-                                          data={this.props.data&&this.props.data[fieldIdentifier]}
-                                          formdata = {this.props.data}
-                                          validation={validationResult&&(fieldIdentifier in validationResult.fields)?validationResult.fields[fieldIdentifier]:''}
-                                          formValidation={validationResult}
-                                          mode = {this.props.mode}
-                                          beforeField={()=>this.props.beforeField&&this.props.beforeField(field, this.props.data, validationResult)}
-                                          afterField={()=>this.props.afterField&&this.props.afterField(field, this.props.data, validationResult)}
-                                           />
-                                : field.type + ' is not supported.'
+              let resultRequired = false;
+              if( this.props.mode == 'edit' && validationResult && validationResult.fields && validationResult.fields[fieldIdentifier] ){
+                if( validationResult.fields[fieldIdentifier] == "1" ){
+                  resultRequired = true;
+                }
+              }
+              return <>
+              {BeforeElement}
+              <div className={"field-id-"+field.identifier+" field-mode-"+this.props.mode+" fieldtype-"+typeStr + (required?" required":"") +(resultRequired?" field-validation-result-required":" ")}>
+              <Fieldtype definition={field}
+                         data={this.props.data&&this.props.data[fieldIdentifier]}
+                         formdata = {this.props.data}
+                         contenttype = {this.props.type}
+                         validation={validationResult&&(fieldIdentifier in validationResult.fields)?validationResult.fields[fieldIdentifier]:''}
+                         formValidation={validationResult}
+                         mode = {this.props.mode}
+                          />
+              {AfterElement}
+              </div>
+                          </>;
+            }else{
+                return field.type + ' is not supported.';
+            }
         }
     }
 
@@ -107,22 +129,20 @@ export default class LoadFields extends React.Component<{ type: string, validati
             fields = currentField.children;
         }
         return (
-            <div>
+            <>
                 {parent&&<div className="fields-parent">
                   {parent.parameters&&parent.parameters.fullname&&
-
                     <div className="field-title">{parent.parameters.fullname}
                     {parent.description&&<i className="icon-info" data-for={parent.identifier+'-description'} data-tip=""></i>}
                     {parent.description&&<ReactTooltip id={parent.identifier+'-description'} effect="solid" place="right" html={true} clickable={true} multiline={true} delayHide={500} className="tip">{parent.description}</ReactTooltip>}
                   </div>}
-
                   </div>}
-                <div>
+                <div className="content-fields">
                     {fields.map((field) => {
                         return this.renderField(field)
                     })}
                 </div>
-            </div>
+            </>
         )
     }
 }

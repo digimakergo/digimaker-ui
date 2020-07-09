@@ -1,0 +1,102 @@
+.field-label, .field-value{
+  display: inline-block
+}
+
+.fieldtype-datetime-date {
+    width: 125px;
+    display: inline-block;
+  }
+
+.fieldtype-datetime-time {
+    text-align: center;
+    color: #736e6e;
+    display: inline-block;
+    width: 3rem;
+}
+
+.fieldtype-datetime > div{
+    padding-top: 1%;
+    width: 450px;
+}
+
+.fieldtype-relationlist .field-value{
+  display: block;
+  padding: 0px 2rem;
+}
+
+.field-mode-edit.fieldtype-relationlist .list-item{
+  border: 1px dotted #999999;
+  max-width: 50%;
+  background: #fcfcfc;
+  cursor: pointer;
+  padding: 5px 10px;
+  margin-top: 5px;
+}
+
+
+.browse .selected .content-view{
+  display: inline-block;
+  border: 1px solid #cccccc;
+  border-radius: 4px;
+  padding: 3px;
+  margin: 2px;
+}
+
+.blockview-grid{
+  display: grid;
+  grid-template-columns: 20% 20% 20% 20% 20%;
+  border-right: 1px solid #999999;
+  border-bottom: 1px solid #999999;
+  margin-bottom: 10px;
+}
+
+
+.blockview-cell{
+  padding: 10px;
+  border-top: 1px solid #999999;
+  border-left: 1px solid #999999;
+  background: #f3f3f3;
+  text-align: center;
+}
+
+.blockview-cell > *{
+  width: 100%;
+}
+
+.blockview-cell > .fieldtype-image > img{
+  max-width: 100%;
+}
+
+.browse-selected .content-baseattr-name, .browse-selected .field-name{
+  font-weight: bold;
+}
+
+.content-viewmode-inline{
+  display: inline-block;
+  margin: 2px;
+}
+
+.blockview-cell.browse-selected{
+  background: #f0f0f0
+}
+
+.field-relationlist-article > div{
+  display: block;
+}
+
+.browse-list .content-view{
+  cursor: pointer
+}
+
+.required .field-label::after{
+  content: "*";
+  color:red;
+}
+
+.field-password .field-value{
+  display: block;
+}
+
+.fieldtype-relation-select{
+  width: 200px;
+}

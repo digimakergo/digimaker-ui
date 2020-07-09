@@ -1,25 +1,20 @@
+import './digimaker-ui.css';
+
 import * as React from 'react';
+import { useState } from "react";
+import { Link } from "react-router-dom";
+import {getDefinition,getFields} from './util';
+import util from './util';
 import Moment from 'react-moment';
 import LoadFields from './LoadFields';
 
-export default class ViewContent extends React.Component<{content:any},{}> {
-
-
-  constructor(props: any) {
-      super(props);
-      this.state = {};
-  }
-
-
-  render () {
-
+//mode: (full/inline)
+const ViewContent = (props:{content:any}) => {
     let data:any = {};
-    let content = this.props.content;
-
-    return (
-       <div>
+    let content = props.content;
+    return <div className="content-view">
               <LoadFields type={content.content_type} validation='' mode='view' data={content} afterField={()=>{}} />
-       </div>
-    );
-  }
+       </div>;
 }
+
+export default ViewContent;

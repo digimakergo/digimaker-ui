@@ -60,12 +60,19 @@ export function SetAccessToken(token: string) {
 }
 
 //todo: make sure it only fetch once for one content type.
+
+let definitionList:any = {}
+
 export function getDefinition(contenttype: string){
-  return FetchWithAuth(process.env.REACT_APP_REMOTE_URL+'/contenttype/get/'+contenttype)
+  if( !definitionList[contenttype] ){
+    definitionList[contenttype] = FetchWithAuth(process.env.REACT_APP_REMOTE_URL+'/contenttype/get/'+contenttype).then(res=>res.json())
+  }
+  return definitionList[contenttype];
 }
 
 export function getFields(definition:any){
   let result:any = {};
+  //todo: extract nested
   definition.fields.forEach((field)=>{
     result[field.identifier] = field;
   })
@@ -96,6 +103,7 @@ export function getCommonFieldName(identifier:string) {
   return result;
 }
 
+let config:any = null;
 //util for general operations
 const util = {
   //put replace variable with real value.eg. "this is {id}" with {'id': 5} will be "this is 5"
@@ -111,6 +119,14 @@ const util = {
      });
    }
    return result;
+ },
+
+ setConfig:(conf:any)=>{
+   config = conf;
+ },
+
+ getConfig:()=>{
+   return config;
  },
 
  //get allowed type under the parent content. condition example: "article:3 or article:images"

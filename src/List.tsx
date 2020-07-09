@@ -4,11 +4,11 @@ import {FetchWithAuth, getDefinition, getFields, getCommonFieldName} from './uti
 import ListRowActions from './ListRowActions';
 import Actions from './Actions';
 import FieldRegister from './FieldRegister';
-import RenderField from './RenderField';
+import RenderProperties from './RenderProperties';
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import ReactTooltip from "react-tooltip";
 
-export default class List extends React.Component<{ id: number, contenttype: string, config:any, onLinkClick?:any }, {def:any, loading:boolean, list: any, actionNew: boolean, currentPage:number, sortby: Array<Array<string>>, selected: Array<number> }> {
+export default class List extends React.Component<{ id: number, contenttype: string, config:any, onLinkClick?:any, onRenderRow?:any }, {def:any, loading:boolean, list: any, actionNew: boolean, currentPage:number, sortby: Array<Array<string>>, selected: Array<number> }> {
 
    private config: any
 
@@ -45,8 +45,11 @@ export default class List extends React.Component<{ id: number, contenttype: str
       if( this.config['viewmode'] == undefined ){
         this.config['viewmode'] = "list";
       }
-      if( this.config['blockview_columns'] == undefined ){
-        this.config['blockview_columns'] = [];
+      if( this.config['block_fields'] == undefined ){
+        this.config['block_fields'] = [];
+      }
+      if( this.config['level'] == undefined ){
+        this.config['level'] = 1;
       }
     }
 
@@ -75,7 +78,7 @@ export default class List extends React.Component<{ id: number, contenttype: str
             limit = "&limit="+pagination+"&offset="+pagination*this.state.currentPage
         }
         this.setState({loading: true});
-        FetchWithAuth(process.env.REACT_APP_REMOTE_URL + '/content/list/' + id+'/'+this.props.contenttype+'?'+sortby+limit)
+        FetchWithAuth(process.env.REACT_APP_REMOTE_URL + '/content/list/'+this.props.contenttype+'?parent='+id+"&level="+this.config.level+"&"+sortby+limit)
             .then(res => res.json())
             .then((data) => {
                 this.resetActionState();
@@ -126,7 +129,6 @@ export default class List extends React.Component<{ id: number, contenttype: str
         this.fetchData();
 
         getDefinition(this.props.contenttype)
-        .then(res=>res.json())
         .then((data)=>{
             this.setState({def:data});
         });
@@ -152,7 +154,7 @@ export default class List extends React.Component<{ id: number, contenttype: str
           delete selected[id];
       }else{
         let content = this.state.list.list.find((value)=>{return value.id==id});
-        selected[id]=content.name;
+        selected[id]=content;
       }
       this.setState({selected:selected});
     }
@@ -172,7 +174,7 @@ export default class List extends React.Component<{ id: number, contenttype: str
     linkClick(e, content){
       if( this.props.onLinkClick ){
         e.preventDefault();
-        this.props.onLinkClick({id:content.id, name:content.name});
+        this.props.onLinkClick(content);
       }
     }
 
@@ -214,45 +216,12 @@ export default class List extends React.Component<{ id: number, contenttype: str
         let rows: Array<any> = [];
         let fieldsDef = getFields(this.state.def);
         for (let i = 0; i < list.length; i++) {
-            let content = list[i]
-            rows.push(<tr>
+            let content = list[i];
+            let rowClasses = this.props.onRenderRow?this.props.onRenderRow(content):'';
+            rows.push(<tr className={rowClasses} onClick={(e)=>this.linkClick(e, content)}>
               {this.config.can_select&&<td onClick={()=>this.select(content.id)} className="td-check center"><input type="checkbox" checked={this.state.selected[content.id]?true:false} value="1" /></td>}
               <td onClick={()=>this.select(content.id)} className="td-id">{content.id}</td>
-              {this.config.columns.map((column)=>{
-                  {/*render fields, todo: use lazy load*/}
-                  if( fieldsDef[column] ){
-                    const fieldtype = fieldsDef[column].type;
-                    if( fieldtype == 'image' ){
-                      return <td className="td-fieldtype-image">
-                            <Link to={"/main/"+content.id}><div data-tip data-for={"image"+content.id}>
-                                <RenderField identifier={column} def={fieldsDef[column]} data={content[column]} mode='inline' />
-                            </div>
-                            </Link>
-                              <ReactTooltip border={true} borderColor='#000000' className="tooltip" id={'image'+content.id} clickable={true} place="right" effect='float' type='light'>
-                              <RenderField identifier={column} def={fieldsDef[column]} data={content[column]} mode='inline' />
-                            </ReactTooltip></td>
-                    }
-                    return <td><RenderField identifier={column} def={fieldsDef[column]} data={content[column]} mode='inline' /></td>
-                  }
-                  {/*render common fields*/}
-                  switch(column){
-                    case 'name':
-                      return (<td className="content-name"><span><Link to={"/main/"+content.id} onClick={(e)=>this.linkClick(e, content)}>{content.name}</Link></span></td>);
-                    case 'author':
-                      return (<td>{content.author}</td>)
-                    case 'published':
-                      return (<td><Moment unix format="DD.MM.YYYY HH:mm">{content.published}</Moment></td>)
-                    case 'modified':
-                      return <td><Moment unix format="DD.MM.YYYY HH:mm">{content.modified}</Moment></td>
-                    case 'priority':
-                      return (<td title="Priority">{content[column]?content[column]:''}</td>)
-                    case 'status':
-                        return (<td><span className={"workflow-status status-"+content.status}></span></td>)
-                    default:
-                      return <td className={"column-"+column}>{content[column]?content[column]:''}</td>
-                    break;
-                  }
-              })}
+              <RenderProperties content={content} contenttype={this.props.contenttype} fields={this.config.columns} mode="inline" as="td" />
                 {this.config['row_actions'].length>0&&<td className="list-row-tool">
                       <ListRowActions content={content} config={this.config['row_actions']} />
                   </td>}
@@ -267,11 +236,10 @@ export default class List extends React.Component<{ id: number, contenttype: str
         let fieldsDef = getFields(this.state.def);
         let cells:Array<any> = [];
         for (let item of list ){
-            let columns = this.config['blockview_columns'];
-            cells.push(<div className="blockview-cell">
-                {columns.map((column)=>{
-                  return <RenderField identifier={column} def={fieldsDef[column]} data={item[column]} mode='inline' />
-                })}
+            let fields = this.config['block_fields'];
+            let rowClasses = this.props.onRenderRow?this.props.onRenderRow(item):'';
+            cells.push(<div className={"blockview-cell "+rowClasses} onClick={(e)=>this.linkClick(e, item)}>
+                <RenderProperties content={item} contenttype={this.props.contenttype} mode="block" fields={fields} />
             </div>);
         }
         return (<div className="blockview-grid">{cells}</div>)
@@ -350,7 +318,6 @@ export default class List extends React.Component<{ id: number, contenttype: str
                         </select>
                     </span>
                   }
-                  &nbsp;&nbsp;<a href="#" title="Thumbnail"><i className="fas fa-th"></i></a>
 
                 </div>
                 {this.renderList(this.state.list.list)}

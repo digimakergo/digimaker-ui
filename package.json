@@ -1,13 +1,15 @@
 {
-  "name": "@digimaker/ui",
-  "version": "0.1.0-alpha.0",
+  "name": "digimaker-ui",
+  "version": "0.1.0-alpha.34",
   "description": "UI components for Digimaker CMF, including displaying, editing, field, content and related utils.",
   "main": "dist/index.js",
   "files": [
-    "**/*.js"
+    "**/*.js",
+    "*.css",
+    "fieldtype.json"
   ],
   "scripts": {
-    "build": "rm -rf dist/* && cp ./package.json ./dist && tsc",
+    "dist": "rm -rf dist/* && cp ./package.json ./src/fieldtype.json README.md ./src/*.css ./dist && tsc",
     "prepare": "npm build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -16,9 +18,8 @@
     "url": "git+https://github.com/digimakergo/ui.git"
   },
   "keywords": [
-    "ui",
-    "cms",
     "cmf",
+    "cms",
     "digimaker",
     "react"
   ],
@@ -28,25 +29,32 @@
     "url": "https://github.com/digimakergo/ui/issues"
   },
   "homepage": "https://github.com/digimakergo/ui#readme",
-  "devDependencies": {
-    "@types/react": "^16.9.37",
-    "@types/react-dom": "^16.9.8",
-    "react": "^16.13.1",
-    "react-dom": "^16.13.1",
-    "typescript": "^3.9.5"
-  },
   "dependencies": {
-    "@types/node": "^14.0.13",
+    "@types/node": "^12.7.5",
+    "@types/react": "^16.9.37",
+    "@types/react-dom": "^16.9.0",
     "@types/react-router-dom": "^5.1.5",
-    "formdata-polyfill": "^3.0.19",
     "bootstrap": "^4.5.0",
-    "jquery": "^3.5.1",
-    "moment": "^2.26.0",
+    "formdata-polyfill": "^3.0.19",
+    "jquery": "^3.4.1",
+    "moment": "^2.24.0",
+    "react": "^16.9.0",
     "react-bootstrap": "^1.0.1",
-    "react-moment": "^0.9.7",
-    "react-router-dom": "^5.2.0",
-    "react-tooltip": "^4.2.7",
-    "tinymce": "^5.3.2",
+    "react-datetime": "^2.16.3",
+    "react-dom": "^16.9.0",
+    "react-moment": "^0.9.2",
+    "react-router-dom": "^5.1.2",
+    "react-select": "^3.1.0",
+    "react-sortablejs": "^2.0.11",
+    "react-tooltip": "^3.11.6",
+    "source-map-loader": "^1.0.0",
+    "tinymce": "^4.9.3",
+    "typescript": "^3.6.3",
     "universal-cookie": "^4.0.3"
+  },
+  "devDependencies": {
+    "webpack": "^4.43.0",
+    "ts-loader": "^7.0.5",
+    "webpack-cli": "^3.3.12"
   }
 }
