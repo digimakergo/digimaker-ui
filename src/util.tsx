@@ -1,5 +1,6 @@
 import Cookies from 'universal-cookie';
 import Registry from './Registry';
+import { useState } from 'react';
 
 const cookies = new Cookies();
 
@@ -102,6 +103,20 @@ export function getCommonFieldName(identifier:string) {
   }
   return result;
 }
+
+//util for toggle model service
+export const useModal = () => {
+  const [isShowing, setIsShowing] = useState(false);
+
+  function toggle() {
+    setIsShowing(!isShowing);
+  }
+
+  return {
+    isShowing,
+    toggle,
+  }
+};
 
 let config:any = null;
 //util for general operations
