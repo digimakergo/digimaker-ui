@@ -49,7 +49,7 @@ export default class LoadFields extends React.Component<{ type: string, validati
 
     renderField(field: any,containerLevel:number=1) {
         if (field.children) {
-            return (<div className={`field-container level${containerLevel} field-${field.identifier}`}>
+            return (<div key={field.identifier} className={`field-container level${containerLevel} field-${field.identifier}`}>
             <div className="container-title" onClick={(e)=>this.fold(e)}>
               {this.props.beforeField&&this.props.beforeField(field, this.props.data, null)}
               <a href="#" className="closable">
@@ -61,7 +61,7 @@ export default class LoadFields extends React.Component<{ type: string, validati
               </div>
               <div className="children">
                 {field.children.map( (child) => {
-                     return (this.renderField( child, containerLevel+1 ))
+                     return (<React.Fragment key={child.identifier}>this.renderField( child, containerLevel+1 )</React.Fragment>)
                 })}
               </div>
             </div>)
@@ -139,7 +139,7 @@ export default class LoadFields extends React.Component<{ type: string, validati
                   </div>}
                 <div className="content-fields">
                     {fields.map((field) => {
-                        return this.renderField(field)
+                        return <React.Fragment key={field.identifier}>{this.renderField(field)}</React.Fragment>
                     })}
                 </div>
             </>

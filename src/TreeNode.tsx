@@ -8,7 +8,7 @@ function TreeNode(props:{data:any, showRoot?:boolean, renderItem?:any, onClick?:
   return <ul className="treemenu">
     {props.showRoot&&<TreeNodeItem data={props.data} renderItem={props.renderItem} onClick={props.onClick}/>}
     {(!props.showRoot && props.data.children) && props.data.children.map(
-      value => { return (<TreeNodeItem data={value} renderItem={props.renderItem} onClick={props.onClick}/>
+      value => { return (<TreeNodeItem key={value.id} data={value} renderItem={props.renderItem} onClick={props.onClick}/>
       )})}
   </ul>
 }
@@ -70,7 +70,7 @@ class TreeNodeItem extends React.Component<{ data: any, onClick?:any, renderItem
       {/*todo: load it without sliding*/}
       {node.children &&<Collapse in={open}><ul>{
         node.children.map(value => {
-          return (<TreeNodeItem data={value} renderItem={this.props.renderItem} open={(open:boolean)=>{
+          return (<TreeNodeItem key={value.id} data={value} renderItem={this.props.renderItem} open={(open:boolean)=>{
             if(open){
               this.setState({open:true});
             }

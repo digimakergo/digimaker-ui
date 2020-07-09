@@ -196,7 +196,7 @@ export default class List extends React.Component<{ id: number, contenttype: str
               sortOrder = 'sort-second ' + sortby[1][1];
             }
             let columnName = fieldsDef[column]?(fieldsDef[column].name):getCommonFieldName(column);
-            return (<th>
+            return (<th key={column}>
               {sortable?
                 <a href="#" onClick={(e)=>{this.sort(e, column);}} className={"column-sortable "+sortOrder}>
                 {columnName}
@@ -218,7 +218,7 @@ export default class List extends React.Component<{ id: number, contenttype: str
         for (let i = 0; i < list.length; i++) {
             let content = list[i];
             let rowClasses = this.props.onRenderRow?this.props.onRenderRow(content):'';
-            rows.push(<tr className={rowClasses} onClick={(e)=>this.linkClick(e, content)}>
+            rows.push(<tr key={content.id} className={rowClasses} onClick={(e)=>this.linkClick(e, content)}>
               {this.config.can_select&&<td onClick={()=>this.select(content.id)} className="td-check center"><input type="checkbox" checked={this.state.selected[content.id]?true:false} value="1" /></td>}
               <td onClick={()=>this.select(content.id)} className="td-id">{content.id}</td>
               <RenderProperties content={content} contenttype={this.props.contenttype} fields={this.config.columns} mode="inline" as="td" />
@@ -235,11 +235,12 @@ export default class List extends React.Component<{ id: number, contenttype: str
         let rows:Array<any> = [];
         let fieldsDef = getFields(this.state.def);
         let cells:Array<any> = [];
+
         for (let item of list ){
             let fields = this.config['block_fields'];
             let rowClasses = this.props.onRenderRow?this.props.onRenderRow(item):'';
             cells.push(<div className={"blockview-cell "+rowClasses} onClick={(e)=>this.linkClick(e, item)}>
-                <RenderProperties content={item} contenttype={this.props.contenttype} mode="block" fields={fields} />
+                <RenderProperties content={item} contenttype={this.props.contenttype} mode="block" fields={fields} />                
             </div>);
         }
         return (<div className="blockview-grid">{cells}</div>)

@@ -71,12 +71,12 @@ const RenderProperties = (props:{content:any, contenttype:string, mode:string, f
   let contentFields = getFields(def);
   if( props.as == 'td' ){
     return <>{fields.map((field:any)=>{
-        return <td>{renderField(field, contentFields[field] )}</td>;
+        return <td key={field}>{renderField(field, contentFields[field] )}</td>;
       })}</>;
   }else{
     return <div className={"contenttype-"+props.contenttype+" content-view content-viewmode-"+props.mode}>
               {fields.map((field:any)=>{
-                    return renderField(field, contentFields[field] );
+                    return <React.Fragment key={field}>{renderField(field, contentFields[field])}</React.Fragment>;
               })}
             </div>;
   }
