@@ -63,11 +63,12 @@ export default class Actions extends React.Component<{ actionsConfig: any, from?
           if (actionConfig['link'] || actionConfig['name'] && actionConfig['com']) {
             return this.renderLink(actionConfig);
           }
-        })
+         })
         }
         <React.Suspense fallback="...">
           <div className="row">{this.state.actions && <div>
-              {Object.values(this.state.actions).map((Action:React.ReactType)=><Action />) }
+              {Object.values(this.state.actions).map((Action:React.ReactType)=>
+                <Action selected={this.props.selected} afterAction={this.props.afterAction} from={this.props.from} />) }
             </div> }
           </div>
         </React.Suspense>

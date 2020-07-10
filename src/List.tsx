@@ -240,7 +240,10 @@ export default class List extends React.Component<{ id: number, contenttype: str
             let fields = this.config['block_fields'];
             let rowClasses = this.props.onRenderRow?this.props.onRenderRow(item):'';
             cells.push(<div className={"blockview-cell "+rowClasses} onClick={(e)=>this.linkClick(e, item)}>
-                <RenderProperties content={item} contenttype={this.props.contenttype} mode="block" fields={fields} />                
+                <RenderProperties content={item} contenttype={this.props.contenttype} mode="block" fields={fields} />
+                {this.config['row_actions'].length>0&&<span className="list-row-tool">
+                      <ListRowActions content={item} config={this.config['row_actions']} />
+                  </span>}
             </div>);
         }
         return (<div className="blockview-grid">{cells}</div>)

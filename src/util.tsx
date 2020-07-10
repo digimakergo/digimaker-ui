@@ -123,8 +123,10 @@ export const useDialog = () => {
 
 export const Dialog = (props:{isShowing:boolean, hide:any,title:string,submit:any,body:any}) => {
   if( props.isShowing ){
-    return (<div className='modal-overlay'>
-    <Modal.Dialog size="lg">
+    return (
+    <Modal size="lg"
+      aria-labelledby="contained-modal-title-vcenter"
+      centered show={props.isShowing} onHide={props.hide}>
        <Modal.Header closeButton>
     <Modal.Title>{props.title}</Modal.Title>
        </Modal.Header>
@@ -132,10 +134,10 @@ export const Dialog = (props:{isShowing:boolean, hide:any,title:string,submit:an
        {props.body}
       </Modal.Body>
        <Modal.Footer>
+         <Button variant="danger" onClick={props.submit}>Yes</Button>
          <Button variant="secondary" onClick={props.hide}>Close</Button>
-          <Button variant="primary" onClick={props.submit}>Save changes</Button>
        </Modal.Footer>
-      </Modal.Dialog></div>);
+      </Modal>);
   }else{
       return '';
   }
