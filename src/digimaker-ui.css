@@ -21,7 +21,7 @@
 
 .fieldtype-relationlist .field-value{
   display: block;
-  padding: 0px 2rem;
+  padding: 0px 1rem;
 }
 
 .field-mode-edit.fieldtype-relationlist .list-item{

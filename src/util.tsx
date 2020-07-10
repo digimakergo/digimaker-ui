@@ -1,5 +1,7 @@
+import * as React from 'react';
 import Cookies from 'universal-cookie';
 import Registry from './Registry';
+import { Modal, Button} from 'react-bootstrap';
 import { useState } from 'react';
 
 const cookies = new Cookies();
@@ -104,8 +106,8 @@ export function getCommonFieldName(identifier:string) {
   return result;
 }
 
-//util for toggle model service
-export const useModal = () => {
+//util for toggle dialog service
+export const useDialog = () => {
   const [isShowing, setIsShowing] = useState(false);
 
   function toggle() {
@@ -117,6 +119,28 @@ export const useModal = () => {
     toggle,
   }
 };
+
+
+export const Dialog = (props:{isShowing:boolean, hide:any,title:string,submit:any,body:any}) => {
+  if( props.isShowing ){
+    return (<div className='modal-overlay'>
+    <Modal.Dialog size="lg">
+       <Modal.Header closeButton>
+    <Modal.Title>{props.title}</Modal.Title>
+       </Modal.Header>
+      <Modal.Body>
+       {props.body}
+      </Modal.Body>
+       <Modal.Footer>
+         <Button variant="secondary" onClick={props.hide}>Close</Button>
+          <Button variant="primary" onClick={props.submit}>Save changes</Button>
+       </Modal.Footer>
+      </Modal.Dialog></div>);
+  }else{
+      return '';
+  }
+};
+
 
 let config:any = null;
 //util for general operations
