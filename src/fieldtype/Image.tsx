@@ -44,10 +44,12 @@ constructor(props:any) {
                 <FileUpload name={this.props.definition.identifier}
                                               service="content"
                                               format="image/*"
-                                              value={this.props.data}
+                                              value={this.state.data}
                                               onSuccess={(data)=>{this.updated(data)}} />
-                {(this.state.data==this.props.data) && this.inline()}
-                {(this.state.data!=this.props.data) && <img src={process.env.REACT_APP_ASSET_URL + "/"+this.state.data} /> }
+                {this.state.data&&<>
+                  {(this.state.data==this.props.data) && this.inline()}
+                  {(this.state.data!=this.props.data) && <img src={process.env.REACT_APP_ASSET_URL + "/"+this.state.data} /> }                
+                </>}
                 </div>
             </>
         )
