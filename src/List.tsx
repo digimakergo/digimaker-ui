@@ -5,8 +5,13 @@ import ListRowActions from './ListRowActions';
 import Actions from './Actions';
 import FieldRegister from './FieldRegister';
 import RenderProperties from './RenderProperties';
+import {Card} from './Card';
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import ReactTooltip from "react-tooltip";
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
+import update from 'immutability-helper';
+
 
 export default class List extends React.Component<{ id: number, contenttype: string, config:any, onLinkClick?:any, onRenderRow?:any }, {def:any, loading:boolean, list: any, actionNew: boolean, currentPage:number, sortby: Array<Array<string>>, selected: Array<number> }> {
 
@@ -212,20 +217,69 @@ export default class List extends React.Component<{ id: number, contenttype: str
       </table>
     }
 
+    private listBeforeMove:any
+
+    moveCard(dragIndex: number, hoverIndex: number){
+      if( !this.listBeforeMove ){
+          this.listBeforeMove = this.state.list.list;
+      }
+      let newObj = this.state.list;
+      let list = this.state.list.list;
+      let value = list[dragIndex];
+      let newList = update(list, {
+            $splice: [
+              [dragIndex, 1],
+              [hoverIndex, 0, value],
+            ],
+          })
+
+      newObj.list = newList
+      this.setState({list: newObj});
+    }
+
+    dropCard(){
+      let newList = this.state.list.list;
+      let oldList = this.listBeforeMove;
+      //compare change
+      let change = [];
+      for( let i in newList ){
+        let item = newList[i];
+        let id = item.id;
+        if( id != oldList[i].id ){
+          let newPriority = oldList[i].priority;
+          change.push(id+","+newPriority);
+        }
+      }
+
+      //send to server
+      FetchWithAuth(process.env.REACT_APP_REMOTE_URL + '/content/setpriority?params='+change.join('%3B'))
+          .then(res => res.json()).catch(()=>{
+            let list = this.state.list;
+            list.list = this.listBeforeMove;
+            this.setState({list: list});
+          })
+          .then((data) => {
+            this.listBeforeMove = null;
+            this.refresh();
+          })
+    }
+
     renderRows(list) {
         let rows: Array<any> = [];
         let fieldsDef = getFields(this.state.def);
         for (let i = 0; i < list.length; i++) {
             let content = list[i];
             let rowClasses = this.props.onRenderRow?this.props.onRenderRow(content):'';
-            rows.push(<tr key={content.id} className={rowClasses} onClick={(e)=>this.linkClick(e, content)}>
+            rows.push(
+              <Card id={content.id} canDrag={content.priority!=0} index={i} moveCard={(dragIndex, hoverIndex)=>{this.moveCard(dragIndex, hoverIndex)}} dropCard={()=>this.dropCard()} key={content.id} className={rowClasses} onClick={(e)=>this.linkClick(e, content)}>
               {this.config.can_select&&<td onClick={()=>this.select(content.id)} className="td-check center"><input type="checkbox" checked={this.state.selected[content.id]?true:false} value="1" /></td>}
               <td onClick={()=>this.select(content.id)} className="td-id">{content.id}</td>
               <RenderProperties content={content} contenttype={this.props.contenttype} fields={this.config.columns} mode="inline" as="td" />
                 {this.config['row_actions'].length>0&&<td className="list-row-tool">
                       <ListRowActions content={content} config={this.config['row_actions']} />
                   </td>}
-              </tr>)
+              </Card>
+              )
         }
         return rows;
     }
@@ -254,6 +308,7 @@ export default class List extends React.Component<{ id: number, contenttype: str
     renderList(data) {
         let totalPage = Math.ceil( this.state.list.count/this.config.pagination);
         return (<div>
+          <DndProvider backend={HTML5Backend}>
             {this.config.show_header&&<h3>{this.state.def.name}({this.state.list.count})</h3>}
             {(()=>{
               switch(this.config.viewmode){
@@ -277,6 +332,7 @@ export default class List extends React.Component<{ id: number, contenttype: str
               <span className="pagination-info">Page {this.state.currentPage+1} of {totalPage} from total {this.state.list.count}</span>
               </span>}
             </div>
+            </DndProvider>
         </div>
         )
     }
