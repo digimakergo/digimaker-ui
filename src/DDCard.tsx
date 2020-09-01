@@ -10,18 +10,12 @@ const style = {
   cursor: 'move',
 }
 
-export interface CardProps {
-  id: any
-  index: number
-  moveCard: (dragIndex: number, hoverIndex: number) => void
-}
-
 interface DragItem {
   index: number
   id: string
   type: string
 }
-export const Card: React.FC<any> = ({ id, canDrag, index, moveCard, dropCard, children, ...props }) => {
+export const DDCard: React.FC<any> = ({ id, as, canDrag, index, moveCard, dropCard, children, ...props }) => {
   const ref = useRef<HTMLTableRowElement>(null)
   const [, drop] = useDrop({
     accept: 'card',
@@ -32,7 +26,6 @@ export const Card: React.FC<any> = ({ id, canDrag, index, moveCard, dropCard, ch
 
       const dragIndex = item.index
       const hoverIndex = index
-
 
       // // Don't replace items with themselves
       if (dragIndex === hoverIndex) {
@@ -52,10 +45,6 @@ export const Card: React.FC<any> = ({ id, canDrag, index, moveCard, dropCard, ch
       // Get pixels to the top
       const hoverClientY = (clientOffset as XYCoord).y - hoverBoundingRect.top
 
-      // // Only perform the move when the mouse has crossed half of the items height
-      // // When dragging downwards, only move when the cursor is below 50%
-      // // When dragging upwards, only move when the cursor is above 50%
-      //
       // // Dragging downwards
       if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
         return
@@ -65,14 +54,14 @@ export const Card: React.FC<any> = ({ id, canDrag, index, moveCard, dropCard, ch
       if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
         return
       }
-      //
-      // Time to actually perform the action
+
+      //perform the action
       moveCard(dragIndex, hoverIndex)
 
       item.index = hoverIndex
     },
     drop(item: DragItem, monitor: DropTargetMonitor){
-      dropCard();
+      dropCard(index);
     }
   })
 
@@ -88,9 +77,16 @@ export const Card: React.FC<any> = ({ id, canDrag, index, moveCard, dropCard, ch
 
   const opacity = isDragging ? 0 : 1
   drag(drop(ref))
-  return (
-    <tr ref={ref} style={{ ...style, opacity }} {...props}>
-      {children}
-    </tr>
-  )
+  if( as == 'tr' ){
+    return (
+      <tr ref={ref} style={{ ...style, opacity }} {...props}>
+        {children}
+      </tr>
+    )
+  }else{
+    return (
+      <div ref={ref} style={{ ...style, opacity }} {...props}>
+        {children}
+      </div>)
+  }
 }

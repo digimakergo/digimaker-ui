@@ -5,7 +5,7 @@ import ListRowActions from './ListRowActions';
 import Actions from './Actions';
 import FieldRegister from './FieldRegister';
 import RenderProperties from './RenderProperties';
-import {Card} from './Card';
+import {DDCard} from './DDCard';
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import ReactTooltip from "react-tooltip";
 import { DndProvider } from 'react-dnd';
@@ -237,10 +237,15 @@ export default class List extends React.Component<{ id: number, contenttype: str
       this.setState({list: newObj});
     }
 
-    dropCard(){
+    dropCard(targetIndex:number){
+      console.log( 'index...' );
+      console.log( targetIndex );
       let newList = this.state.list.list;
       let oldList = this.listBeforeMove;
       //compare change
+      if( !oldList ){
+          return;
+      }
       let change = [];
       for( let i in newList ){
         let item = newList[i];
@@ -251,6 +256,9 @@ export default class List extends React.Component<{ id: number, contenttype: str
         }
       }
 
+      if( change.length == 0 ){
+        return;
+      }
       //send to server
       FetchWithAuth(process.env.REACT_APP_REMOTE_URL + '/content/setpriority?params='+change.join('%3B'))
           .then(res => res.json()).catch(()=>{
@@ -270,15 +278,16 @@ export default class List extends React.Component<{ id: number, contenttype: str
         for (let i = 0; i < list.length; i++) {
             let content = list[i];
             let rowClasses = this.props.onRenderRow?this.props.onRenderRow(content):'';
+            let canDrag = content.priority!=0 && this.state.sortby[0][0]=='priority';
             rows.push(
-              <Card id={content.id} canDrag={content.priority!=0} index={i} moveCard={(dragIndex, hoverIndex)=>{this.moveCard(dragIndex, hoverIndex)}} dropCard={()=>this.dropCard()} key={content.id} className={rowClasses} onClick={(e)=>this.linkClick(e, content)}>
+              <DDCard id={content.id} as='tr' canDrag={canDrag} index={i} moveCard={(dragIndex, hoverIndex)=>{this.moveCard(dragIndex, hoverIndex)}} dropCard={(targetIndex:number)=>this.dropCard(targetIndex)} key={content.id} className={rowClasses} onClick={(e)=>this.linkClick(e, content)}>
               {this.config.can_select&&<td onClick={()=>this.select(content.id)} className="td-check center"><input type="checkbox" checked={this.state.selected[content.id]?true:false} value="1" /></td>}
               <td onClick={()=>this.select(content.id)} className="td-id">{content.id}</td>
               <RenderProperties content={content} contenttype={this.props.contenttype} fields={this.config.columns} mode="inline" as="td" />
                 {this.config['row_actions'].length>0&&<td className="list-row-tool">
                       <ListRowActions content={content} config={this.config['row_actions']} />
                   </td>}
-              </Card>
+              </DDCard>
               )
         }
         return rows;

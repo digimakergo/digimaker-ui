@@ -100,3 +100,11 @@
 .fieldtype-relation-select{
   width: 200px;
 }
+
+.dragging{
+  opacity: 0.2;
+}
+
+tr.dragging td{
+  cursor: move;
+}
