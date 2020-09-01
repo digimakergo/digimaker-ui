@@ -8,6 +8,8 @@ interface DragItem {
   id: string
   type: string
 }
+
+//todo: only allow vertical move when it's in tr mode, no left-right move.
 export const DDCard: React.FC<any> = ({ id, as, canDrag, index, moveCard, dropCard, children, ...props }) => {
   const ref = useRef<HTMLTableRowElement>(null)
   const [, drop] = useDrop({

@@ -113,3 +113,8 @@ tr.draggable td{
   font-size: 0.85em;
   cursor: pointer;
 }
+
+.content-baseattr-priority i{
+  color: green;
+  font-size: 0.8rem;
+}

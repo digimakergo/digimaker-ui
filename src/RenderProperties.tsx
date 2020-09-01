@@ -41,7 +41,7 @@ const RenderProperties = (props:{content:any, contenttype:string, mode:string, f
      case 'modified':
        return <Moment unix format="DD.MM.YYYY HH:mm">{content.modified}</Moment>;
      case 'priority':
-       return content[field]?content[field]:'';
+       return content[field]?<span title={content[field]}><i className="fas fa-check"></i></span>:'';
      case 'status':
          return <span className={"status-"+content.status}></span>;
      default:

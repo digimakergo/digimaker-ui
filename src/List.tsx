@@ -241,8 +241,6 @@ export default class List extends React.Component<{ id: number, contenttype: str
     }
 
     dropCard(targetIndex:number){
-      console.log( 'index...' );
-      console.log( targetIndex );
       let newList = this.state.list.list;
       let oldList = this.listBeforeMove;
       //compare change
