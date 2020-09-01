@@ -288,7 +288,7 @@ export default class List extends React.Component<{ id: number, contenttype: str
               <td onClick={()=>this.select(content.id)} className="td-id">{content.id}</td>
               <RenderProperties content={content} contenttype={this.props.contenttype} fields={this.config.columns} mode="inline" as="td" />
                 {this.config['row_actions'].length>0&&<td className="list-row-tool">
-                      <ListRowActions content={content} config={this.config['row_actions']} />
+                      <ListRowActions afterAction={()=>this.refresh()} content={content} config={this.config['row_actions']} />
                   </td>}
               </DDCard>
               )

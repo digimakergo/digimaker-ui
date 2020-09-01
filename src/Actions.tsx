@@ -49,6 +49,10 @@ export default class Actions extends React.Component<{ actionsConfig: any, from?
           </div>);
   }
 
+  afterAction(){
+
+  }
+
   render() {
     let content = this.props.from;
     let actions = this.props.actionsConfig;
@@ -66,7 +70,7 @@ export default class Actions extends React.Component<{ actionsConfig: any, from?
          })
         }
         <React.Suspense fallback="...">
-          <div className="row">{this.state.actions && <div>
+          <div className="action">{this.state.actions && <div>
               {Object.values(this.state.actions).map((Action:React.ReactType)=>
                 <Action selected={this.props.selected} afterAction={this.props.afterAction} from={this.props.from} />) }
             </div> }
