@@ -2,13 +2,6 @@ import React, { useRef } from 'react'
 import { useDrag, useDrop, DropTargetMonitor } from 'react-dnd'
 import { XYCoord } from 'dnd-core'
 import './digimaker-ui.css';
-const style = {
-  //border: '1px dashed gray',
-  //padding: '0.5rem 1rem',
-  //marginBottom: '.5rem',
-  // backgroundColor: '#ffe9e9',
-  cursor: 'move',
-}
 
 interface DragItem {
   index: number
@@ -76,16 +69,22 @@ export const DDCard: React.FC<any> = ({ id, as, canDrag, index, moveCard, dropCa
   })
 
   const opacity = isDragging ? 0 : 1
+  const draggableClass = canDrag?' draggable':'';
+  if( props.className ){
+    props.className += draggableClass;
+  }else{
+    props.className = draggableClass;
+  }
   drag(drop(ref))
   if( as == 'tr' ){
     return (
-      <tr ref={ref} style={{ ...style, opacity }} {...props}>
+      <tr ref={ref} style={{opacity }} {...props}>
         {children}
       </tr>
     )
   }else{
     return (
-      <div ref={ref} style={{ ...style, opacity }} {...props}>
+      <div ref={ref} style={{opacity }} {...props}>
         {children}
       </div>)
   }

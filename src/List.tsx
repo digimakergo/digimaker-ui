@@ -56,6 +56,9 @@ export default class List extends React.Component<{ id: number, contenttype: str
       if( this.config['level'] == undefined ){
         this.config['level'] = 1;
       }
+      if( this.config['can_dd'] == undefined ){
+        this.config['can_dd'] = true;
+      }
     }
 
 
@@ -278,9 +281,9 @@ export default class List extends React.Component<{ id: number, contenttype: str
         for (let i = 0; i < list.length; i++) {
             let content = list[i];
             let rowClasses = this.props.onRenderRow?this.props.onRenderRow(content):'';
-            let canDrag = content.priority!=0 && this.state.sortby[0][0]=='priority';
+            let canDD = this.config['can_dd'] && content.priority!=0 && this.state.sortby[0][0]=='priority'&&this.state.sortby[0][1]=='desc';
             rows.push(
-              <DDCard id={content.id} as='tr' canDrag={canDrag} index={i} moveCard={(dragIndex, hoverIndex)=>{this.moveCard(dragIndex, hoverIndex)}} dropCard={(targetIndex:number)=>this.dropCard(targetIndex)} key={content.id} className={rowClasses} onClick={(e)=>this.linkClick(e, content)}>
+              <DDCard id={content.id} as='tr' canDrag={canDD} index={i} moveCard={(dragIndex, hoverIndex)=>{if(canDD){this.moveCard(dragIndex, hoverIndex)}}} dropCard={(targetIndex:number)=>this.dropCard(targetIndex)} key={content.id} className={rowClasses} onClick={(e)=>this.linkClick(e, content)}>
               {this.config.can_select&&<td onClick={()=>this.select(content.id)} className="td-check center"><input type="checkbox" checked={this.state.selected[content.id]?true:false} value="1" /></td>}
               <td onClick={()=>this.select(content.id)} className="td-id">{content.id}</td>
               <RenderProperties content={content} contenttype={this.props.contenttype} fields={this.config.columns} mode="inline" as="td" />

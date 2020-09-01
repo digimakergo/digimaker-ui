@@ -101,10 +101,10 @@
   width: 200px;
 }
 
-.dragging{
-  opacity: 0.2;
+.draggable {
+  background-color: #fffaed !important
 }
 
-tr.dragging td{
-  cursor: move;
+tr.draggable td{
+  border-bottom-color: #f7e8b8;
 }
