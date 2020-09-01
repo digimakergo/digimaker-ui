@@ -17,9 +17,7 @@ export default class ListRowActions extends React.Component<{content:any,config:
 
   afterAction(){
     this.setState({menuShown: false});
-    if( this.props.afterAction ){
-      this.props.afterAction();
-    }
+    this.props.afterAction(true);
   }
 
   render(){
@@ -29,8 +27,8 @@ export default class ListRowActions extends React.Component<{content:any,config:
       return '';
     }
 
-    return <div>
-    <a href="#" className="action" title="Actions" onClick={(e)=>this.click(e)}><i className="fas fa-ellipsis-h"></i></a>
+    return <div className="row-action" >
+    <a href="#" title="Actions" onClick={(e)=>this.click(e)}><i className="fas fa-ellipsis-h"></i></a>
     <div className={'action-menu '+(this.state.menuShown?'':'hide')}>
       <Actions from={this.props.content} afterAction={()=>this.afterAction()} actionsConfig={config} />
     </div>

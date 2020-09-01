@@ -288,7 +288,7 @@ export default class List extends React.Component<{ id: number, contenttype: str
               <td onClick={()=>this.select(content.id)} className="td-id">{content.id}</td>
               <RenderProperties content={content} contenttype={this.props.contenttype} fields={this.config.columns} mode="inline" as="td" />
                 {this.config['row_actions'].length>0&&<td className="list-row-tool">
-                      <ListRowActions afterAction={()=>this.refresh()} content={content} config={this.config['row_actions']} />
+                      <ListRowActions afterAction={(refresh:boolean)=>this.afterAction(refresh)} content={content} config={this.config['row_actions']} />
                   </td>}
               </DDCard>
               )
@@ -308,7 +308,7 @@ export default class List extends React.Component<{ id: number, contenttype: str
             cells.push(<div className={"blockview-cell "+rowClasses} onClick={(e)=>this.linkClick(e, item)}>
                 <RenderProperties content={item} contenttype={this.props.contenttype} mode="block" fields={fields} />
                 {this.config['row_actions'].length>0&&<span className="list-row-tool">
-                      <ListRowActions content={item} config={this.config['row_actions']} />
+                      <ListRowActions afterAction={(refresh:boolean)=>this.afterAction(refresh)} content={item} config={this.config['row_actions']} />
                   </span>}
             </div>);
         }

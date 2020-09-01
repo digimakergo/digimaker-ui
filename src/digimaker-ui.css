@@ -108,3 +108,8 @@
 tr.draggable td{
   border-bottom-color: #f7e8b8;
 }
+
+.action-menu {
+  font-size: 0.85em;
+  cursor: pointer;
+}
