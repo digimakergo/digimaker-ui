@@ -233,6 +233,21 @@ const util = {
 
      //when setting value is array
      if( Array.isArray(value) && commonValue !==undefined ){
+          //do not merge
+          let removed = 0;
+          for( let i=0; i<value.length; i++ ){
+            if( value[i] == "-" ){
+              removed = i;
+              break;
+            }
+          }
+          if( removed > 0 ){
+              value.splice( removed );
+              result[setting] = value;
+              continue;
+          }
+
+          //merge
           let newItems = [];
           for( let item of commonValue ){
             let existing = value.find((ele)=>{
