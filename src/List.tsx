@@ -193,7 +193,6 @@ export default class List extends React.Component<{ id: number, contenttype: str
           {this.config.can_select&&<th className="center" onClick={()=>this.selectAll()}>
             <a href="#"><i className="far fa-check-square"></i></a>
           </th>}
-          <th><a href="#" onClick={(e)=>{this.sort(e, 'id');}} className={'column-sortable '+(this.state.sortby[0][0] == 'id'? this.state.sortby[0][1]:'')}>ID</a></th>
           {this.config.columns.map( (column)=>{
             let sortable = this.config.sort[column]?true:false;
             let sortby = this.state.sortby;
@@ -283,7 +282,6 @@ export default class List extends React.Component<{ id: number, contenttype: str
             rows.push(
               <DDCard id={content.id} as='tr' canDrag={canDD} index={i} moveCard={(dragIndex, hoverIndex)=>{if(canDD){this.moveCard(dragIndex, hoverIndex)}}} dropCard={(targetIndex:number)=>this.dropCard(targetIndex)} key={content.id} className={rowClasses} onClick={(e)=>this.linkClick(e, content)}>
               {this.config.can_select&&<td onClick={()=>this.select(content.id)} className="td-check center"><input type="checkbox" checked={this.state.selected[content.id]?true:false} value="1" /></td>}
-              <td onClick={()=>this.select(content.id)} className="td-id">{content.id}</td>
               <RenderProperties content={content} contenttype={this.props.contenttype} fields={this.config.columns} mode="inline" as="td" />
                 {this.config['row_actions'].length>0&&<td className="list-row-tool">
                       <ListRowActions afterAction={(refresh:boolean)=>this.afterAction(refresh)} content={content} config={this.config['row_actions']} />

@@ -66,6 +66,7 @@ export function SetAccessToken(token: string) {
 
 let definitionList:any = {}
 
+//todo: use sync way?
 export function getDefinition(contenttype: string){
   if( !definitionList[contenttype] ){
     definitionList[contenttype] = FetchWithAuth(process.env.REACT_APP_REMOTE_URL+'/contenttype/get/'+contenttype).then(res=>res.json())
@@ -96,6 +97,9 @@ export function getCommonFieldName(identifier:string) {
       break;
     case 'published':
       result = 'Published';
+      break;
+    case 'id':
+      result = 'ID';
       break;
     case 'priority':
       result = 'P';
@@ -191,7 +195,69 @@ const util = {
       }
     }
     return false;
+ },
+
+
+ //For array it will replace
+ getSettings:(settings:any, key:string)=>{
+   let common = settings["*"];
+   let result = {};
+   let map = settings[key];
+   if(!map){
+      return common;
+   }
+
+   //todo: replace this with getDefinition(key).has_location after getDefinition is async
+   if( map["no_override"] ){
+     return map;
+   }
+
+   //get all setting keys
+   let settingKeys = Object.keys( map );
+   for( let setting of Object.keys( common ) ){
+     if( !settingKeys.includes( setting ) ){
+       settingKeys.push( setting );
+     }
+   }
+
+
+   for( let setting of settingKeys ){
+     let value = map[setting];
+     let commonValue = common[setting];
+     if( value===undefined ){
+       if( commonValue !==undefined ){
+          result[setting] = commonValue;
+       }
+       continue;
+     }
+
+     //when setting value is array
+     if( Array.isArray(value) && commonValue !==undefined ){
+          let newItems = [];
+          for( let item of commonValue ){
+            let existing = value.find((ele)=>{
+                          return JSON.stringify(item) == JSON.stringify(ele)
+                        });
+            if( existing === undefined ){
+              newItems.push( item );
+            }
+          }
+          result[setting] = [...newItems, ...value]
+          continue;
+      }
+
+      //when setting value is object
+      if( typeof value === 'object' && commonValue !==undefined ){
+         result[setting] = {...commonValue, ...value};
+         continue;
+      }
+
+     //override in other cases
+     result[setting] = value;
+   }
+   return result;
  }
+
 }
 
 export default util;
