@@ -41,11 +41,11 @@ class Dialog extends React.Component<{config:any, contenttype:string, trigger:bo
   }
 
   setConfig( config, contenttype ){
-    let config = {};
-    for( let item in props.config ){
-      config[item] = util.getSettings( props.config[item], contenttype );
+    let result = {};
+    for( let item in config ){
+      result[item] = util.getSettings( config[item], contenttype );
     }
-    this.config = config;
+    this.config = result;
   }
 
   componentDidUpdate(prevProps){
