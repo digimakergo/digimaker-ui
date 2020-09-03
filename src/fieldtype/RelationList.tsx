@@ -69,7 +69,7 @@ export default class RelationList extends React.Component<{definition:any, valid
     }
     let relatedType = def.parameters.type;
 
-    let browseConfig = util.getSettings( util.getConfig().browse, relatedType );
+    let browseConfig = util.getConfig().browse;    
 
     let ids = [];
     let types = [];

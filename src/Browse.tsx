@@ -5,6 +5,7 @@ import Button from 'react-bootstrap/Button';
 import TreeNode from './TreeNode';
 import RenderProperties from './RenderProperties';
 import { FetchWithAuth } from './util';
+import util from './util';
 import List from './List';
 
 //todo: make id based on context(site?)
@@ -31,12 +32,26 @@ export default Browse;
 //Dialog of the browse
 class Dialog extends React.Component<{config:any, contenttype:string, trigger:boolean, onConfirm: any, selected: Array<any> }, { shown: boolean, showTree:boolean, data: any, list: any, id: number, selected: Array<any> }> {
 
+  private config:any;
+
   constructor(props: any) {
     super(props);
+    this.setConfig( props.config, props.contenttype );
     this.state = { shown: false, showTree:false, data: '', list: '', id: 1, selected: props.selected };
   }
 
+  setConfig( config, contenttype ){
+    let config = {};
+    for( let item in props.config ){
+      config[item] = util.getSettings( props.config[item], contenttype );
+    }
+    this.config = config;
+  }
+
   componentDidUpdate(prevProps){
+    if( prevProps.contenttype != this.props.contenttype ){
+      this.setConfig( this.props.config, this.props.contenttype );
+    }
     if(this.props.trigger != prevProps.trigger){
       this.setState({shown: true, selected:this.props.selected});
     }
@@ -47,7 +62,7 @@ class Dialog extends React.Component<{config:any, contenttype:string, trigger:bo
   }
 
   fetchData() {
-    FetchWithAuth(process.env.REACT_APP_REMOTE_URL + '/content/treemenu/1?type='+this.props.config.treetype.join(','))
+    FetchWithAuth(process.env.REACT_APP_REMOTE_URL + '/content/treemenu/1?type='+this.config.treetype.join(','))
       .then(res => res.json())
       .then((data) => {
         this.setState({ data: data });
@@ -131,7 +146,7 @@ class Dialog extends React.Component<{config:any, contenttype:string, trigger:bo
               <a href="#" onClick={(e:any)=>{e.preventDefault();this.setState({showTree:!this.state.showTree});}}>
                 <i className={this.state.showTree?"fas fa-chevron-left":"fas fa-chevron-right"}></i>
               </a>
-              <List id={this.state.id} onRenderRow={(content:any)=>this.selectedRow(content)} contenttype={this.props.contenttype} config={this.props.config.list} onLinkClick={(content) => this.select(content)} />
+              <List id={this.state.id} onRenderRow={(content:any)=>this.selectedRow(content)} contenttype={this.props.contenttype} config={this.config.list} onLinkClick={(content) => this.select(content)} />
             </div>
           </div>
         </div>
