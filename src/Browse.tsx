@@ -8,21 +8,18 @@ import { FetchWithAuth } from './util';
 import util from './util';
 import List from './List';
 
-//todo: make id based on context(site?)
-//todo: remove id in the list
 //todo: support * in contenttype(depending on implementation of list on *)
-//todo: make treemenu based on context(eg. site/configuration)
 //todo: make button as prop(eg. <Browse button={<button>Add</button>} ... />)
 
 //config:
 // treetype: ["folder"]
 
 const Browse = (props:any)=>{
-  const [trigger, setTrigger] = useState(false);
+  const [trigger, setTrigger] = useState(props.trigger?true:false);
 
-  return (<><button className="btn btn-link btn-sm" onClick={(e) => {e.preventDefault();setTrigger(!trigger);}}>
+  return (<>{!props.trigger&&<button className="btn btn-link btn-sm" onClick={(e) => {e.preventDefault();setTrigger(!trigger);}}>
             <i className="fas fa-search"></i>&nbsp;Browse
-          </button>
+          </button>}
           <Dialog {...props} trigger={trigger} />
           </>);
 }
@@ -30,14 +27,14 @@ export default Browse;
 
 //todo: add filter
 //Dialog of the browse
-class Dialog extends React.Component<{config:any, contenttype:string, trigger:boolean, onConfirm: any, selected: Array<any> }, { shown: boolean, showTree:boolean, data: any, list: any, id: number, selected: Array<any> }> {
+class Dialog extends React.Component<{config:any, contenttype:string, trigger:boolean, onConfirm: any, multi:boolean, selected: any }, { shown: boolean, showTree:boolean, data: any, list: any, id: number, selected: any }> {
 
   private config:any;
 
   constructor(props: any) {
     super(props);
     this.setConfig( props.config, props.contenttype );
-    this.state = { shown: false, showTree:false, data: '', list: '', id: 1, selected: props.selected };
+    this.state = { shown: props.trigger?true:false, showTree:false, data: '', list: '', id: 1, selected: props.selected };
   }
 
   setConfig( config, contenttype ){
@@ -88,12 +85,20 @@ class Dialog extends React.Component<{config:any, contenttype:string, trigger:bo
     this.setState({ id: content.id });
   }
 
-  selectedRow(content:any){
-    let existing = this.state.selected.find((item:any)=>{
-      return item.id == content.id
-    });
+  selectedRowClass(content:any){
+    if( !this.state.selected ){
+      return "";
+    }
 
-    if( existing ){
+    let selected = this.state.selected;
+    if( !this.props.multi ){
+      selected = [selected];
+    }
+
+    if( selected.find((item:any)=>{
+            return item.id == content.id
+            })
+      ){
       return "browse-selected";
     }else{
       return "";
@@ -106,6 +111,11 @@ class Dialog extends React.Component<{config:any, contenttype:string, trigger:bo
   }
 
   select(content: any) {
+    if( !this.props.multi ){
+      this.setState({ selected: content });
+      return;
+    }
+
     let list = this.state.selected;
     let newList = [];
     let existing = false;
@@ -122,6 +132,8 @@ class Dialog extends React.Component<{config:any, contenttype:string, trigger:bo
   }
 
   render() {
+    let selected = this.props.multi?this.state.selected:(this.state.selected?[this.state.selected]:null);
+
     return (<div><Modal
       show={this.state.shown}
       onHide={() => this.close()}
@@ -134,7 +146,7 @@ class Dialog extends React.Component<{config:any, contenttype:string, trigger:bo
         </Modal.Title>
       </Modal.Header>
       <Modal.Body className="browse">
-        <div className="selected">{this.state.selected.map((content: any) => {
+        <div className="selected">{selected&&selected.map((content: any) => {
           return <><RenderProperties content={content} contenttype={this.props.contenttype} mode="inline" /></>
         })}</div>
         <div className="container browse-list">
@@ -146,7 +158,7 @@ class Dialog extends React.Component<{config:any, contenttype:string, trigger:bo
               <a href="#" onClick={(e:any)=>{e.preventDefault();this.setState({showTree:!this.state.showTree});}}>
                 <i className={this.state.showTree?"fas fa-chevron-left":"fas fa-chevron-right"}></i>
               </a>
-              <List id={this.state.id} onRenderRow={(content:any)=>this.selectedRow(content)} contenttype={this.props.contenttype} config={this.config.list} onLinkClick={(content) => this.select(content)} />
+              <List id={this.state.id} onRenderRow={(content:any)=>this.selectedRowClass(content)} contenttype={this.props.contenttype} config={this.config.list} onLinkClick={(content) => this.select(content)} />
             </div>
           </div>
         </div>
