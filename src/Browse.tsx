@@ -8,7 +8,6 @@ import { FetchWithAuth } from './util';
 import util from './util';
 import List from './List';
 
-//todo: support * in contenttype(depending on implementation of list on *)
 //todo: make button as prop(eg. <Browse button={<button>Add</button>} ... />)
 
 //config:
@@ -27,14 +26,14 @@ export default Browse;
 
 //todo: add filter
 //Dialog of the browse
-class Dialog extends React.Component<{config:any, contenttype:string, trigger:boolean, onConfirm: any, multi:boolean, selected: any }, { shown: boolean, showTree:boolean, data: any, list: any, id: number, selected: any }> {
+class Dialog extends React.Component<{config:any, contenttype:Array<string>, trigger:boolean, onConfirm: any, multi:boolean, selected: any }, { contenttype:string, shown: boolean, showTree:boolean, data: any, list: any, id: number, selected: any }> {
 
   private config:any;
 
   constructor(props: any) {
     super(props);
-    this.setConfig( props.config, props.contenttype );
-    this.state = { shown: props.trigger?true:false, showTree:false, data: '', list: '', id: 1, selected: props.selected };
+    this.setConfig( props.config, props.contenttype[0] );
+    this.state = { shown: props.trigger?true:false, contenttype:props.contenttype[0], showTree:false, data: '', list: '', id: 1, selected: props.selected };
   }
 
   setConfig( config, contenttype ){
@@ -46,8 +45,8 @@ class Dialog extends React.Component<{config:any, contenttype:string, trigger:bo
   }
 
   componentDidUpdate(prevProps){
-    if( prevProps.contenttype != this.props.contenttype ){
-      this.setConfig( this.props.config, this.props.contenttype );
+    if( prevProps.contenttype.join('') != this.props.contenttype.join('') ){
+      this.setConfig( this.props.config, this.props.contenttype[0] );
     }
     if(this.props.trigger != prevProps.trigger){
       this.setState({shown: true, selected:this.props.selected});
@@ -131,6 +130,10 @@ class Dialog extends React.Component<{config:any, contenttype:string, trigger:bo
     }
   }
 
+  changeContentype(contenttype:string){
+    this.setState({contenttype:contenttype});
+  }
+
   render() {
     let selected = this.props.multi?this.state.selected:(this.state.selected?[this.state.selected]:null);
 
@@ -147,8 +150,15 @@ class Dialog extends React.Component<{config:any, contenttype:string, trigger:bo
       </Modal.Header>
       <Modal.Body className="browse">
         <div className="selected">{selected&&selected.map((content: any) => {
-          return <><RenderProperties content={content} contenttype={this.props.contenttype} mode="inline" /></>
+          return <><RenderProperties content={content} contenttype={this.state.contenttype} mode="inline" /></>
         })}</div>
+        {this.props.contenttype.length>1&&<div>
+          <select onChange={(e:any)=>this.changeContentype(e.target.value)}>
+          {this.props.contenttype.map((item:any)=>{
+            return <option value={item}>{item}</option>
+          })}
+          </select>
+         </div>}
         <div className="container browse-list">
           <div className="row">
             {this.state.showTree&&<div className="col-4">
@@ -158,7 +168,7 @@ class Dialog extends React.Component<{config:any, contenttype:string, trigger:bo
               <a href="#" onClick={(e:any)=>{e.preventDefault();this.setState({showTree:!this.state.showTree});}}>
                 <i className={this.state.showTree?"fas fa-chevron-left":"fas fa-chevron-right"}></i>
               </a>
-              <List id={this.state.id} onRenderRow={(content:any)=>this.selectedRowClass(content)} contenttype={this.props.contenttype} config={this.config.list} onLinkClick={(content) => this.select(content)} />
+              <List id={this.state.id} onRenderRow={(content:any)=>this.selectedRowClass(content)} contenttype={this.state.contenttype} config={this.config.list} onLinkClick={(content) => this.select(content)} />
             </div>
           </div>
         </div>

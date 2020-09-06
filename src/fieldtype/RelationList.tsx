@@ -82,7 +82,7 @@ export default class RelationList extends React.Component<{definition:any, valid
     return  <>
             <label className="field-label">{this.props.definition.name}:</label>
             <div className="field-value">
-            <Browse config={browseConfig} multi={true} contenttype={relatedType} onConfirm={(selected:Array<any>)=>this.confirmDialog(selected)} selected={this.state.list} />
+            <Browse config={browseConfig} multi={true} contenttype={[relatedType]} onConfirm={(selected:Array<any>)=>this.confirmDialog(selected)} selected={this.state.list} />
               <ReactSortable
                  className="list"
                  list={this.state.list}
