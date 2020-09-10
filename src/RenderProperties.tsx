@@ -11,18 +11,8 @@ import FieldRegister from './FieldRegister';
 //Render properties which renders field's inline mode.
 //This is same as like render-content when it's not invoked in a table list(as='td').
 const RenderProperties = (props:{content:any, contenttype:string, mode:string, fields?:Array<string>, as?:string}) => {
-  const [def, setDef] = useState('');
+  let def = getDefinition(props.contenttype);
 
-  const loadDef = ()=>{
-    getDefinition(props.contenttype).then((data:any)=>{
-      setDef( data );
-    })
-  };
-
-  if( !def ){
-      loadDef();
-      return <div />;
-  }
   let config = util.getConfig();
   let content = props.content;
   let fields = [];

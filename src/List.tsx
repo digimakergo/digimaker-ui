@@ -136,10 +136,8 @@ export default class List extends React.Component<{ id: number, contenttype: str
     componentDidMount() {
         this.fetchData();
 
-        getDefinition(this.props.contenttype)
-        .then((data)=>{
-            this.setState({def:data});
-        });
+        let data = getDefinition(this.props.contenttype)
+        this.setState({def:data});
     }
 
     //when state changed

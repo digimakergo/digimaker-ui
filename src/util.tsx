@@ -68,9 +68,6 @@ let definitionList:any = {}
 
 //todo: use sync way?
 export function getDefinition(contenttype: string){
-  if( !definitionList[contenttype] ){
-    definitionList[contenttype] = FetchWithAuth(process.env.REACT_APP_REMOTE_URL+'/contenttype/get/'+contenttype).then(res=>res.json())
-  }
   return definitionList[contenttype];
 }
 
@@ -197,6 +194,9 @@ const util = {
     return false;
  },
 
+ setDefinitionList:(list:any)=>{
+   definitionList = list;
+ },
 
  //For array it will replace
  getSettings:(settings:any, key:string)=>{
