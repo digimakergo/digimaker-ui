@@ -1,6 +1,7 @@
 import * as React from 'react';
 import {useState} from 'react';
 import DateTime from 'react-datetime';
+import Moment from 'react-moment';
 import 'react-datetime/css/react-datetime.css'
 import moment from 'moment';
 import { timeStamp } from 'console';
@@ -12,18 +13,22 @@ export default class Datetime extends React.Component<{definition: any, validati
 
     constructor(props:any) {
         super(props);
+
+        let datetime = null;
+        if( props.data && Number.isInteger( props.data ) ){
+            datetime = moment.unix(props.data)
+        }
         this.state = {
             date:'',
             hour:'',
             minute:'',
-            datetime:'',
+            datetime:datetime,
             disabled: false
           };
       }
 
         setdate(Date){
             let value = (moment(Date).format('L'))
-            console.log("momment",value)
             this.setState({date:value})
         };
 
@@ -47,14 +52,14 @@ export default class Datetime extends React.Component<{definition: any, validati
              hour = ('00' + this.state.hour).slice(-2);
           }
           var dateTime = moment(this.state.date + ' ' +hour+''+this.state.minute, 'DD/MM/YYYY HH:mm');
-          let final = (moment(dateTime).format('DD/MM/YYYY HH:mm'));
+          let final = moment(dateTime);
           this.setState({
             datetime:final
           });
         }
 
       inline(){
-        return this.state.datetime
+        return <Moment format="DD.MM.YYYY HH:mm">{this.state.datetime}</Moment>
       }
 
       view(){

@@ -58,7 +58,7 @@ const RenderProperties = (props:{content:any, contenttype:string, mode:string, f
                     <Fieldtype definition={fieldDef} data={props.content[field]} mode="inline" />
                   </div>;
         }else{
-          return '';
+          return <div className={"field-"+field+" field-viewmode-inline"+" fieldtype-"+fieldtypeStr}>{props.content[field]}</div>;
         }
       }else{
         //location related properties
