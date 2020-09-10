@@ -43,9 +43,15 @@ export default class Actions extends React.Component<{ actionsConfig: any, from?
       path = util.washVariables(config.link, variables); //todo: support component here also
     }
 
+    let newWindow = config.new?true:false;
+
+    let linkText = (<><i className={config.icon ? ("icon " + config.icon) : ("fas fa-tools")}></i> {config.name ? config.name : ''}</>);
+
     return (<div className="action-item">
-            <Link to={path?path:'#'} title={config.title} onClick={this.showDialog.bind(this, config)}>
-              <i className={config.icon ? ("icon " + config.icon) : ("fas fa-tools")}></i> {config.name ? config.name : ''}</Link>
+            {!newWindow&&<Link to={path?path:'#'} title={config.title} onClick={this.showDialog.bind(this, config)}>
+                {linkText}
+            </Link>}
+            {newWindow&&<a href={path} title={config.title} target="_blank">{linkText}</a>}
           </div>);
   }
 
