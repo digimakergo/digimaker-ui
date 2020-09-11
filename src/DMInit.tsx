@@ -4,6 +4,7 @@ import util from './util';
 import {FetchWithAuth} from './util';
 
 
+//Init things before loading ui
 const DMInit = (props:any)=>{
   const [inited, setInited] = useState(false);
 

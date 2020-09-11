@@ -5,7 +5,7 @@ import util from './util';
 import Registry from './Registry';
 import { Modal, Accordion, Button } from 'react-bootstrap';
 
-export default class Actions extends React.Component<{ actionsConfig: any, from?: any, selected?: any, afterAction?: any }, { actions: any }> {
+export default class Actions extends React.Component<{ actionsConfig: any, fromview:string, from?: any, selected?: any, afterAction?: any }, { actions: any }> {
   constructor(props: any) {
     super(props);
     this.state = { actions: {} };
@@ -78,7 +78,7 @@ export default class Actions extends React.Component<{ actionsConfig: any, from?
         <React.Suspense fallback="...">
           <div className="action">{this.state.actions && <div>
               {Object.values(this.state.actions).map((Action:React.ReactType)=>
-                <Action selected={this.props.selected} afterAction={this.props.afterAction} from={this.props.from} />) }
+                <Action fromview={this.props.fromview} selected={this.props.selected} afterAction={this.props.afterAction} from={this.props.from} />) }
             </div> }
           </div>
         </React.Suspense>
