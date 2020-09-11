@@ -8,58 +8,58 @@ import { timeStamp } from 'console';
 
 let defaultValue = 0;
 
-export default class Datetime extends React.Component<{definition: any, validation: any, data: any, mode: string },{date, hour, minute,datetime,disabled}> {
-
-
+export default class Datetime extends React.Component<{definition: any, validation: any, data: any, mode: string },{datetime, disabled, error:string}> {
     constructor(props:any) {
         super(props);
-
         let datetime = null;
-        if( props.data && Number.isInteger( props.data ) ){
+        if( props.data ){
+          if( Number.isInteger( props.data ) ){
             datetime = moment.unix(props.data)
+          }else{
+            datetime = moment(props.data)
+          }
         }
-        this.state = {
-            date:'',
-            hour:'',
-            minute:'',
-            datetime:datetime,
-            disabled: false
-          };
+        this.state = {datetime:datetime, disabled: false,error: ''};
       }
 
-        setdate(Date){
-            let value = (moment(Date).format('L'))
-            this.setState({date:value})
-        };
-
-        setHour(event) {
-            this.setState({
-              hour: event.target.value
-            });
-
-        };
-
-        setMinute(event) {
-            this.setState({
-              minute: event.target.value
-            });
-        };
-
-        combineValue(){
-          let hour = ''
-          if(this.state.hour <= '9')
-          {
-             hour = ('00' + this.state.hour).slice(-2);
-          }
-          var dateTime = moment(this.state.date + ' ' +hour+''+this.state.minute, 'DD/MM/YYYY HH:mm');
-          let final = moment(dateTime);
-          this.setState({
-            datetime:final
-          });
+      updateValue(inputtype:string, value:any){
+        let datetime = this.state.datetime;
+        switch( inputtype ){
+          case "date":
+            if( !value.isValid() ){
+              this.setState({error: 'invalid date'});
+              return;
+            }
+            datetime = moment(value.format('YYYY-MM-DD'))
+            break;
+          case "hour":
+            if( datetime ){
+              let i = parseInt(value)
+              if( isNaN( i ) || i<0 || i>59 ){
+                  this.setState({error: 'invalid hour'});
+                  return;
+              }
+              datetime.hour(value)
+            }
+            break;
+          case "minute":
+            if( datetime ){
+              let i = parseInt(value)
+              if( isNaN( i ) || i<0 || i>59 ){
+                 this.setState({error: 'invalid minute'});
+                 return;
+              }
+              datetime.minute(value)
+            }
+            break;
         }
+        //todo: fix when hour and minute/date are both invalid
+        //todo: do not allow submit when there is error.
+        this.setState({datetime:datetime, error:''});
+      }
 
       inline(){
-        return <Moment format="DD.MM.YYYY HH:mm">{this.state.datetime}</Moment>
+        return (this.state.datetime?<Moment format="DD.MM.YYYY HH:mm">{this.state.datetime}</Moment>:'')
       }
 
       view(){
@@ -73,23 +73,20 @@ export default class Datetime extends React.Component<{definition: any, validati
             <div>
             <label className="field-label">{this.props.definition.name}</label>
             <div className="field-value">
-                <span>Date</span>&nbsp;
-                <DateTime className='fieldtype-datetime-date' timeFormat={false} dateFormat="DD-MM-YYYY" onChange={value => this.setdate(value)}/>
-
-                {this.state.disabled == true ? (
-                  <span></span>
-                ) : (<span> &nbsp;
-                      <input className="fieldtype-datetime-time form-control" type = "text" maxLength={2} onChange={this.setHour.bind(this)}/>
-                      :<input className="fieldtype-datetime-time form-control" type="text" maxLength={2} onChange={this.setMinute.bind(this)}/>
-                  </span>
-                )}
+                <DateTime className='fieldtype-datetime-date' defaultValue={this.state.datetime?this.state.datetime:''} timeFormat={false} dateFormat="DD.MM.YYYY" onChange={value => this.updateValue('date',value)}/>
+                {!this.state.disabled&&<span> &nbsp;
+                      <input className="fieldtype-datetime-time form-control" defaultValue={this.state.datetime?this.state.datetime.format('hh'):''} type = "text" maxLength={2} onChange={e => this.updateValue('hour',e.target.value)}/>
+                      :<input className="fieldtype-datetime-time form-control" defaultValue={this.state.datetime?this.state.datetime.format('mm'):''} type="text" maxLength={2} onChange={e => this.updateValue('minute',e.target.value)}/>
+                  </span>}
+                {this.state.error&&<span className='error'>{this.state.error}</span>}
+                {!this.state.error&&<input type="hidden" name={this.props.definition.identifier} value={this.state.datetime?this.state.datetime.format('YYYY-MM-DD HH:mm'):''} />}
                 </div>
             </div>
         )
       }
-      componentWillUnmount(){
-        this.combineValue();
-      }
+      // componentWillUnmount(){
+      //   this.updateValue();
+      // }
 
       render() {
           if( this.props.mode == 'edit' ){
