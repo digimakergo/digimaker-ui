@@ -59,7 +59,7 @@ export default class Datetime extends React.Component<{definition: any, validati
       }
 
       inline(){
-        return (this.state.datetime?<Moment format="DD.MM.YYYY hh:mm">{this.state.datetime}</Moment>:'')
+        return (this.state.datetime?<Moment format="DD.MM.YYYY HH:mm">{this.state.datetime}</Moment>:'')
       }
 
       view(){
@@ -75,7 +75,7 @@ export default class Datetime extends React.Component<{definition: any, validati
             <div className="field-value">
                 <DateTime className='fieldtype-datetime-date' defaultValue={this.state.datetime?this.state.datetime:''} timeFormat={false} dateFormat="DD.MM.YYYY" onChange={value => this.updateValue('date',value)}/>
                 {!this.state.disabled&&<span> &nbsp;
-                      <input className="fieldtype-datetime-time form-control" defaultValue={this.state.datetime?this.state.datetime.format('hh'):''} type = "text" maxLength={2} onChange={e => this.updateValue('hour',e.target.value)}/>
+                      <input className="fieldtype-datetime-time form-control" defaultValue={this.state.datetime?this.state.datetime.format('HH'):''} type = "text" maxLength={2} onChange={e => this.updateValue('hour',e.target.value)}/>
                       :<input className="fieldtype-datetime-time form-control" defaultValue={this.state.datetime?this.state.datetime.format('mm'):''} type="text" maxLength={2} onChange={e => this.updateValue('minute',e.target.value)}/>
                   </span>}
                 {this.state.error&&<span className='error'>{this.state.error}</span>}
