@@ -20,12 +20,15 @@ export default class List extends React.Component<{ id: number, contenttype: str
     //todo: support * or _ as general config(so merge _ with spearate, type: array(merge), value(override), object(merge) ), so id can be in *
     constructor(props: any) {
         super(props);
-        this.setConfig();
+        this.setConfig(props);
         this.state = { def:'',list: '', loading: true, actionNew: false, currentPage: 0, sortby:this.config['sort_default'], selected:[]};
     }
 
-    setConfig(){
+    setConfig(props:any){
       this.config = this.props.config?this.props.config:{};
+      if( this.config['request_url'] == undefined ){
+        this.config['request_url'] = 'content/list/'+props.contenttype;
+      }
       if( !this.config['sort_default'] ){
         this.config['sort_default'] = [['id', 'desc']];
       }
@@ -86,7 +89,7 @@ export default class List extends React.Component<{ id: number, contenttype: str
             limit = "&limit="+pagination+"&offset="+pagination*this.state.currentPage
         }
         this.setState({loading: true});
-        FetchWithAuth(process.env.REACT_APP_REMOTE_URL + '/content/list/'+this.props.contenttype+'?parent='+id+"&level="+this.config.level+"&"+sortby+limit)
+        FetchWithAuth(process.env.REACT_APP_REMOTE_URL + '/'+this.config.request_url+'?parent='+id+"&level="+this.config.level+"&"+sortby+limit)
             .then(res => res.json())
             .then((data) => {
                 this.resetActionState();
@@ -148,7 +151,7 @@ export default class List extends React.Component<{ id: number, contenttype: str
         || prevProps.id != this.props.id
         || prevProps.contenttype != this.props.contenttype)
       {
-        this.setConfig();
+        this.setConfig(this.props);
         this.fetchData();
       }
     }
