@@ -33,7 +33,7 @@ constructor(props:any) {
                 <FileUpload name={this.props.definition.identifier}
                                               service="content"
                                               format="*"
-                                              value="" />
+                                              value={this.props.data} />
                 </div>
             </>
         )
