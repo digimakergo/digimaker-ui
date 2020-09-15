@@ -15,17 +15,18 @@ import update from 'immutability-helper';
 
 export default class List extends React.Component<{ id: number, contenttype: string, config:any, onLinkClick?:any, onRenderRow?:any }, {def:any, loading:boolean, list: any, actionNew: boolean, currentPage:number, sortby: Array<Array<string>>, selected: Array<number> }> {
 
-   private config: any
+   private config: any = {};
 
     //todo: support * or _ as general config(so merge _ with spearate, type: array(merge), value(override), object(merge) ), so id can be in *
     constructor(props: any) {
         super(props);
-        this.setConfig(props);
+        this.setConfig( props );
         this.state = { def:'',list: '', loading: true, actionNew: false, currentPage: 0, sortby:this.config['sort_default'], selected:[]};
     }
 
     setConfig(props:any){
-      this.config = this.props.config?this.props.config:{};
+      this.config = props.config?{...props.config}:{};
+
       if( this.config['request_url'] == undefined ){
         this.config['request_url'] = 'content/list/'+props.contenttype;
       }
@@ -62,6 +63,7 @@ export default class List extends React.Component<{ id: number, contenttype: str
       if( this.config['can_dd'] == undefined ){
         this.config['can_dd'] = true;
       }
+
     }
 
 
