@@ -234,16 +234,17 @@ const util = {
      //when setting value is array
      if( Array.isArray(value) && commonValue !==undefined ){
           //do not merge
-          let removed = 0;
+          let removed = -1;
           for( let i=0; i<value.length; i++ ){
             if( value[i] == "-" ){
               removed = i;
               break;
             }
           }
-          if( removed > 0 ){
-              value.splice( removed );
-              result[setting] = value;
+          if( removed != -1 ){
+              let valueCopy = [...value];
+              valueCopy.splice( removed );
+              result[setting] = valueCopy;
               continue;
           }
 
