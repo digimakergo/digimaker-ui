@@ -198,41 +198,34 @@ const util = {
    definitionList = list;
  },
 
- //For array it will replace
- getSettings:(settings:any, key:string)=>{
-   let common = settings["*"];
+ mergeSettings: (first, second)=>{
    let result = {};
-   let map = settings[key];
-   if(!map){
-      return common;
-   }
 
    //todo: replace this with getDefinition(key).has_location after getDefinition is async
-   if( map["no_override"] ){
-     return map;
+   if( second["no_override"] ){
+     return second;
    }
 
    //get all setting keys
-   let settingKeys = Object.keys( map );
-   for( let setting of Object.keys( common ) ){
+   let settingKeys = Object.keys( second );
+   for( let setting of Object.keys( first ) ){
      if( !settingKeys.includes( setting ) ){
        settingKeys.push( setting );
      }
    }
 
-
    for( let setting of settingKeys ){
-     let value = map[setting];
-     let commonValue = common[setting];
+     let value = second[setting];
+     let firstValue = first[setting];
      if( value===undefined ){
-       if( commonValue !==undefined ){
-          result[setting] = commonValue;
+       if( firstValue !==undefined ){
+          result[setting] = firstValue;
        }
        continue;
      }
 
      //when setting value is array
-     if( Array.isArray(value) && commonValue !==undefined ){
+     if( Array.isArray(value) && firstValue !==undefined ){
           //do not merge
           let removed = -1;
           for( let i=0; i<value.length; i++ ){
@@ -250,7 +243,7 @@ const util = {
 
           //merge
           let newItems = [];
-          for( let item of commonValue ){
+          for( let item of firstValue ){
             let existing = value.find((ele)=>{
                           return JSON.stringify(item) == JSON.stringify(ele)
                         });
@@ -263,8 +256,8 @@ const util = {
       }
 
       //when setting value is object
-      if( typeof value === 'object' && commonValue !==undefined ){
-         result[setting] = {...commonValue, ...value};
+      if( typeof value === 'object' && firstValue !==undefined ){
+         result[setting] = {...firstValue, ...value};
          continue;
       }
 
@@ -272,6 +265,26 @@ const util = {
      result[setting] = value;
    }
    return result;
+ },
+
+ _settingCache:{},
+
+ //For array it will replace
+ getSettings:(settings:any, key:string )=>{
+   if( util._settingCache[key] === undefined ){
+     console.log('undefined');
+     let result = settings["*"];
+     let arr = key.split(":");
+     if( settings[arr[0]] ){
+       result =util.mergeSettings( result, settings[arr[0]] );
+     }
+     if( arr.length == 2 && settings[key] ){
+       result =util.mergeSettings( result, settings[key] );
+     }
+     util._settingCache[key] = result;
+   }
+   console.log( 'result' );
+   return util._settingCache[key];
  }
 
 }

@@ -45,17 +45,15 @@
 .blockview-grid{
   display: grid;
   grid-template-columns: 20% 20% 20% 20% 20%;
-  border-right: 1px solid #999999;
-  border-bottom: 1px solid #999999;
+  border: 1px solid #999999;
   margin-bottom: 10px;
 }
 
 
 .blockview-cell{
   padding: 10px;
-  border-top: 1px solid #999999;
-  border-left: 1px solid #999999;
   background: #f3f3f3;
+  margin: 2px;
   text-align: center;
 }
 
