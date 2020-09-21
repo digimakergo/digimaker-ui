@@ -39,7 +39,7 @@ class Dialog extends React.Component<{config:any, contenttype:Array<string>, tri
   setConfig( config, contenttype ){
     let result = {};
     for( let item in config ){
-      result[item] = util.getSettings( config[item], contenttype );
+      result[item] = util.getSettings( config[item], contenttype, "browse-"+item );
     }
     this.config = result;
   }
