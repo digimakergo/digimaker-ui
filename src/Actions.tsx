@@ -2,10 +2,11 @@ import * as React from 'react';
 import { Link } from "react-router-dom";
 import ReactTooltip from "react-tooltip";
 import util from './util';
+import {getDefinition} from './util';
 import Registry from './Registry';
 import { Modal, Accordion, Button } from 'react-bootstrap';
 
-export default class Actions extends React.Component<{ actionsConfig: any, fromview:string, from?: any, selected?: any, afterAction?: any }, { actions: any }> {
+export default class Actions extends React.Component<{ actionsConfig: any, fromview:string, content:any, from?: any, selected?: any, afterAction?: any }, { actions: any }> {
   constructor(props: any) {
     super(props);
     this.state = { actions: {} };
@@ -36,10 +37,18 @@ export default class Actions extends React.Component<{ actionsConfig: any, fromv
 
   //render link
   renderLink(config: any) {
-    let content = this.props.from;
+    let content = this.props.content;
     let path = '';
+    let from = this.props.from;
     if( config.link ){
-      let variables = content; //can support more attribute also.
+      let variables = {...content}; //can support more attribute also.
+      let def = getDefinition( content.content_type );
+      variables["_contenttype_id"] = def.has_location?content.id:(content.content_type+'/'+content.id);
+      if(from){
+        for(let key in from){
+            variables["_from_"+key] = from[key];
+        }
+      }
       path = util.washVariables(config.link, variables); //todo: support component here also
     }
 
@@ -60,7 +69,8 @@ export default class Actions extends React.Component<{ actionsConfig: any, fromv
   }
 
   render() {
-    let content = this.props.from;
+    let content = this.props.content;
+    let from = this.props.from;
     let actions = this.props.actionsConfig;
 
     if (!actions) {
@@ -78,7 +88,7 @@ export default class Actions extends React.Component<{ actionsConfig: any, fromv
         <React.Suspense fallback="...">
           <div className="action">{this.state.actions && <div>
               {Object.values(this.state.actions).map((Action:React.ReactType)=>
-                <Action fromview={this.props.fromview} selected={this.props.selected} afterAction={this.props.afterAction} from={this.props.from} />) }
+                <Action fromview={this.props.fromview} selected={this.props.selected} afterAction={this.props.afterAction} content={this.props.content} from={this.props.from} />) }
             </div> }
           </div>
         </React.Suspense>
