@@ -366,7 +366,7 @@ export default class List extends React.Component<{ id: number, contenttype: str
             return (<div className="loading"></div>);
         }
         if(this.state.list.count==0){
-          return (<div className="alert alert-info">No {this.props.contenttype} found.</div>)
+          return (<div className="alert alert-info">No {this.state.def.name} found.</div>)
         }
 
         return (
