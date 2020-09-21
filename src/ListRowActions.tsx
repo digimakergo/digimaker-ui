@@ -4,7 +4,7 @@ import util from './util';
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import Actions from './Actions';
 
-export default class ListRowActions extends React.Component<{content:any,config:any,afterAction:any}, {menuShown:boolean}> {
+export default class ListRowActions extends React.Component<{content:any,from:any,config:any,afterAction:any}, {menuShown:boolean}> {
   constructor(props: any) {
       super(props);
       this.state={menuShown:false};
@@ -30,7 +30,7 @@ export default class ListRowActions extends React.Component<{content:any,config:
     return <div className="row-action" >
     <a href="#" title="Actions" onClick={(e)=>this.click(e)}><i className="fas fa-ellipsis-h"></i></a>
     <div className={'action-menu '+(this.state.menuShown?'':'hide')}>
-      <Actions from={this.props.content} fromview="inline" selected={this.props.content} afterAction={()=>this.afterAction()} actionsConfig={config} />
+      <Actions content={this.props.content} from={this.props.from} fromview="inline" selected={this.props.content} afterAction={()=>this.afterAction()} actionsConfig={config} />
     </div>
     </div>
   }

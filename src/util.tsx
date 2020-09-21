@@ -270,21 +270,22 @@ const util = {
  _settingCache:{},
 
  //For array it will replace
- getSettings:(settings:any, key:string )=>{
-   if( util._settingCache[key] === undefined ){
-     console.log('undefined');
-     let result = settings["*"];
+ getSettings:(settings:any, key:string, type:string )=>{
+   let cacheKey = key + '-' + type;
+   if( util._settingCache[cacheKey] === undefined ){
+     let result = {...settings["*"]};
      let arr = key.split(":");
+
      if( settings[arr[0]] ){
+       console.log( settings[arr[0]] );
        result =util.mergeSettings( result, settings[arr[0]] );
      }
      if( arr.length == 2 && settings[key] ){
        result =util.mergeSettings( result, settings[key] );
      }
-     util._settingCache[key] = result;
+     util._settingCache[cacheKey] = result;
    }
-   console.log( 'result' );
-   return util._settingCache[key];
+   return util._settingCache[cacheKey];
  }
 
 }
