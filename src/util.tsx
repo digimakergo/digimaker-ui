@@ -45,10 +45,13 @@ export function FetchWithAuth(url: string, reqObj?: any) {
 //todo: use sigleton way to make sure it will only request once when accessToken is empty.
 export function GetAccessToken() {
   if (!accessToken) {
+    if( !refreshToken ){
+      throw {code:'0001', message:'No refresh token'}
+    }
     accessToken = fetch(process.env.REACT_APP_REMOTE_URL + '/auth/token/access/renew?token=' + refreshToken)
       .then(res => {
         if (!res.ok) {
-          throw "Can not proceed because of invalid authorization. Need to relogin?";
+          throw {code:'0001', message:"Can not proceed because of invalid authorization. Need to relogin?"};
         }
         accessToken = res.text();
         return accessToken
