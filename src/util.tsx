@@ -46,7 +46,7 @@ export function FetchWithAuth(url: string, reqObj?: any) {
 export function GetAccessToken() {
   if (!accessToken) {
     if( !refreshToken ){
-      throw {code:'0001', message:'No refresh token'}
+      throw {code:'0001', message:'No valid token'}
     }
     accessToken = fetch(process.env.REACT_APP_REMOTE_URL + '/auth/token/access/renew?token=' + refreshToken)
       .then(res => {

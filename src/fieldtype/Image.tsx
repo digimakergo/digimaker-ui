@@ -5,7 +5,7 @@ import ReactTooltip from 'react-tooltip';
 
 export default class Image extends React.Component<{definition:any, validation:any, mode: string, data:any},{data:any}> {
 
-constructor(props:any) {
+  constructor(props:any) {
       super(props);
       this.state = {data:props.data};
     }
@@ -48,7 +48,7 @@ constructor(props:any) {
                                               onSuccess={(data)=>{this.updated(data)}} />
                 {this.state.data&&<>
                   {(this.state.data==this.props.data) && this.inline()}
-                  {(this.state.data!=this.props.data) && <img src={process.env.REACT_APP_ASSET_URL + "/"+this.state.data} /> }                
+                  {(this.state.data!=this.props.data) && <img src={process.env.REACT_APP_ASSET_URL + "/"+this.state.data} /> }
                 </>}
                 </div>
             </>
