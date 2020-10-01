@@ -4,7 +4,7 @@ import * as React from 'react';
 import FieldRegister from './FieldRegister';
 import ReactTooltip from 'react-tooltip';
 
-export default class LoadFields extends React.Component<{ type: string, validation: any, data: any, language?:string, mode?:string, beforeField?:any, afterField?:any, onChange?:void }, { definition: any, typeArr:string[] }> {
+export default class LoadFields extends React.Component<{ type: string, validation: any,  data: any, editFields?:any, language?:string, mode?:string, beforeField?:any, afterField?:any, onChange?:void }, { definition: any, typeArr:string[] }> {
 
     constructor(props: any) {
         super(props);
@@ -85,17 +85,24 @@ export default class LoadFields extends React.Component<{ type: string, validati
                 if( validationResult.fields[fieldIdentifier] == "1" ){
                   resultRequired = true;
                 }
+              };
+              let mode = this.props.mode;
+              if( mode == 'edit' ){
+                if( this.props.editFields && !this.props.editFields.includes(fieldIdentifier) )
+                {
+                      mode = 'view';
+                }
               }
               return <>
               {BeforeElement}
-              <div className={"field-id-"+field.identifier+" field-mode-"+this.props.mode+" fieldtype-"+typeStr + (required?" required":"") +(resultRequired?" field-validation-result-required":" ")}>
+              <div className={"field-id-"+field.identifier+" field-mode-"+mode+" fieldtype-"+typeStr + (required?" required":"") +(resultRequired?" field-validation-result-required":" ")}>
               <Fieldtype definition={field}
                          data={this.props.data&&this.props.data[fieldIdentifier]}
                          formdata = {this.props.data}
                          contenttype = {this.props.type}
                          validation={validationResult&&(fieldIdentifier in validationResult.fields)?validationResult.fields[fieldIdentifier]:''}
                          formValidation={validationResult}
-                         mode = {this.props.mode}
+                         mode = {mode}
                           />
               {AfterElement}
               </div>
@@ -137,7 +144,7 @@ export default class LoadFields extends React.Component<{ type: string, validati
                     {parent.description&&<ReactTooltip id={parent.identifier+'-description'} effect="solid" place="right" html={true} clickable={true} multiline={true} delayHide={500} className="tip">{parent.description}</ReactTooltip>}
                   </div>}
                   </div>}
-                <div className="content-fields">
+                <div className={"content-fields content-fields-"+this.props.mode}>
                     {fields.map((field) => {
                         return <React.Fragment key={field.identifier}>{this.renderField(field)}</React.Fragment>
                     })}

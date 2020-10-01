@@ -20,7 +20,7 @@
 }
 
 .fieldtype-relationlist .field-value{
-  display: block;
+  display: inline-block;
   padding: 0px 1rem;
 }
 
@@ -86,9 +86,14 @@
   cursor: pointer
 }
 
-.required .field-label::after{
+.field-mode-edit.required .field-label::after{
   content: "*";
   color:red;
+}
+
+.field-validation-result-required input{
+   border-color: red;
+   background-color: #f1e7e7;
 }
 
 .field-password .field-value{
