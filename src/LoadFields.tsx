@@ -95,7 +95,8 @@ export default class LoadFields extends React.Component<{ type: string, validati
               };
               let mode = this.props.mode;
               if( mode == 'edit' ){
-                if( this.props.editFields && !this.props.editFields.includes(fieldIdentifier) )
+                let editFields = this.props.editFields;
+                if(  editFields && !editFields.includes('*') && !editFields.includes(fieldIdentifier) )
                 {
                       mode = 'view';
                 }
