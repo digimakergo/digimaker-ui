@@ -81,9 +81,16 @@ export default class LoadFields extends React.Component<{ type: string, validati
               }
 
               let resultRequired = false;
+              let errorMessage = '';
+              let validationPassed = true;
               if( this.props.mode == 'edit' && validationResult && validationResult.fields && validationResult.fields[fieldIdentifier] ){
                 if( validationResult.fields[fieldIdentifier] == "1" ){
                   resultRequired = true;
+                }else{
+                  errorMessage = validationResult.fields[fieldIdentifier];
+                }
+                if(resultRequired || errorMessage){
+                  validationPassed = false;
                 }
               };
               let mode = this.props.mode;
@@ -95,7 +102,7 @@ export default class LoadFields extends React.Component<{ type: string, validati
               }
               return <>
               {BeforeElement}
-              <div className={"field-id-"+field.identifier+" field-mode-"+mode+" fieldtype-"+typeStr + (required?" required":"") +(resultRequired?" field-validation-result-required":" ")}>
+              <div className={"field-id-"+field.identifier+" field-mode-"+mode+" fieldtype-"+typeStr + (required?" required":"") + (validationPassed?'':' field-validation-failed') + (resultRequired?" field-validation-required":" ")}>
               <Fieldtype definition={field}
                          data={this.props.data&&this.props.data[fieldIdentifier]}
                          formdata = {this.props.data}
@@ -105,6 +112,7 @@ export default class LoadFields extends React.Component<{ type: string, validati
                          mode = {mode}
                           />
               {AfterElement}
+              {errorMessage&&<div className="validation-failed-field-error">{errorMessage}</div>}
               </div>
                           </>;
             }else{
@@ -145,6 +153,7 @@ export default class LoadFields extends React.Component<{ type: string, validati
                   </div>}
                   </div>}
                 <div className={"content-fields content-fields-"+this.props.mode}>
+                    {this.props.validation&&this.props.validation.message&&<div className="validation-failed validation-failed-error">this.props.validation.message</div>}
                     {fields.map((field) => {
                         return <React.Fragment key={field.identifier}>{this.renderField(field)}</React.Fragment>
                     })}

@@ -91,9 +91,13 @@
   color:red;
 }
 
-.field-validation-result-required input{
+.field-validation-failed input{
    border-color: red;
    background-color: #f1e7e7;
+}
+
+.validation-failed-field-error{
+  color: red
 }
 
 .field-password .field-value{
