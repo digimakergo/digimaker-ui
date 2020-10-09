@@ -26,14 +26,14 @@ export default Browse;
 
 //todo: add filter
 //Dialog of the browse
-class Dialog extends React.Component<{config:any, contenttype:Array<string>, trigger:boolean, onConfirm: any, multi:boolean, selected: any }, { contenttype:string, shown: boolean, showTree:boolean, data: any, list: any, id: number, selected: any }> {
+class Dialog extends React.Component<{config:any, contenttype:Array<string>, trigger:boolean, onConfirm: any, multi:boolean, selected: any }, { contenttype:string, shown: boolean, showTree:boolean, data: any, list: any, parent: number, selected: any }> {
 
   private config:any;
 
   constructor(props: any) {
     super(props);
     this.setConfig( props.config, props.contenttype[0] );
-    this.state = { shown: props.trigger?true:false, contenttype:props.contenttype[0], showTree:false, data: '', list: '', id: 1, selected: props.selected };
+    this.state = { shown: props.trigger?true:false, contenttype:props.contenttype[0], showTree:false, data: '', list: '', parent: (this.config.list['parent']?this.config.list['parent']:1), selected: props.selected };
   }
 
   setConfig( config, contenttype ){
@@ -58,7 +58,7 @@ class Dialog extends React.Component<{config:any, contenttype:Array<string>, tri
   }
 
   fetchData() {
-    FetchWithAuth(process.env.REACT_APP_REMOTE_URL + '/content/treemenu/1?type='+this.config.filter.contenttype.join(','))
+    FetchWithAuth(process.env.REACT_APP_REMOTE_URL + '/content/treemenu/'+this.state.parent+'?type='+this.config.filter.contenttype.join(','))
       .then(res => res.json())
       .then((data) => {
         this.setState({ data: data });
@@ -81,7 +81,7 @@ class Dialog extends React.Component<{config:any, contenttype:Array<string>, tri
 
 
   clickTree(content: any) {
-    this.setState({ id: content.id });
+    this.setState({ parent: content.id });
   }
 
   selectedRowClass(content:any){
@@ -168,7 +168,7 @@ class Dialog extends React.Component<{config:any, contenttype:Array<string>, tri
               <a href="#" onClick={(e:any)=>{e.preventDefault();this.setState({showTree:!this.state.showTree});}}>
                 <i className={this.state.showTree?"fas fa-chevron-left":"fas fa-chevron-right"}></i>
               </a>
-              <List id={this.state.id} onRenderRow={(content:any)=>this.selectedRowClass(content)} contenttype={this.state.contenttype} config={this.config.list} onLinkClick={(content) => this.select(content)} />
+              <List id={this.state.parent} onRenderRow={(content:any)=>this.selectedRowClass(content)} contenttype={this.state.contenttype} config={this.config.list} onLinkClick={(content) => this.select(content)} />
             </div>
           </div>
         </div>
