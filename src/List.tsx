@@ -379,7 +379,7 @@ export default class List extends React.Component<{ id: number, contenttype: str
                           </a>
                      }
                     {/*todo: give message if it's not selected(may depend on setting) */}
-                    <Actions fromview="list" content={null} selected={this.state.selected} actionsConfig={this.config.actions} afterAction={(refresh:boolean)=>this.afterAction(refresh)} />
+                    <Actions fromview="list" from={{id: this.props.id}} content={null} selected={this.state.selected} actionsConfig={this.config.actions} afterAction={(refresh:boolean)=>this.afterAction(refresh)} />
                     {!this.config.show_table_header&&
                     <span>
                         <i className="fas fa-sort-alpha-up"></i> &nbsp;
