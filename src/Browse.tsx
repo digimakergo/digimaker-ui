@@ -17,7 +17,7 @@ const Browse = (props:any)=>{
   const [trigger, setTrigger] = useState(props.trigger?true:false);
 
   return (<>{!props.trigger&&<button className="btn btn-link btn-sm" onClick={(e) => {e.preventDefault();setTrigger(!trigger);}}>
-            <i className="fas fa-search"></i>&nbsp;Browse
+            <i className="fas fa-search"></i>&nbsp;{props.buttonText?props.buttonText:'Browse'}
           </button>}
           <Dialog {...props} trigger={trigger} />
           </>);
