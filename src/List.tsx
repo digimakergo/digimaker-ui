@@ -13,7 +13,7 @@ import { HTML5Backend } from 'react-dnd-html5-backend';
 import update from 'immutability-helper';
 
 
-export default class List extends React.Component<{ id: number, contenttype: string, config:any, onLinkClick?:any, onRenderRow?:any }, {def:any, loading:boolean, list: any, actionNew: boolean, currentPage:number, sortby: Array<Array<string>>, selected: Array<number> }> {
+export default class List extends React.Component<{ id: number, contenttype: string, config:any, onLinkClick?:any, onRenderRow?:any }, {def:any, loading:boolean, list: any, actionNew: boolean, currentPage:number, sortby: Array<Array<string>>, selected: Array<number> ,filter:Array<string>}> {
 
    private config: any = {};
 
@@ -21,7 +21,7 @@ export default class List extends React.Component<{ id: number, contenttype: str
     constructor(props: any) {
         super(props);
         this.setConfig( props );
-        this.state = { def:'',list: '', loading: true, actionNew: false, currentPage: 0, sortby:this.config['sort_default'], selected:[]};
+        this.state = { def:'',list: '', loading: true, actionNew: false, currentPage: 0, sortby:this.config['sort_default'], selected:[],filter:[]};
     }
 
     setConfig(props:any){
@@ -63,6 +63,9 @@ export default class List extends React.Component<{ id: number, contenttype: str
       if( this.config['can_dd'] == undefined ){
         this.config['can_dd'] = true;
       }
+      if( this.config['filter'] == undefined ){
+        this.config['filter'] = [];
+      }
 
     }
 
@@ -76,22 +79,30 @@ export default class List extends React.Component<{ id: number, contenttype: str
     }
 
     //callback after an action is done.
-    afterAction(refresh:boolean){
+    afterAction(refresh:boolean,config:any={}){
       if(refresh){
+        const configObj = {...this.config};
+        this.config = {...configObj,...config};
         this.refresh();
       }
     }
+
 
     fetchData() {
         let id = this.props.id;
         let sortby = "sortby="+this.getSortbyStr( this.state.sortby );
         let limit = "";
+        let filter="";
         let pagination = this.config.pagination;
         if(  pagination!= -1 ){
             limit = "&limit="+pagination+"&offset="+pagination*this.state.currentPage
         }
+        let filterQuery= this.config.filter;
+        if(filterQuery){
+        filter = this.createFilterQuery(filterQuery);
+        }
         this.setState({loading: true});
-        FetchWithAuth(process.env.REACT_APP_REMOTE_URL + '/'+this.config.request_url+'?parent='+id+"&level="+this.config.level+"&"+sortby+limit)
+        FetchWithAuth(process.env.REACT_APP_REMOTE_URL + '/'+this.config.request_url+'?parent='+id+"&level="+this.config.level+"&"+sortby+limit+filter)
             .then(res => res.json())
             .then((data) => {
                 this.resetActionState();
@@ -107,7 +118,23 @@ export default class List extends React.Component<{ id: number, contenttype: str
       this.setState({selected:[]});
     }
 
-
+    createFilterQuery=(filter:string)=>{
+      let filterQuery="&"
+     
+      if(filter){
+        Object.keys(filter).map((key:any,index:number)=>{
+         if(Array.isArray(filter[key]))// if(key=="created"|| key=="modified")
+            {
+              filterQuery+=key+'='+filter[key][0]+':'+filter[key][1];
+            }
+            else{
+              filterQuery+=key+'='+filter[key];
+            }
+          });
+          return filterQuery;
+      }
+    
+     }
     //sort by column
     sort(e, column){
       e.preventDefault();
@@ -333,7 +360,6 @@ export default class List extends React.Component<{ id: number, contenttype: str
             })()}
             <div className="text-right">
             {totalPage>1&&<span className="dm-pagination">
-              {this.state.loading&&<span className="loading"></span>}
               <a href="#" className="page-first" onClick={(e)=>{e.preventDefault();this.setState({currentPage: 0});}}><i className="fas fa-step-backward"></i></a>
               <a href="#" className="page-previous" onClick={(e)=>{e.preventDefault();if(this.state.currentPage>0){this.setState({currentPage: this.state.currentPage-1});}}}><i className="fas fa-chevron-left"></i></a>
               <a href="#" className="page-next" onClick={(e)=>{e.preventDefault();if(this.state.currentPage<totalPage-1){this.setState({currentPage: this.state.currentPage+1});}}}><i className="fas fa-chevron-right"></i></a>
@@ -379,7 +405,8 @@ export default class List extends React.Component<{ id: number, contenttype: str
                           </a>
                      }
                     {/*todo: give message if it's not selected(may depend on setting) */}
-                    <Actions fromview="list" content={null} selected={this.state.selected} actionsConfig={this.config.actions} afterAction={(refresh:boolean)=>this.afterAction(refresh)} />
+                    {this.state.loading&&<span className="loading"></span>}
+                    <Actions fromview="list" content={null} selected={this.state.selected} actionsConfig={this.config.actions} afterAction={(refresh:boolean,config:any)=>this.afterAction(refresh,config)} />
                     {!this.config.show_table_header&&
                     <span>
                         <i className="fas fa-sort-alpha-up"></i> &nbsp;
