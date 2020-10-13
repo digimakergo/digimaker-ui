@@ -42,7 +42,7 @@ const RenderProperties = (props:{content:any, contenttype:string, mode:string, f
   const renderField = (field, fieldDef:any)=>{
       if(fieldDef ){
         let fieldtypeStr = fieldDef.type;
-        const Fieldtype: React.ReactType = FieldRegister.getFieldtype(fieldtypeStr);
+        const Fieldtype: React.ReactType = FieldRegister.getFieldtype(fieldtypeStr, props.contenttype+'/'+fieldDef.identifier);
         if(Fieldtype){
           return <div className={"field-"+field+" field-viewmode-inline"+" fieldtype-"+fieldtypeStr}>
                     <Fieldtype definition={fieldDef} data={props.content[field]} mode="inline" />

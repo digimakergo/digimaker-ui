@@ -24,10 +24,13 @@ export default class FieldRegister{
             return FieldRegister.fieldtypeMap;
         }
 
-        static getFieldtype( fieldtype:string ){
+        static getFieldtype( fieldtype:string, fieldPath?:string ){
+          if( fieldPath && FieldRegister.fieldtypeMap[fieldPath] ){
+            return FieldRegister.fieldtypeMap[fieldPath];
+          }
            const result = FieldRegister.fieldtypeMap[fieldtype];
            if( !result ){
-               console.log( "fieldtype " + fieldtype +" is not supported." );
+               console.log( "fieldtype " + fieldtype + " or "+ fieldPath +" is not supported." );
            }
            return result;
         }
