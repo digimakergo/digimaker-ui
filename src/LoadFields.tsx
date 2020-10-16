@@ -61,7 +61,7 @@ export default class LoadFields extends React.Component<{ type: string, validati
               </div>
               <div className="children">
                 {field.children.map( (child) => {
-                     return (<React.Fragment key={child.identifier}>this.renderField( child, containerLevel+1 )</React.Fragment>)
+                     return (<React.Fragment key={child.identifier}>{this.renderField( child, containerLevel+1 )}</React.Fragment>)
                 })}
               </div>
             </div>)
@@ -74,8 +74,8 @@ export default class LoadFields extends React.Component<{ type: string, validati
             const fieldPath = this.props.type.split('/')[0]+ '/'+ fieldIdentifier;
             const Fieldtype: React.ReactType = FieldRegister.getFieldtype(typeStr, fieldPath);
             if( Fieldtype){
-              const BeforeElement:React.ReactType = this.props.beforeField?this.props.beforeField():null;
-              const AfterElement:React.ReactType = this.props.afterField?this.props.afterField():null;
+              const BeforeElement:React.ReactType = this.props.beforeField?this.props.beforeField(field, this.props.data, null):null;
+              const AfterElement:React.ReactType = this.props.afterField?this.props.afterField(field, this.props.data, null):null;
               let required = false;
               if( field.required && this.props.mode == 'edit' ){
                 required = true;
@@ -118,7 +118,9 @@ export default class LoadFields extends React.Component<{ type: string, validati
               </div>
                           </>;
             }else{
-                return field.type + ' is not supported.';
+                if( field.type ){
+                  return field.type + ' is not supported.';  
+                }
             }
         }
     }
