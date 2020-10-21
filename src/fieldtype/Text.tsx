@@ -18,7 +18,7 @@ constructor(props:any) {
     view(){
       return <>
               <label className="field-label">{this.props.definition.name}: </label>
-              <div className="field-value">{this.props.data}</div>
+              <div className={"field-value"+(this.props.definition.parameters&&this.props.definition.parameters.multiline?' fieldtype-text-multiline':'')}>{this.props.data}</div>
               </>
     }
 
@@ -30,7 +30,10 @@ constructor(props:any) {
                   {this.props.definition.description&&<i className="icon-info" data-for={this.props.definition.identifier+'-desciption'} data-tip=""></i>}
                   {this.props.definition.description&&<ReactTooltip id={this.props.definition.identifier+'-desciption'} effect="solid" place="right" html={true} clickable={true} multiline={true} delayHide={500} className="tip">{this.props.definition.description}</ReactTooltip>}
               :</label>
-              <input type="text" id={name} className="field-value form-control" name={name} defaultValue={this.props.data} />
+              {(def.parameters&&def.parameters.multiline)?
+                <textarea id={name} className="field-value form-control" name={name} defaultValue={this.props.data} />
+                :<input type="text" id={name} className="field-value form-control" name={name} defaultValue={this.props.data} />
+              }
               </>
       )
     }
