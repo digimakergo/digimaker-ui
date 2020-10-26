@@ -6,8 +6,6 @@ import { useState } from 'react';
 
 const cookies = new Cookies();
 
-const refreshToken = cookies.get('refreshToken')
-
 //todo: move this token into another file(auth).
 let accessToken: any = null; //access token, which is a promise<string>
 
@@ -45,6 +43,7 @@ export function FetchWithAuth(url: string, reqObj?: any) {
 //todo: use sigleton way to make sure it will only request once when accessToken is empty.
 export function GetAccessToken() {
   if (!accessToken) {
+    let refreshToken = util.getRefreshToken();
     if( !refreshToken ){
       return new Promise((resolve, reject) => {
           reject({code:'0001', message:'No token found.'});
@@ -166,6 +165,21 @@ const util = {
      });
    }
    return result;
+ },
+
+ cookieKey:'refreshToken',
+
+ getRefreshToken:()=>{
+    return cookies.get(util.cookieKey)
+ },
+
+ //set key in cookie, useful when there is multi site in one domain.
+ setCookieKey:(key:string)=>{
+    util.cookieKey = key;
+ },
+
+ getCookieKey:()=>{
+    return util.cookieKey;
  },
 
  setConfig:(conf:any)=>{
