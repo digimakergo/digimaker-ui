@@ -1,5 +1,5 @@
 .field-label, .field-value{
-  display: inline-block
+   display: inline-block
 }
 
 .fieldtype-datetime-date {
@@ -24,9 +24,12 @@
   padding: 0px 1rem;
 }
 
+.field-mode-edit.fieldtype-relationlist{
+  width: 50%;
+}
+
 .field-mode-edit.fieldtype-relationlist .list-item{
   border: 1px dotted #999999;
-  max-width: 50%;
   background: #fcfcfc;
   cursor: pointer;
   padding: 5px 10px;
