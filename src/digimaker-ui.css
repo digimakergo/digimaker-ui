@@ -72,7 +72,7 @@
   max-width: 100%;
 }
 
-.browse-selected .content-baseattr-name, .browse-selected .field-name{
+.browse-selected > td{
   font-weight: bold;
 }
 
