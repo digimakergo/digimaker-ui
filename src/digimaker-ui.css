@@ -3,7 +3,10 @@
 }
 
 .field-label{
-   vertical-align: top
+   vertical-align: top;
+   font-weight:500;
+   width: 100px;
+   line-height: 1.2;
 }
 
 .fieldtype-datetime-date {
@@ -23,7 +26,7 @@
     width: 450px;
 }
 
-.fieldtype-relationlist .field-value{
+.fieldtype-relationlist.field-mode-edit .field-value{
   display: inline-block;
   padding: 0px 1rem;
 }
