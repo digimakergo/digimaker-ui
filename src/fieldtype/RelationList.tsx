@@ -35,7 +35,7 @@ export default class RelationList extends React.Component<{definition:any, valid
     for( let item of data ){
       ids.push(item.from_content_id);
     }
-    FetchWithAuth(process.env.REACT_APP_REMOTE_URL + '/content/list/'+this.props.definition.parameters.type+'?cid='+ids.join(','))
+    FetchWithAuth(process.env.REACT_APP_REMOTE_URL + '/content/list/'+this.props.definition.parameters.type+'?cid='+ids.join(',')+'&limit=0')
         .then(res => res.json())
         .then((data) => {
             let sortedList = [];
