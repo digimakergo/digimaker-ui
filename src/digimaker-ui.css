@@ -2,6 +2,10 @@
    display: inline-block
 }
 
+.field-label{
+   vertical-align: top
+}
+
 .fieldtype-datetime-date {
     width: 125px;
     display: inline-block;
