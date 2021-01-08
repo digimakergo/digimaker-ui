@@ -1,22 +1,23 @@
-import * as React from 'react';
+import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Link, NavLink } from "react-router-dom";
 import Collapse from 'react-bootstrap/Collapse'
 
 //TreeNode which render tree based on data from server.
 //renderItem is to render what's inside(eg. if you want to remove icon or output node id, or additional link ).
-function TreeNode(props:{data:any, showRoot?:boolean, renderItem?:any, onClick?:any}) {
+function TreeNode(props:{data:any, selectedId?:number, showRoot?:boolean, renderItem?:any, onClick?:any}) {
+  //todo: use better way to get parameters
   return <ul className="treemenu">
-    {props.showRoot&&<TreeNodeItem data={props.data} renderItem={props.renderItem} onClick={props.onClick}/>}
+    {props.showRoot&&<TreeNodeItem data={props.data} selectedId={props.selectedId} renderItem={props.renderItem} onClick={props.onClick}/>}
     {(!props.showRoot && props.data.children) && props.data.children.map(
-      value => { return (<TreeNodeItem key={value.id} data={value} renderItem={props.renderItem} onClick={props.onClick}/>
+      value => { return (<TreeNodeItem key={value.id} selectedId={props.selectedId} data={value} renderItem={props.renderItem} onClick={props.onClick}/>
       )})}
   </ul>
 }
 
-class TreeNodeItem extends React.Component<{ data: any, onClick?:any, renderItem?:any, open?:any }, { open: boolean }> {
+class TreeNodeItem extends React.Component<{ data: any, selectedId?: number, onClick?:any, renderItem?:any, onOpenClose?:any }, { open: boolean}> {
   constructor(props: any) {
     super(props);
-    this.state = { open: false };
+    this.state = { open:false};
   }
 
   //todo: fix that when visit from url directly it's closed - use router match to update state?
@@ -27,11 +28,8 @@ class TreeNodeItem extends React.Component<{ data: any, onClick?:any, renderItem
   }
 
   componentDidMount(){
-    //todo: use better way to get parameters
-    let path = window.location.pathname;
-    let currentID = path.substr(path.lastIndexOf('/')+1,);
     let node = this.props.data;
-    if( node.id == currentID ){
+    if( node.id == this.props.selectedId ){
       this.setState({open: true});
     }
   }
@@ -39,14 +37,15 @@ class TreeNodeItem extends React.Component<{ data: any, onClick?:any, renderItem
   componentDidUpdate(prevProps, prevState, snapshot){
     if(!prevState.open&&this.state.open){
       //Trigger chain that open parent which open parent's parent also...
-      if( this.props.open ){
-          this.props.open(true);
+      if( this.props.onOpenClose ){
+          this.props.onOpenClose(true);
       }
     }
   }
 
-
   onClick(e){
+    //open itself
+    this.setState({open: true });
     if(this.props.onClick){
       e.preventDefault();
       this.props.onClick(this.props.data);
@@ -70,7 +69,7 @@ class TreeNodeItem extends React.Component<{ data: any, onClick?:any, renderItem
       {/*todo: load it without sliding*/}
       {node.children &&<Collapse in={open}><ul>{
         node.children.map(value => {
-          return (<TreeNodeItem key={value.id} data={value} renderItem={this.props.renderItem} open={(open:boolean)=>{
+          return (<TreeNodeItem key={value.id} Id={this.props.selectedId} data={value} renderItem={this.props.renderItem} onOpenClose={(open:boolean)=>{
             if(open){
               this.setState({open:true});
             }
