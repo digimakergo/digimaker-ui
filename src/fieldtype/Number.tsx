@@ -39,7 +39,7 @@ constructor(props:any) {
       const def = this.props.definition;
       const name = def.identifier;
       return (<>
-              <label htmlFor={this.props.definition.identifier}>{this.props.definition.name}
+              <label className="field-label" htmlFor={this.props.definition.identifier}>{this.props.definition.name}
                   {this.props.definition.description&&<i className="icon-info" data-for={this.props.definition.identifier+'-desciption'} data-tip=''></i>}
                   {this.props.definition.description&&<ReactTooltip id={this.props.definition.identifier+'-desciption'} effect="solid" place="right" html={true} clickable={true} multiline={true} delayHide={500} className="tip">{this.props.definition.description}</ReactTooltip>}
               :</label>
