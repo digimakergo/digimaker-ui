@@ -69,7 +69,7 @@ class TreeNodeItem extends React.Component<{ data: any, selectedId?: number, onC
       {/*todo: load it without sliding*/}
       {node.children &&<Collapse in={open}><ul>{
         node.children.map(value => {
-          return (<TreeNodeItem key={value.id} Id={this.props.selectedId} data={value} renderItem={this.props.renderItem} onOpenClose={(open:boolean)=>{
+          return (<TreeNodeItem key={value.id} selectedId={this.props.selectedId} data={value} renderItem={this.props.renderItem} onOpenClose={(open:boolean)=>{
             if(open){
               this.setState({open:true});
             }
