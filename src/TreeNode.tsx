@@ -63,7 +63,7 @@ class TreeNodeItem extends React.Component<{ data: any, selectedId?: number, onC
         <span className={node.children ? 'foldable space' : 'space'} onClick={(e) => this.openclose(e)}>
           {node.children&&<i className={"foldable fas fa-chevron-right" + (open ? ' open' : '')}></i>}
        </span>
-        {this.props.renderItem?(this.props.renderItem(node)):(<span className="tree-text"><i className={"nodeicon far icon-" + node.content_type + " " + subtype}></i>{node.name}</span>)}
+        {this.props.renderItem?(this.props.renderItem(node)):(<span className="tree-text" title={node.name}><i className={"nodeicon far icon-" + node.content_type + " " + subtype}></i>{node.name}</span>)}
       </NavLink>
 
       {/*todo: load it without sliding*/}
