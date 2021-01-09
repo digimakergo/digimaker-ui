@@ -53,7 +53,9 @@ constructor(props:any) {
 
 
     delete(){
-      this.props.onSuccess('');
+      if( this.props.onSuccess ){
+          this.props.onSuccess('');
+      }
       this.setState({filename:''});
     }
 
@@ -64,7 +66,7 @@ constructor(props:any) {
                   {this.state.uploadState==1&&<span className="loading"></span>}
                   {this.state.uploadState==2&&<span className="success"></span>}
                   {this.state.uploadState==3&&<span className="error">{this.state.error}</span>}
-                  {this.props.value&&<span className="fileupload-path">{this.props.value} <a href="#" onClick={(e)=>{e.preventDefault();this.delete();}}><i className="far fa-trash-alt"></i></a></span>}
+                  {this.state.filename&&<><span className="fileupload-path">{this.state.filename}</span><a className="fileupload-delete" href="#" onClick={(e)=>{e.preventDefault();this.delete();}}><i className="far fa-trash-alt"></i></a></>}
                   <input name={this.props.name} type="hidden" value={this.state.filename} />
              </span>
         )
