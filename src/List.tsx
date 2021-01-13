@@ -177,10 +177,8 @@ export default class List extends React.Component<{ id: number, contenttype: str
       //when changing page
       if( prevState.currentPage != this.state.currentPage
         || this.getSortbyStr( prevState.sortby ) != this.getSortbyStr( this.state.sortby )
-        || prevProps.id != this.props.id
-        || prevProps.contenttype != this.props.contenttype)
+        )
       {
-        this.setConfig(this.props);
         this.fetchData();
       }
     }
@@ -391,9 +389,7 @@ export default class List extends React.Component<{ id: number, contenttype: str
         if( !this.state.list || !this.state.def ){
             return (<div className="loading"></div>);
         }
-        if(this.state.list.count==0){
-          return (<div className="alert alert-info">No {this.state.def.name} found.</div>)
-        }
+
 
         return (
             <div className={"listmode-"+this.config.viewmode+" listtype-"+this.props.contenttype}>
@@ -407,7 +403,6 @@ export default class List extends React.Component<{ id: number, contenttype: str
                     {/*todo: give message if it's not selected(may depend on setting) */}
                     {this.state.loading&&<span className="loading"></span>}
                     <Actions fromview="list" from={{id: this.props.id}} content={null} selected={this.state.selected} actionsConfig={this.config.actions} afterAction={(refresh:boolean,config:any)=>this.afterAction(refresh,config)} />
-
                     {!this.config.show_table_header&&
                     <span>
                         <i className="fas fa-sort-alpha-up"></i> &nbsp;
@@ -419,7 +414,9 @@ export default class List extends React.Component<{ id: number, contenttype: str
                   }
 
                 </div>
-                {this.renderList(this.state.list.list)}
+
+                {this.state.list.count==0&&<div className="alert alert-info">No {this.state.def.name} found.</div>}
+                {this.state.list.count>0&&this.renderList(this.state.list.list)}
             </div>
         );
     }
