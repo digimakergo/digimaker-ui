@@ -135,3 +135,13 @@ tr.draggable td{
   color: green;
   font-size: 0.8rem;
 }
+
+.browse .selected .close{
+  font-size: 0.8rem;
+  float: none;
+  cursor: pointer;
+}
+
+.browse .selected .close::after{
+  content: 'X'
+}

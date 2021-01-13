@@ -134,6 +134,12 @@ class Dialog extends React.Component<{config:any, contenttype:Array<string>, tri
     this.setState({contenttype:contenttype});
   }
 
+  unselect(index:any){
+    let selected = this.state.selected;
+    selected.splice(index, 1);
+    this.setState({selected: selected});
+  }
+
   render() {
     let selected = this.props.multi?this.state.selected:(this.state.selected?[this.state.selected]:null);
 
@@ -149,8 +155,8 @@ class Dialog extends React.Component<{config:any, contenttype:Array<string>, tri
         </Modal.Title>
       </Modal.Header>
       <Modal.Body className="browse">
-        <div className="selected">{selected&&selected.map((content: any) => {
-          return <><RenderProperties content={content} contenttype={this.state.contenttype} mode="inline" /></>
+        <div className="selected">{selected&&selected.map((content: any, index:any) => {
+          return <><RenderProperties content={content} contenttype={this.state.contenttype} mode="inline" /><span className="close" onClick={(e)=>this.unselect(index)}></span></>
         })}</div>
         {this.props.contenttype.length>1&&<div>
           <select onChange={(e:any)=>this.changeContentype(e.target.value)}>
