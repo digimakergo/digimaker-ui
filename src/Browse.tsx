@@ -135,9 +135,13 @@ class Dialog extends React.Component<{config:any, contenttype:Array<string>, tri
   }
 
   unselect(index:any){
-    let selected = this.state.selected;
-    selected.splice(index, 1);
-    this.setState({selected: selected});
+    if( !this.props.multi ){
+      this.setState({selected: null});      
+    }else{
+      let selected = this.state.selected;
+      selected.splice(index, 1);
+      this.setState({selected: selected});
+    }
   }
 
   render() {
