@@ -5,6 +5,7 @@ import ListRowActions from './ListRowActions';
 import Actions from './Actions';
 import FieldRegister from './FieldRegister';
 import RenderProperties from './RenderProperties';
+import FieldtypeIcon from './FieldtypeIcon';
 import {DDCard} from './DDCard';
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import ReactTooltip from "react-tooltip";
@@ -48,6 +49,11 @@ export default class List extends React.Component<{ id: number, contenttype: str
       if( this.config['show_table_header'] == undefined ){
         this.config['show_table_header'] = true;
       }
+
+      if( this.config['show_header_icon'] == undefined ){
+        this.config['show_header_icon'] = true;
+      }
+
       if( this.config['columns'] == undefined ){
         this.config['columns'] = [];
       }
@@ -345,7 +351,7 @@ export default class List extends React.Component<{ id: number, contenttype: str
         let totalPage = Math.ceil( this.state.list.count/this.config.pagination);
         return (<div>
           <DndProvider backend={HTML5Backend}>
-            {this.config.show_header&&<h3>{this.state.def.name}({this.state.list.count})</h3>}
+            {this.config.show_header&&<h3>{this.config.show_header_icon&&<FieldtypeIcon contenttype={this.props.contenttype} />}{this.state.def.name}({this.state.list.count})</h3>}
             {(()=>{
               switch(this.config.viewmode){
                 case "block":
