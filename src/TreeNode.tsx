@@ -28,8 +28,6 @@ class TreeNodeItem extends React.Component<{ data: any, selectedId?: any, onClic
     this.setState({ open: !this.state.open });
   }
 
-
-
   componentDidMount(){
     this.initSelected();
   }
@@ -63,8 +61,7 @@ class TreeNodeItem extends React.Component<{ data: any, selectedId?: any, onClic
     //open itself
     this.setState({open: true });
     if(this.props.onClick){
-      e.preventDefault();
-      this.props.onClick(this.props.data);
+      this.props.onClick(e, this.props.data);
     }
   }
 
@@ -76,7 +73,7 @@ class TreeNodeItem extends React.Component<{ data: any, selectedId?: any, onClic
     let subtype = (node.fields && node.fields['subtype']) ? ('icon-subtype-' + node.fields['subtype']) : '';
     return <li className={(open ? 'tree-open' : 'tree-close') + ' ' + (node.children?'tree-haschild':'tree-nochild')}>
       <NavLink to={url} className={this.state.selected?'selected':''}
-                        activeClassName="active"                        
+                        activeClassName="active"
                         onClick={(e)=>{this.onClick(e)}}>
         <span className={node.children ? 'foldable space' : 'space'} onClick={(e) => this.openclose(e)}>
           {node.children&&<i className={"foldable fas fa-chevron-right" + (open ? ' open' : '')}></i>}
