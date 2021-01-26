@@ -312,21 +312,31 @@ export default class List extends React.Component<{ id: number, contenttype: str
     }
 
     renderRows(list) {
-        let rows: Array<any> = [];
         let fieldsDef = getFields(this.state.def);
+
+        let renderCells = (content:any)=>{
+          return <>{this.config.can_select&&<td onClick={()=>this.select(content.id)} className="td-check center"><input type="checkbox" checked={this.state.selected[content.id]?true:false} value="1" /></td>}
+          <RenderProperties content={content} contenttype={this.props.contenttype} fields={this.config.columns} mode="inline" as="td" />
+            {this.config['row_actions'].length>0&&<td className="list-row-tool">
+                  <ListRowActions visibleNumber={this.config["row_actions_visible"]} afterAction={(refresh:boolean)=>this.afterAction(refresh)} from={{id:this.props.id}} content={content} config={this.config['row_actions']} />
+              </td>}</>;
+        };
+
+        let rows: Array<any> = [];
         for (let i = 0; i < list.length; i++) {
             let content = list[i];
             let rowClasses = this.props.onRenderRow?this.props.onRenderRow(content):'';
             let canDD = this.config['can_dd'] && content.priority!=0 && this.state.sortby[0][0]=='priority'&&this.state.sortby[0][1]=='desc';
-            rows.push(
-              <DDCard id={content.id} as='tr' canDrag={canDD} index={i} moveCard={(dragIndex, hoverIndex)=>{if(canDD){this.moveCard(dragIndex, hoverIndex)}}} dropCard={(targetIndex:number)=>this.dropCard(targetIndex)} key={content.id} className={rowClasses} onClick={(e)=>this.linkClick(e, content)}>
-              {this.config.can_select&&<td onClick={()=>this.select(content.id)} className="td-check center"><input type="checkbox" checked={this.state.selected[content.id]?true:false} value="1" /></td>}
-              <RenderProperties content={content} contenttype={this.props.contenttype} fields={this.config.columns} mode="inline" as="td" />
-                {this.config['row_actions'].length>0&&<td className="list-row-tool">
-                      <ListRowActions visibleNumber={this.config["row_actions_visible"]} afterAction={(refresh:boolean)=>this.afterAction(refresh)} from={{id:this.props.id}} content={content} config={this.config['row_actions']} />
-                  </td>}
-              </DDCard>
-              )
+            if( canDD ){
+              rows.push(<DDCard id={content.id} as='tr' canDrag={canDD} index={i} moveCard={(dragIndex, hoverIndex)=>{if(canDD){this.moveCard(dragIndex, hoverIndex)}}} dropCard={(targetIndex:number)=>this.dropCard(targetIndex)} key={content.id} className={rowClasses} onClick={(e)=>this.linkClick(e, content)}>
+                {renderCells( content )}
+              </DDCard>);
+            }else{
+              rows.push(<tr>
+                {renderCells( content )}
+              </tr>);
+            }
+
         }
         return rows;
     }
