@@ -27,6 +27,9 @@ export default class ListRowActions extends React.Component<{content:any,from:an
   render(){
     let config = this.props.config;
     let visibleNumber = this.props.visibleNumber?this.props.visibleNumber:3;
+    if( config.length < visibleNumber ){
+      visibleNumber = config.length;
+    }
 
     if(!config){
       return '';
