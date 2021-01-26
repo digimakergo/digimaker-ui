@@ -95,7 +95,7 @@ export default class RelationList extends React.Component<{definition:any, valid
                })}
                 </ReactSortable>
 
-              <input type="hidden" name={def.identifier} value={ids.join(',')+';'+types.join(',')} />
+              <input type="hidden" name={def.identifier} value={ids.length>0?(ids.join(',')+';'+types.join(',')):''} />
               </div>
               </>
   }

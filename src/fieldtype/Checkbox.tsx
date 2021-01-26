@@ -17,15 +17,17 @@ constructor(props:any) {
       return (
            <label>
               {!this.state.checked&&<input type="hidden" value="0" name={this.props.definition.identifier} />}
-              <input type="checkbox"
-                  id={this.props.definition.identifier}
-                  name={this.props.definition.identifier}
-                  value="1"
-                  onChange={this.changeChecked.bind(this)}
-                  defaultChecked={this.props.data==1} />
-              <div>{this.props.definition.name}
+              <div className="field-label">{this.props.definition.name}:
               {this.props.definition.description&&<i className="icon-info" data-for={this.props.definition.identifier+'-desciption'} data-tip=""></i>}</div>
               {this.props.definition.description&&<ReactTooltip id={this.props.definition.identifier+'-desciption'} effect="solid" place="right" html={true} clickable={true} multiline={true} delayHide={500} className="tip">{this.props.definition.description}</ReactTooltip>}
+              <div className="field-value">
+                <input type="checkbox"
+                    id={this.props.definition.identifier}
+                    name={this.props.definition.identifier}
+                    value="1"
+                    onChange={this.changeChecked.bind(this)}
+                    defaultChecked={this.props.data==1} />
+              </div>
              </label>
       )
     }
