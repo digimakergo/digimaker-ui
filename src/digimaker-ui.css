@@ -145,3 +145,12 @@ tr.draggable td{
 .browse .selected .close::after{
   content: 'X'
 }
+
+.row-action-inline{
+  display: inline-block;
+  margin-right: 0.3rem;
+}
+
+.row-action-inline .action-item{
+  display: inline-block;
+}

@@ -46,6 +46,11 @@ export default class List extends React.Component<{ id: number, contenttype: str
       if( this.config['row_actions'] == undefined ){
         this.config['row_actions'] = [];
       }
+
+      if( this.config['row_actions_visible'] == undefined ){
+        this.config['row_actions_visible'] = 0;
+      }
+
       if( this.config['show_table_header'] == undefined ){
         this.config['show_table_header'] = true;
       }
@@ -318,7 +323,7 @@ export default class List extends React.Component<{ id: number, contenttype: str
               {this.config.can_select&&<td onClick={()=>this.select(content.id)} className="td-check center"><input type="checkbox" checked={this.state.selected[content.id]?true:false} value="1" /></td>}
               <RenderProperties content={content} contenttype={this.props.contenttype} fields={this.config.columns} mode="inline" as="td" />
                 {this.config['row_actions'].length>0&&<td className="list-row-tool">
-                      <ListRowActions afterAction={(refresh:boolean)=>this.afterAction(refresh)} from={{id:this.props.id}} content={content} config={this.config['row_actions']} />
+                      <ListRowActions visibleNumber={this.config["row_actions_visible"]} afterAction={(refresh:boolean)=>this.afterAction(refresh)} from={{id:this.props.id}} content={content} config={this.config['row_actions']} />
                   </td>}
               </DDCard>
               )
@@ -338,7 +343,7 @@ export default class List extends React.Component<{ id: number, contenttype: str
             cells.push(<div className={"blockview-cell "+rowClasses} onClick={(e)=>this.linkClick(e, item)}>
                 <RenderProperties content={item} contenttype={this.props.contenttype} mode="block" fields={fields} />
                 {this.config['row_actions'].length>0&&<span className="list-row-tool">
-                      <ListRowActions afterAction={(refresh:boolean)=>this.afterAction(refresh)} content={item} from={{id:this.props.id}} config={this.config['row_actions']} />
+                      <ListRowActions  visibleNumber={this.config["row_actions_visible"]} afterAction={(refresh:boolean)=>this.afterAction(refresh)} content={item} from={{id:this.props.id}} config={this.config['row_actions']} />
                   </span>}
             </div>);
         }

@@ -6,7 +6,7 @@ import {getDefinition} from './util';
 import Registry from './Registry';
 import { Modal, Accordion, Button } from 'react-bootstrap';
 
-export default class Actions extends React.Component<{ actionsConfig: any, fromview:string, content:any, from?: any, selected?: any, afterAction?: any }, { actions: any }> {
+export default class Actions extends React.Component<{ actionsConfig: any, fromview:string, content:any, iconOnly?:boolean, from?: any, selected?: any, afterAction?: any }, { actions: any }> {
   constructor(props: any) {
     super(props);
     this.state = { actions: {} };
@@ -54,10 +54,10 @@ export default class Actions extends React.Component<{ actionsConfig: any, fromv
 
     let newWindow = config.new?true:false;
 
-    let linkText = (<><i className={config.icon ? ("icon " + config.icon) : ("fas fa-tools")}></i>{config.name ? config.name : ''}</>);
+    let linkText = (<><i className={config.icon ? ("icon " + config.icon) : ("fas fa-tools")}></i>{(!this.props.iconOnly)&&config.name ? config.name : ''}</>);
 
     return (<div className="action-item">
-            {!newWindow&&<Link to={path?path:'#'} title={config.title} onClick={this.showDialog.bind(this, config)}>
+            {!newWindow&&<Link to={path?path:'#'} title={this.props.iconOnly?config.name :config.title} onClick={this.showDialog.bind(this, config)}>
                 {linkText}
             </Link>}
             {newWindow&&<a href={path} title={config.title} target="_blank">{linkText}</a>}
