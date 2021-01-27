@@ -332,7 +332,7 @@ export default class List extends React.Component<{ id: number, contenttype: str
                 {renderCells( content )}
               </DDCard>);
             }else{
-              rows.push(<tr>
+              rows.push(<tr className={rowClasses} onClick={(e)=>this.linkClick(e, content)}>
                 {renderCells( content )}
               </tr>);
             }
