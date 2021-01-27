@@ -136,7 +136,7 @@ class Dialog extends React.Component<{config:any, contenttype:Array<string>, tri
 
   unselect(index:any){
     if( !this.props.multi ){
-      this.setState({selected: null});      
+      this.setState({selected: null});
     }else{
       let selected = this.state.selected;
       selected.splice(index, 1);
@@ -178,7 +178,7 @@ class Dialog extends React.Component<{config:any, contenttype:Array<string>, tri
               <a href="#" onClick={(e:any)=>{e.preventDefault();this.setState({showTree:!this.state.showTree});}}>
                 <i className={this.state.showTree?"fas fa-chevron-left":"fas fa-chevron-right"}></i>
               </a>
-              <List id={this.state.parent} onRenderRow={(content:any)=>this.selectedRowClass(content)} contenttype={this.state.contenttype} config={this.config.list} onLinkClick={(content) => this.select(content)} />
+              <List id={this.state.parent} key={this.state.parent+this.state.contenttype} onRenderRow={(content:any)=>this.selectedRowClass(content)} contenttype={this.state.contenttype} config={this.config.list} onLinkClick={(content) => this.select(content)} />
             </div>
           </div>
         </div>
