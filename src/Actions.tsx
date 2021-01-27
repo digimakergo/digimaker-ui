@@ -6,10 +6,10 @@ import {getDefinition} from './util';
 import Registry from './Registry';
 import { Modal, Accordion, Button } from 'react-bootstrap';
 
-export default class Actions extends React.Component<{ actionsConfig: any, fromview:string, content:any, iconOnly?:boolean, from?: any, selected?: any, afterAction?: any }, { actions: any }> {
+export default class Actions extends React.Component<{ actionsConfig: any, fromview:string, content:any, iconOnly?:boolean, from?: any, selected?: any, afterAction?: any }, { actions: any, counters:any }> {
   constructor(props: any) {
     super(props);
-    this.state = { actions: {} };
+    this.state = { actions: {}, counters:{} };
   }
 
 
@@ -31,8 +31,14 @@ export default class Actions extends React.Component<{ actionsConfig: any, fromv
 
   showDialog(config:any){
     event.preventDefault();
-    let action = Registry.getComponent(config['com'])
-    this.setState({actions: {...this.state.actions, [config['com']]:action}});
+    let identifier = config['com'];
+    let action = Registry.getComponent(identifier);
+    let counters = this.state.counters;
+    if( !counters[identifier] ){
+      counters[identifier] = 0;
+    }
+    counters[identifier] +=1;
+    this.setState({actions: {...this.state.actions, [identifier]:action}, counters: counters });
   }
 
   //render link
@@ -87,8 +93,10 @@ export default class Actions extends React.Component<{ actionsConfig: any, fromv
         }
         <React.Suspense fallback="...">
           <div className="action">{this.state.actions && <div>
-              {Object.values(this.state.actions).map((Action:React.ReactType)=>
-                <Action fromview={this.props.fromview} selected={this.props.selected} afterAction={this.props.afterAction} content={this.props.content} from={this.props.from} />) }
+              {Object.values(this.state.actions).map((Action:React.ReactType, i:number)=>{
+                let identifier = Object.keys(this.state.actions)[i];
+                return <Action counter={this.state.counters[identifier]} fromview={this.props.fromview} selected={this.props.selected} afterAction={this.props.afterAction} content={this.props.content} from={this.props.from} />
+              })}
             </div> }
           </div>
         </React.Suspense>
