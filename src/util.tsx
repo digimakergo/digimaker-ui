@@ -111,41 +111,38 @@ export function getCommonFieldName(identifier:string) {
   return result;
 }
 
-//util for toggle dialog service
-export const useDialog = () => {
-  const [isShowing, setIsShowing] = useState(false);
+export const Dialog = (props:{title:string, type?:string, onClose?:any, onSubmit?:any, children:any}) => {
+    const [shown, setShown] = useState(true);
 
-  function toggle() {
-    setIsShowing(!isShowing);
-  }
+    const hide = ()=>{
+      if( props.onClose ){
+        props.onClose();
+      }
+      setShown(false);
+    };
 
-  return {
-    isShowing,
-    toggle,
-  }
-};
+    const submit = ()=>{
+      if( props.onSubmit ){
+        props.onSubmit();
+      }
+      setShown(false);
+    };
 
-
-export const Dialog = (props:{isShowing:boolean, hide:any,title:string,submit:any,body:any}) => {
-  if( props.isShowing ){
-    return (
-    <Modal size="lg"
+    return <Modal size="lg"
       aria-labelledby="contained-modal-title-vcenter"
-      centered show={props.isShowing} onHide={props.hide}>
+      centered show={shown} onHide={hide}>
        <Modal.Header closeButton>
     <Modal.Title>{props.title}</Modal.Title>
        </Modal.Header>
       <Modal.Body>
-       {props.body}
+       {props.children}
       </Modal.Body>
        <Modal.Footer>
-         <Button variant="danger" onClick={props.submit}>Yes</Button>
-         <Button variant="secondary" onClick={props.hide}>Close</Button>
+         {props.type=="confirm"&&<Button variant="primary" onClick={hide}>Close</Button>}
+         {!props.type&&<><Button variant="danger" onClick={submit}>Yes</Button>
+         <Button variant="secondary" onClick={hide}>Close</Button></>}
        </Modal.Footer>
-      </Modal>);
-  }else{
-      return '';
-  }
+      </Modal>;
 };
 
 
