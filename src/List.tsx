@@ -197,22 +197,22 @@ export default class List extends React.Component<{ id: number, contenttype: str
 
     select(id){
       let selected = this.state.selected;
-      if(selected[id]){
-          delete selected[id];
+      if(selected.includes(id)){
+          let index = selected.findIndex( (item) => item == id );
+          selected.splice(index,1);
       }else{
-        let content = this.state.list.list.find((value)=>{return value.id==id});
-        selected[id]=content;
+        selected.push( id );
       }
       this.setState({selected:selected});
     }
 
     selectAll(){
       let list = this.state.list.list;
-      let selected:any={};
+      let selected:any=[];
       for(let value of list){
         let id = value.id;
-        if( !this.state.selected[id] ){
-            selected[value.id]=value.name;
+        if( !this.state.selected.includes( id ) ){
+            selected.push(id);
         }
       };
       this.setState({selected: selected});
@@ -315,7 +315,7 @@ export default class List extends React.Component<{ id: number, contenttype: str
         let fieldsDef = getFields(this.state.def);
 
         let renderCells = (content:any)=>{
-          return <>{this.config.can_select&&<td onClick={()=>this.select(content.id)} className="td-check center"><input type="checkbox" checked={this.state.selected[content.id]?true:false} value="1" /></td>}
+          return <>{this.config.can_select&&<td onClick={()=>this.select(content.id)} className="td-check center"><input type="checkbox" checked={this.state.selected.includes(content.id)} value="1" /></td>}
           <RenderProperties content={content} contenttype={this.props.contenttype} fields={this.config.columns} mode="inline" as="td" />
             {this.config['row_actions'].length>0&&<td className="list-row-tool">
                   <ListRowActions visibleNumber={this.config["row_actions_visible"]} afterAction={(refresh:boolean)=>this.afterAction(refresh)} from={{id:this.props.id}} content={content} config={this.config['row_actions']} />
@@ -423,7 +423,7 @@ export default class List extends React.Component<{ id: number, contenttype: str
                      }
                     {/*todo: give message if it's not selected(may depend on setting) */}
                     {this.state.loading&&<span className="loading"></span>}
-                    <Actions fromview="list" from={{id: this.props.id}} content={null} selected={this.state.selected} actionsConfig={this.config.actions} afterAction={(refresh:boolean,config:any)=>this.afterAction(refresh,config)} />
+                    <Actions fromview="list" from={{id: this.props.id}} content={null} selected={this.state.list.list.filter((item)=>this.state.selected.includes(item.id))} actionsConfig={this.config.actions} afterAction={(refresh:boolean,config:any)=>this.afterAction(refresh,config)} />
                     {!this.config.show_table_header&&
                     <span>
                         <i className="fas fa-sort-alpha-up"></i> &nbsp;
