@@ -35,7 +35,7 @@ const RenderProperties = (props:{content:any, contenttype:string, mode:string, f
      case 'status':
          return <span className={"status-"+content.status}></span>;
      default:
-        return content[field];
+        return util.getValue( field, content);
     }
   }
 
@@ -44,11 +44,11 @@ const RenderProperties = (props:{content:any, contenttype:string, mode:string, f
         let fieldtypeStr = fieldDef.type;
         const Fieldtype: React.ReactType = FieldRegister.getFieldtype(fieldtypeStr, props.contenttype+'/'+fieldDef.identifier);
         if(Fieldtype){
-          return <div className={"field-"+field+" field-viewmode-inline"+" fieldtype-"+fieldtypeStr}>
+          return <div key={props.content.id} className={"field-"+field+" field-viewmode-inline"+" fieldtype-"+fieldtypeStr}>
                     <Fieldtype definition={fieldDef} data={props.content[field]} mode="inline" />
                   </div>;
         }else{
-          return <div className={"field-"+field+" field-viewmode-inline"+" fieldtype-"+fieldtypeStr}>{props.content[field]}</div>;
+          return <div key={props.content.id} className={"field-"+field+" field-viewmode-inline"+" fieldtype-"+fieldtypeStr}>{props.content[field]}</div>;
         }
       }else{
         //location related properties

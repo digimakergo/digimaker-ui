@@ -167,6 +167,21 @@ const util = {
    return result;
  },
 
+ // get value from expression. eg. "relations.apartment.data"
+ getValue:(expression:string, value:any)=>{
+   let arr = expression.split( '.' );
+   let result = value;
+   for( let key of arr ){
+     if( result[key] ){
+       result = result[key];
+     }else{
+       result = '';
+       break;
+     }
+   }
+   return result;
+ },
+
  cookieKey:'refreshToken',
 
  getRefreshToken:()=>{
