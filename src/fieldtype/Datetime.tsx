@@ -61,7 +61,11 @@ export default class Datetime extends React.Component<{definition: any, validati
       }
 
       inline(){
-        return (this.state.datetime?<Moment format="DD.MM.YYYY HH:mm">{this.state.datetime}</Moment>:'')
+        let format = "DD.MM.YYYY";
+        if( !this.state.dateOnly ){
+            format +=" HH:mm";
+        }
+        return (this.state.datetime?<Moment format={format}>{this.state.datetime}</Moment>:'')
       }
 
       view(){
