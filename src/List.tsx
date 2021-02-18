@@ -14,7 +14,7 @@ import { HTML5Backend } from 'react-dnd-html5-backend';
 import update from 'immutability-helper';
 
 
-export default class List extends React.Component<{ id: number, contenttype: string, config:any, onLinkClick?:any, onRenderRow?:any }, {def:any, loading:boolean, list: any, actionNew: boolean, currentPage:number, sortby: Array<Array<string>>, selected: Array<number> ,filter:Array<string>}> {
+export default class List extends React.Component<{ id: number, contenttype: string, config:any, onLinkClick?:any, onRenderRow?:any }, {def:any, loading:boolean, counter:number, list: any, actionNew: boolean, currentPage:number, sortby: Array<Array<string>>, selected: Array<number> ,filter:Array<string>}> {
 
    private config: any = {};
 
@@ -22,7 +22,7 @@ export default class List extends React.Component<{ id: number, contenttype: str
     constructor(props: any) {
         super(props);
         this.setConfig( props );
-        this.state = { def:'',list: '', loading: true, actionNew: false, currentPage: 0, sortby:this.config['sort_default'], selected:[],filter:[]};
+        this.state = { def:'',list: '', loading: true, counter: 0, actionNew: false, currentPage: 0, sortby:this.config['sort_default'], selected:[],filter:[]};
     }
 
     setConfig(props:any){
@@ -117,7 +117,7 @@ export default class List extends React.Component<{ id: number, contenttype: str
             .then(res => res.json())
             .then((data) => {
                 this.resetActionState();
-                this.setState({ loading: false, list: data });
+                this.setState({ loading: false, counter: this.state.counter+1, list: data });
             })
     }
 
@@ -364,7 +364,7 @@ export default class List extends React.Component<{ id: number, contenttype: str
 
     renderList(data) {
         let totalPage = Math.ceil( this.state.list.count/this.config.pagination);
-        return (<div>
+        return (<div key={this.state.counter} >
           <DndProvider backend={HTML5Backend}>
             {this.config.show_header&&<h3>{this.config.show_header_icon&&<FieldtypeIcon contenttype={this.props.contenttype} />}{this.state.def.name}({this.state.list.count})</h3>}
             {(()=>{
