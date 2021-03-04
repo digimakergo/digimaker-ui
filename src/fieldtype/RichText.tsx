@@ -37,7 +37,7 @@ export default class RichText extends React.Component<{ definition: any, validat
       menubar:false,
       toolbar: mode,
       selector: `textarea#`+this.props.definition.identifier,
-      skin_url: `${process.env.PUBLIC_URL}/skins/lightgray`,
+      skin_url: `${process.env.PUBLIC_URL}/tinymce/skins/lightgray`,
       plugins: Fieldtype.richtext.plugins,
       branding: false,
       setup: editor => {
