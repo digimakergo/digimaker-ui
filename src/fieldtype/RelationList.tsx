@@ -22,11 +22,7 @@ export default class RelationList extends React.Component<{definition:any, valid
   }
 
   fetchExisting(){
-    let identifier = this.props.definition.identifier;
-    if( !this.props.formdata["relations"] ){
-      return
-    }
-    let data = this.props.formdata["relations"][identifier];
+    let data = this.props.data;
     if( !data ){
       return
     }
