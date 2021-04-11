@@ -26,7 +26,7 @@ export default Browse;
 
 //todo: add filter
 //Dialog of the browse
-class Dialog extends React.Component<{config:any, contenttype:Array<string>, trigger:boolean, onConfirm: any, multi:boolean, selected: any }, { contenttype:string, shown: boolean, showTree:boolean, data: any, list: any, parent: number, selected: any }> {
+class Dialog extends React.Component<{config:any, contenttype:Array<string>, trigger:boolean, onConfirm: any, multi:boolean, selected: any, inline: boolean }, { contenttype:string, shown: boolean, showTree:boolean, data: any, list: any, parent: number, selected: any }> {
 
   private config:any;
 
@@ -112,6 +112,10 @@ class Dialog extends React.Component<{config:any, contenttype:Array<string>, tri
   select(content: any) {
     if( !this.props.multi ){
       this.setState({ selected: content });
+      //if it's inline and selected and not-multi, trigger onConfirm
+      if( this.props.inline && this.props.trigger ){
+        this.props.onConfirm( content );
+      }
       return;
     }
 
@@ -127,6 +131,9 @@ class Dialog extends React.Component<{config:any, contenttype:Array<string>, tri
     if( !existing ){
       newList.push( content );
       this.setState({ selected: newList });
+      if( this.props.inline && this.props.trigger ){
+        this.props.onConfirm( newList );
+      }
     }
   }
 
@@ -144,49 +151,58 @@ class Dialog extends React.Component<{config:any, contenttype:Array<string>, tri
     }
   }
 
-  render() {
+  renderBody(){
     let selected = this.props.multi?this.state.selected:(this.state.selected?[this.state.selected]:null);
-
-    return (<div><Modal
-      show={this.state.shown}
-      onHide={() => this.close()}
-      size="lg"
-      aria-labelledby="contained-modal-title-vcenter"
-      centered>
-      <Modal.Header closeButton>
-        <Modal.Title id="contained-modal-title-vcenter">
-          Select
-        </Modal.Title>
-      </Modal.Header>
-      <Modal.Body className="browse">
-        <div className="selected">{selected&&selected.map((content: any, index:any) => {
-          return <><RenderProperties content={content} contenttype={this.state.contenttype} mode="inline" /><span className="close" onClick={(e)=>this.unselect(index)}></span></>
-        })}</div>
-        {this.props.contenttype.length>1&&<div>
-          <select onChange={(e:any)=>this.changeContentype(e.target.value)}>
-          {this.props.contenttype.map((item:any)=>{
-            return <option value={item}>{item}</option>
-          })}
-          </select>
-         </div>}
-        <div className="container browse-list">
-          <div className="row">
-            {this.state.showTree&&<div className="col-4">
-              <TreeNode data={this.state.data} showRoot={true} renderItem={(content: any) => { return this.renderNode(content) }} onClick={(content: any) => { this.clickTree(content) }} />
-            </div>}
-            <div className={this.state.showTree?"col-8":"col"}>
-              <a href="#" onClick={(e:any)=>{e.preventDefault();this.setState({showTree:!this.state.showTree});}}>
-                <i className={this.state.showTree?"fas fa-chevron-left":"fas fa-chevron-right"}></i>
-              </a>
-              <List id={this.state.parent} key={this.state.parent+this.state.contenttype} onRenderRow={(content:any)=>this.selectedRowClass(content)} contenttype={this.state.contenttype} config={this.config.list} onLinkClick={(content) => this.select(content)} />
-            </div>
-          </div>
+    return <><div className="selected">{selected&&selected.map((content: any, index:any) => {
+      return <><RenderProperties content={content} contenttype={this.state.contenttype} mode="inline" /><span className="close" onClick={(e)=>this.unselect(index)}></span></>
+    })}</div>
+    {this.props.contenttype.length>1&&<div>
+      <select onChange={(e:any)=>this.changeContentype(e.target.value)}>
+      {this.props.contenttype.map((item:any)=>{
+        return <option value={item}>{item}</option>
+      })}
+      </select>
+     </div>}
+    <div className="container browse-list">
+      <div className="row">
+        {this.state.showTree&&<div className="col-4">
+          <TreeNode data={this.state.data} showRoot={true} renderItem={(content: any) => { return this.renderNode(content) }} onClick={(content: any) => { this.clickTree(content) }} />
+        </div>}
+        <div className={this.state.showTree?"col-8":"col"}>
+          <a href="#" onClick={(e:any)=>{e.preventDefault();this.setState({showTree:!this.state.showTree});}}>
+            <i className={this.state.showTree?"fas fa-chevron-left":"fas fa-chevron-right"}></i>
+          </a>
+          <List id={this.state.parent} key={this.state.parent+this.state.contenttype} onRenderRow={(content:any)=>this.selectedRowClass(content)} contenttype={this.state.contenttype} config={this.config.list} onLinkClick={(content) => this.select(content)} />
         </div>
-      </Modal.Body>
-      <Modal.Footer>
-        <Button onClick={() => this.submit()} variant="primary" size="sm"><i className="fas fa-check-circle"></i> Confirm</Button>
-        <Button onClick={() => this.close()} variant="secondary" size="sm"><i className="fas fa-times-circle"></i> Cancel</Button>
-      </Modal.Footer>
-    </Modal></div>);
+      </div>
+    </div></>
+  }
+
+  render() {
+    return (<div>
+      {this.props.inline&&
+        <div className="browse inline">{this.renderBody()}</div>}
+      {!this.props.inline&&
+        <Modal
+        show={this.state.shown}
+        onHide={() => this.close()}
+        size="lg"
+        aria-labelledby="contained-modal-title-vcenter"
+        centered>
+        <Modal.Header closeButton>
+          <Modal.Title id="contained-modal-title-vcenter">
+            Select
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body className="browse">
+
+        </Modal.Body>
+        <Modal.Footer>
+          <Button onClick={() => this.submit()} variant="primary" size="sm"><i className="fas fa-check-circle"></i> Confirm</Button>
+          <Button onClick={() => this.close()} variant="secondary" size="sm"><i className="fas fa-times-circle"></i> Cancel</Button>
+        </Modal.Footer>
+      </Modal>}
+
+    </div>);
   }
 }

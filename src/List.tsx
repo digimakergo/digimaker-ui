@@ -130,16 +130,16 @@ export default class List extends React.Component<{ id: number, contenttype: str
     }
 
     createFilterQuery=(filter:string)=>{
-      let filterQuery="&"
+      let filterQuery=""
 
       if(filter){
         Object.keys(filter).map((key:any,index:number)=>{
          if(Array.isArray(filter[key]))// if(key=="created"|| key=="modified")
             {
-              filterQuery+=key+'='+filter[key][0]+':'+filter[key][1];
+              filterQuery+= '&'+key+'='+filter[key][0]+':'+filter[key][1];
             }
             else{
-              filterQuery+=key+'='+filter[key];
+              filterQuery+='&'+key+'='+filter[key];
             }
           });
           return filterQuery;
