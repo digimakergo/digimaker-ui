@@ -51,7 +51,7 @@
     "react-sortablejs": "^6.0.0",
     "react-tooltip": "^3.11.6",
     "source-map-loader": "^1.0.0",
-    "tinymce": "^4.9.3",
+    "tinymce": "^5.7.1",
     "typescript": "^3.6.3",
     "universal-cookie": "^4.0.3"
   },

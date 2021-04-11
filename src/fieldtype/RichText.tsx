@@ -1,18 +1,9 @@
 import * as React from 'react';
+import ReactTooltip from 'react-tooltip';
 import tinymce from "tinymce";
-import Moment from 'react-moment';
-import ReactTooltip from 'react-tooltip'
-import "tinymce/themes/modern";
 import Fieldtype from '../fieldtype.json';
-import "tinymce/plugins/table";
-import "tinymce/plugins/image"
-import "tinymce/plugins/code"
-import "tinymce/plugins/media"
-import "tinymce/plugins/preview"
-import "tinymce/plugins/textcolor"
 
-
-  var mode = Fieldtype.richtext.mode.standard
+var mode = Fieldtype.richtext.mode.standard
 
 export default class RichText extends React.Component<{ definition: any, validation: any, data: any, mode: string }, {data:''}> {
 
@@ -33,30 +24,33 @@ export default class RichText extends React.Component<{ definition: any, validat
       mode=Fieldtype.richtext.mode.standard;
     }
 
-    tinymce.init({
-      menubar:false,
-      toolbar: mode,
-      selector: `textarea#`+this.props.definition.identifier,
-      skin_url: `${process.env.PUBLIC_URL}/tinymce/skins/lightgray`,
-      plugins: Fieldtype.richtext.plugins,
-      branding: false,
-      setup: editor => {
-        editor.on("keyup change", () => {
-          const content = editor.getContent();
-          console.log(content);
-          this.setState({data:content})
-        });
+    if(this.props.mode=='edit'){
+      tinymce.init({
+        menubar:false,
+        toolbar: mode,
+        height: 300,
+        selector: `textarea#`+this.props.definition.identifier,
+        plugins: Fieldtype.richtext.plugins,
+        branding: false,
+        setup: editor => {
+          editor.on("keyup change", () => {
+            const content = editor.getContent();
+            this.setState({data:content})
+          });
 
-        editor.on("init", () => {
-          editor.setContent(this.props.data);
-        });
-      },
-    });
+          editor.on("init", () => {
+            editor.setContent(this.props.data);
+          });
+        },
+      });
+    }
     this.setState({data:this.props.data});
   }
 
   componentWillUnmount() {
-    tinymce.remove(`textarea#`+this.props.definition.identifier);
+    if(this.props.mode=='edit'){
+      tinymce.remove(`textarea#`+this.props.definition.identifier);
+    }
   }
 
   edit() {
