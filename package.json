@@ -15,7 +15,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/digimakergo/ui.git"
+    "url": "git+https://github.com/digimakergo/digimaker-ui.git"
   },
   "keywords": [
     "cmf",
@@ -26,9 +26,9 @@
   "author": "Digimaker Go",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/digimakergo/ui/issues"
+    "url": "https://github.com/digimakergo/digimaker-ui/issues"
   },
-  "homepage": "https://github.com/digimakergo/ui#readme",
+  "homepage": "https://digimaker.org",
   "dependencies": {
     "@types/node": "^12.7.5",
     "@types/react": "^16.9.37",
