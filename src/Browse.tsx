@@ -26,7 +26,7 @@ export default Browse;
 
 //todo: add filter
 //Dialog of the browse
-class Dialog extends React.Component<{config:any, contenttype:Array<string>, trigger:boolean, onConfirm: any, multi:boolean, selected: any, inline: boolean }, { contenttype:string, shown: boolean, showTree:boolean, data: any, list: any, parent: number, selected: any }> {
+class Dialog extends React.Component<{config:any, contenttype:Array<string>, trigger:boolean, onConfirm: any, onCancel?:any, multi:boolean, selected: any, inline: boolean }, { contenttype:string, shown: boolean, showTree:boolean, data: any, list: any, parent: number, selected: any }> {
 
   private config:any;
 
@@ -47,6 +47,9 @@ class Dialog extends React.Component<{config:any, contenttype:Array<string>, tri
   componentDidUpdate(prevProps){
     if( prevProps.contenttype.join('') != this.props.contenttype.join('') ){
       this.setConfig( this.props.config, this.props.contenttype[0] );
+    }
+    if(this.props.selected != prevProps.selected){
+      this.setState({selected:this.props.selected});
     }
     if(this.props.trigger != prevProps.trigger){
       this.setState({shown: true, selected:this.props.selected});
@@ -70,13 +73,16 @@ class Dialog extends React.Component<{config:any, contenttype:Array<string>, tri
     this.setState({shown: true });
   }
 
-  close() {
-    this.setState({ selected:this.props.selected, shown: false });
+  cancel(){
+    this.setState({shown: false });    
+    if( this.props.onCancel ){
+      this.props.onCancel();
+    }    
   }
 
   submit() {
     this.props.onConfirm(this.state.selected);
-    this.close();
+    this.setState({ selected:this.props.selected, shown: false });    
   }
 
 
@@ -185,7 +191,7 @@ class Dialog extends React.Component<{config:any, contenttype:Array<string>, tri
       {!this.props.inline&&
         <Modal
         show={this.state.shown}
-        onHide={() => this.close()}
+        onHide={() => this.cancel()}
         size="lg"
         aria-labelledby="contained-modal-title-vcenter"
         centered>
@@ -195,11 +201,11 @@ class Dialog extends React.Component<{config:any, contenttype:Array<string>, tri
           </Modal.Title>
         </Modal.Header>
         <Modal.Body className="browse">
-
+          {this.renderBody()}
         </Modal.Body>
         <Modal.Footer>
           <Button onClick={() => this.submit()} variant="primary" size="sm"><i className="fas fa-check-circle"></i> Confirm</Button>
-          <Button onClick={() => this.close()} variant="secondary" size="sm"><i className="fas fa-times-circle"></i> Cancel</Button>
+          <Button onClick={() => this.cancel()} variant="secondary" size="sm"><i className="fas fa-times-circle"></i> Cancel</Button>
         </Modal.Footer>
       </Modal>}
 
