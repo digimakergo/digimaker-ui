@@ -62,9 +62,8 @@ class Dialog extends React.Component<{config:any, contenttype:Array<string>, tri
 
   fetchData() {
     FetchWithAuth(process.env.REACT_APP_REMOTE_URL + '/content/treemenu/'+this.state.parent+'?type='+this.config.filter.contenttype.join(','))
-      .then(res => res.json())
       .then((data) => {
-        this.setState({ data: data });
+        this.setState({ data: data.data });
       })
   }
 

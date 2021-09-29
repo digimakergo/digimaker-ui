@@ -34,7 +34,19 @@ export function FetchWithAuth(url: string, reqObj?: any) {
           accessToken = null;
           return FetchWithAuth(url, reqObj);
         }
-        return res;
+
+        //Internal error.
+        if(res.status>=500&&res.status<600){
+          res.text().then((data)=>{
+            console.log( "error on request: " + url + ":" + data );
+          });
+          throw "Server side error: " + res.status;
+        }
+
+        return res.json().catch((err)=>{
+          throw "response wrong format(should be json).";
+        });
+
       })
     });
 }
@@ -54,8 +66,12 @@ export function GetAccessToken() {
         if (!res.ok) {
           throw {code:'0001', message:"Can not proceed because of invalid authorization. Need to relogin?"};
         }
-        accessToken = res.text();
-        return accessToken
+        return res.json().then((data)=>{
+          if( data.error ){
+            throw data.data;
+          }
+          return data.data
+        });
       });
   }
   return accessToken

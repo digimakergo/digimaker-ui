@@ -114,10 +114,9 @@ export default class List extends React.Component<{ id: number, contenttype: str
         }
         this.setState({loading: true});
         FetchWithAuth(process.env.REACT_APP_REMOTE_URL + '/'+this.config.request_url+'?parent='+id+"&level="+this.config.level+"&"+sortby+limit+filter)
-            .then(res => res.json())
             .then((data) => {
                 this.resetActionState();
-                this.setState({ loading: false, counter: this.state.counter+1, list: data });
+                this.setState({ loading: false, counter: this.state.counter+1, list: data.data });
             })
     }
 
@@ -299,15 +298,14 @@ export default class List extends React.Component<{ id: number, contenttype: str
         return;
       }
       //send to server
-      FetchWithAuth(process.env.REACT_APP_REMOTE_URL + '/content/setpriority?params='+change.join('%3B'))
-          .then(res => res.json()).catch(()=>{
-            let list = this.state.list;
-            list.list = this.listBeforeMove;
-            this.setState({list: list});
-          })
+      FetchWithAuth(process.env.REACT_APP_REMOTE_URL + '/content/setpriority?params='+change.join('%3B'))          
           .then((data) => {
             this.listBeforeMove = null;
             this.refresh();
+          }).catch(()=>{
+            let list = this.state.list;
+            list.list = this.listBeforeMove;
+            this.setState({list: list});
           })
     }
 

@@ -3,6 +3,7 @@ import './digimaker-ui.css';
 import * as React from 'react';
 import FieldRegister from './FieldRegister';
 import ReactTooltip from 'react-tooltip';
+import { FetchWithAuth } from './util';
 
 export default class LoadFields extends React.Component<{ type: string, validation: any,  data: any, editFields?:any, language?:string, mode?:string, beforeField?:any, afterField?:any, onChange?:void }, { definition: any, typeArr:string[] }> {
 
@@ -16,12 +17,9 @@ export default class LoadFields extends React.Component<{ type: string, validati
     fetchData() {
         console.log( "remote:" + process.env.REACT_APP_REMOTE_URL  );
         let languageParams = this.props.language?'?language='+this.props.language:'';
-        fetch(process.env.REACT_APP_REMOTE_URL + '/contenttype/get/' + this.props.type.split('/')[0]+languageParams)
-            .then(res => res.json())
+        FetchWithAuth(process.env.REACT_APP_REMOTE_URL + '/contenttype/get/' + this.props.type.split('/')[0]+languageParams)
             .then((data) => {
-                console.log( 'fetched data:' );
-                console.log( data );
-                this.setState({ definition: data, typeArr: this.props.type.split('/') });
+                this.setState({ definition: data.data, typeArr: this.props.type.split('/') });
             })
     }
 

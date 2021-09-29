@@ -11,9 +11,8 @@ const DMInit = (props:any)=>{
 
   useEffect(() => {
     FetchWithAuth(process.env.REACT_APP_REMOTE_URL + '/contenttype/get')
-        .then(res => res.json())
         .then((data) => {
-          util.setDefinitionList( data );
+          util.setDefinitionList( data.data );
           setInited(true)
         }).catch(err=>{
             setError( err );

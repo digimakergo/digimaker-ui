@@ -22,9 +22,8 @@ export default class RelationList extends React.Component<{definition:any, valid
   fetchList(){
     let def = this.props.definition;
     FetchWithAuth(process.env.REACT_APP_REMOTE_URL + '/relation/optionlist/'+this.props.contenttype+'/'+def.identifier)
-        .then(res => res.json())
         .then((data) => {
-            this.setState({list: data.list });
+            this.setState({list: data.data.list });
         })
   }
 
@@ -35,9 +34,8 @@ export default class RelationList extends React.Component<{definition:any, valid
       return;
     }
     FetchWithAuth(process.env.REACT_APP_REMOTE_URL + '/content/list/'+def.parameters.type+'?cid='+this.props.data)
-        .then(res => res.json())
         .then((data) => {
-            this.setState({content: data.list[0] });
+            this.setState({content: data.data.list[0] });
         })
   }
 

@@ -46,10 +46,13 @@ export default class Actions extends React.Component<{ actionsConfig: any, fromv
     let content = this.props.content;
     let path = '';
     let from = this.props.from;
-    if( config.link ){
-      let variables = {...content}; //can support more attribute also.
-      let def = getDefinition( content.content_type );
-      variables["_contenttype_id"] = def.has_location?content.id:(content.content_type+'/'+content.id);
+    if( config.link ){    
+      let variables = {};
+      if( content ){
+        variables = {...content}; //can support more attribute also.
+        let def = getDefinition( content.content_type );
+        variables["_contenttype_id"] = def.has_location?content.id:(content.content_type+'/'+content.id);
+      }  
       if(from){
         for(let key in from){
             variables["_from_"+key] = from[key];
