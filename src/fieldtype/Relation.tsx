@@ -5,7 +5,7 @@ import Select from 'react-select'
 import {FetchWithAuth} from '../util';
 
 
-export default class RelationList extends React.Component<{definition:any, validation:any, data:any, formdata:any, mode:string, contenttype?:any},{list:any, selected:any, content:any}> {
+export default class Relation extends React.Component<{definition:any, validation:any, data:any, formdata:any, mode:string, contenttype?:any},{list:any, selected:any, content:any}> {
   constructor(props: any) {
       super(props);
       this.state = {list:[], selected:this.props.data, content:''};

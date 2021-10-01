@@ -1,11 +1,4 @@
-{
-    "fieldtypes": {
-        "text": "./fieldtype/Text",
-        "richtext": "./fieldtype/RichText",
-        "image": "./fieldtype/Image",
-        "checkbox": "./fieldtype/Checkbox",
-        "file": "./fieldtype/File"
-    },
+{   
     "richtext":{
        "plugins":[
             "advlist autolink link image lists charmap print preview hr anchor pagebreak",
