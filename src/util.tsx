@@ -163,6 +163,7 @@ export const Dialog = (props:{title:string, type?:string, onClose?:any, onSubmit
 
 
 let config:any = null;
+
 //util for general operations
 const util = {
   //put replace variable with real value.eg. "this is {id}" with {'id': 5} will be "this is 5"
@@ -208,6 +209,16 @@ const util = {
 
  getCookieKey:()=>{
     return util.cookieKey;
+ },
+
+ alertFunc:null,
+
+ alert:(message:any, title:string, type:string)=>{
+  if( util.alertFunc ){
+    util.alertFunc( message, type, title );
+  }else{
+    window.alert( message );
+  }
  },
 
  setConfig:(conf:any)=>{
