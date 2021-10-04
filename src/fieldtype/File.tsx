@@ -22,6 +22,8 @@ constructor(props:any) {
     }
 
     edit(){
+        let params = this.props.definition.parameters;      
+        params = params?params:{};  
         return (
             <>
                 <label className="field-label" htmlFor={this.props.definition.identifier}>{this.props.definition.name}
@@ -32,7 +34,7 @@ constructor(props:any) {
                 <div className="field-value">
                 <FileUpload name={this.props.definition.identifier}
                                               service="content"
-                                              format="*"
+                                              format={params.format?params.format:"*"}
                                               value={this.props.data} />
                 </div>
             </>

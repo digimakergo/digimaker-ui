@@ -33,15 +33,19 @@ constructor(props:any) {
         if (!response.ok) {
             throw response.statusText;
         }
-        return response.text()
+        return response.json()
       })
       .then(
-        (text) => {
-          this.setState( {filename: text, uploadState: 2 } );
-          if( this.props.onSuccess ){
-            file.nameUploaded = text;
-            this.props.onSuccess(file);
-          }
+        (data) => {
+          if( data.error === false ){
+            this.setState( {filename: data.data, uploadState: 2 } );
+            if( this.props.onSuccess ){
+              file.nameUploaded = data.data;
+              this.props.onSuccess(file);
+            }
+          }else{
+            throw data.data;
+          }          
         }
       ).catch(
         (error) => {
