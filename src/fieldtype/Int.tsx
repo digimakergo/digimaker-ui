@@ -2,7 +2,7 @@ import * as React from 'react';
 import Moment from 'react-moment';
 import ReactTooltip from 'react-tooltip';
 
-export default class Number extends React.Component<{definition:any, validation:any, data:any, mode:string},{value:string}> {
+export default class Int extends React.Component<{definition:any, validation:any, data:any, mode:string},{value:string}> {
 
 constructor(props:any) {
       super(props);
@@ -12,17 +12,21 @@ constructor(props:any) {
     view(){
       return (<>
               <label className="field-label">{this.props.definition.name}: </label>
-              <div className="field-value">{this.props.data}</div>
+              <div className="field-value">{this.state.value}</div>
               </>)
     }
 
     raw(){
-      return this.props.data;
+      return this.state.value;
     }
 
     componentDidMount() {
       if (this.props.data) {
-        this.setState({ value: this.props.data });
+        let data = this.props.data;
+        if( data == -1 ){
+          data = '';
+        }
+        this.setState({ value: data });
       }
     }
 
