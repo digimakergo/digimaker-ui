@@ -8,9 +8,6 @@ import RenderProperties from './RenderProperties';
 import FieldtypeIcon from './FieldtypeIcon';
 import {DDCard} from './DDCard';
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
-import ReactTooltip from "react-tooltip";
-import { DndProvider } from 'react-dnd';
-import { HTML5Backend } from 'react-dnd-html5-backend';
 import update from 'immutability-helper';
 
 
@@ -363,7 +360,7 @@ export default class List extends React.Component<{ id: number, contenttype: str
     renderList(data) {
         let totalPage = Math.ceil( this.state.list.count/this.config.pagination);
         return (<div key={this.state.counter} >
-          <DndProvider backend={HTML5Backend}>
+          
             {this.config.show_header&&<h3>{this.config.show_header_icon&&<FieldtypeIcon contenttype={this.props.contenttype} />}{this.state.def.name}({this.state.list.count})</h3>}
             {(()=>{
               switch(this.config.viewmode){
@@ -386,7 +383,6 @@ export default class List extends React.Component<{ id: number, contenttype: str
               <span className="pagination-info">Page {this.state.currentPage+1} of {totalPage} from total {this.state.list.count}</span>
               </span>}
             </div>
-            </DndProvider>
         </div>
         )
     }
