@@ -13,11 +13,22 @@ export default class FieldtypeSelect extends React.Component<{definition:any, va
   }
 
   componentDidMount(){
-    this.init();
+    if( this.props.mode != 'inline' ){
+      this.init();
+    }
   }
 
   init(){
-    let arr = this.props.data.split(';');
+    let arr:Array<string> = [];
+    if( Array.isArray( this.props.data ) ){
+      for( let item of this.props.data ){
+        arr.push(item["value"]);
+      }
+    }else{
+      if( this.props.data ){
+        arr.push(this.props.data["value"]);
+      }
+    }
     let options = [];
     let selected:any = this.state.isMulti?[]:null;
 
@@ -82,15 +93,14 @@ export default class FieldtypeSelect extends React.Component<{definition:any, va
 
   inline(){
     let textList = [];
-    if( !this.state.selected ){
-        return '';
-    }
-    if( this.state.isMulti ){
-        for( let item of this.state.selected ){
-            textList.push(item.label);
-        }
+    if( Array.isArray( this.props.data ) ){
+      for( let item of this.props.data ){
+        textList.push(item['text']);
+      }
     }else{
-        textList.push(this.state.selected.label);
+      if( this.props.data ){
+        textList.push(this.props.data['text']);
+      }
     }
     return textList.join(', ');
   }
