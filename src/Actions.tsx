@@ -95,13 +95,12 @@ export default class Actions extends React.Component<{ actionsConfig: any, fromv
          })
         }
         <React.Suspense fallback="...">
-          <div className="action">{this.state.actions && <div>
+          {this.state.actions && <div className="action-item">
               {Object.values(this.state.actions).map((Action:React.ReactType, i:number)=>{
                 let identifier = Object.keys(this.state.actions)[i];
                 return <Action counter={this.state.counters[identifier]} fromview={this.props.fromview} selected={this.props.selected} afterAction={this.props.afterAction} content={this.props.content} from={this.props.from} />
               })}
-            </div> }
-          </div>
+            </div> }          
         </React.Suspense>
       </div>)
     );
