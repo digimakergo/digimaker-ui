@@ -251,6 +251,9 @@ const util = {
       //when it's field
       }else{
         let realValue = content[fieldCond[0]];
+        if( !realValue ){
+          return false;
+        }
         if( Array.isArray( realValue ) ){
           let result:any = false;
           for( let item of realValue ){
@@ -260,6 +263,12 @@ const util = {
             }
           }
           return result;
+        }else if( typeof realValue == 'object' ){
+          if( realValue.value == fieldCond[1] ){
+            return value;
+          }else{
+            return false;
+          }
         }else if(realValue==fieldCond[1]){
           return value;
         }else{
