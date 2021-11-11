@@ -229,27 +229,44 @@ const util = {
    return config;
  },
 
- //get allowed type under the parent content. condition example: "article:3 or article:images"
+ //get allowed type under the parent content. condition example: "id/3:article or subtype/images:article"
  //only support id(3 is an ancestor id in the example) and subtype(images is the subtype of parent)
  getAllowedType:(content:any, condition:string)=>{
    if( !condition ){
      return false;
    }
     let arr = condition.split(':');
-    let type = arr[0];
     if( arr.length == 1 ){
-      return type;
+      return condition;
     }else{
-      let value:any = arr[1];
-      if(isNaN(value) && content.subtype && content.subtype == value){
-        return type;
-      }else if( !isNaN(value) && content.hierarchy.split('/').includes( value ) ){
-        return type;
+      let fieldCond = arr[0].split('/');
+      let value = arr[1];
+      //when it's id
+      if( fieldCond.length == 1 ){      
+        if( content.hierarchy.split('/').includes( fieldCond[0] ) ){
+          return value;
+        }else{
+          return false;
+        }
+      //when it's field
       }else{
-        return false;
+        let realValue = content[fieldCond[0]];
+        if( Array.isArray( realValue ) ){
+          let result:any = false;
+          for( let item of realValue ){
+            if( item == fieldCond[1] || item.value == fieldCond[1] ){
+              result = value;
+              break;
+            }
+          }
+          return result;
+        }else if(realValue==fieldCond[1]){
+          return value;
+        }else{
+          return false;
+        }
       }
     }
-    return false;
  },
 
  setDefinitionList:(list:any)=>{
