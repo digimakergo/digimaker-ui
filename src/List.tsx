@@ -247,6 +247,7 @@ export default class List extends React.Component<{ id: number, contenttype: str
                 </th>) //todo: use name from definition.
           } )}
           {this.config['row_actions'].length>0&&<th></th>}
+          <th></th>
           </tr>}
         {this.renderRows(data)}
         {this.state.currentPage>0&&this.renderEmpties(this.config.pagination-data.length)}
@@ -329,6 +330,7 @@ export default class List extends React.Component<{ id: number, contenttype: str
             }else{
               rows.push(<tr className={rowClasses} onClick={(e)=>this.linkClick(e, content)}>
                 {renderCells( content )}
+                <td></td>
               </tr>);
             }
 

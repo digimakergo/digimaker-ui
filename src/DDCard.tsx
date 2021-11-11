@@ -11,7 +11,7 @@ interface DragItem {
 
 //todo: only allow vertical move when it's in tr mode, no left-right move.
 export const DDCard: React.FC<any> = ({ id, as, canDrag, index, moveCard, dropCard, children, ...props }) => {
-  const ref = useRef<HTMLTableRowElement>(null)
+  const ref = useRef<HTMLTableCellElement>(null)
   const [, drop] = useDrop({
     accept: 'card',
     hover(item: DragItem, monitor: DropTargetMonitor) {
@@ -60,7 +60,7 @@ export const DDCard: React.FC<any> = ({ id, as, canDrag, index, moveCard, dropCa
     }
   })
 
-  const [{ isDragging }, drag] = useDrag({
+  const [{ isDragging }, drag, preview] = useDrag({
     item: { type: 'card', id, index },
     collect: (monitor: any) => ({
       isDragging: monitor.isDragging(),
@@ -80,8 +80,11 @@ export const DDCard: React.FC<any> = ({ id, as, canDrag, index, moveCard, dropCa
   drag(drop(ref))
   if( as == 'tr' ){
     return (
-      <tr ref={ref} style={{opacity }} {...props}>
+      <tr ref={preview} style={{opacity }} {...props}>
         {children}
+        <td ref={ref}>
+          <a href="#" style={{cursor:'move'}} onClick={e=>e.preventDefault()}><i className="fas fa-sort"></i></a>
+        </td>
       </tr>
     )
   }else{
