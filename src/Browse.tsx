@@ -171,7 +171,7 @@ class Dialog extends React.Component<{config:any, contenttype:Array<string>, tri
     <div className="container browse-list">
       <div className="row">
         {this.state.showTree&&<div className="col-4">
-          <TreeNode data={this.state.data} showRoot={true} renderItem={(content: any) => { return this.renderNode(content) }} onClick={(content: any) => { this.clickTree(content) }} />
+          <TreeNode data={this.state.data} showRoot={true} renderItem={(content: any) => { return this.renderNode(content) }} onClick={(e:any, content: any) => { e.preventDefault(); this.clickTree(content) }} />
         </div>}
         <div className={this.state.showTree?"col-8":"col"}>
           <a href="#" onClick={(e:any)=>{e.preventDefault();this.setState({showTree:!this.state.showTree});}}>
