@@ -6,7 +6,7 @@ import {getDefinition} from './util';
 import Registry from './Registry';
 import { Modal, Accordion, Button } from 'react-bootstrap';
 
-export default class Actions extends React.Component<{ actionsConfig: any, fromview:string, content:any, iconOnly?:boolean, from?: any, selected?: any, afterAction?: any }, { actions: any, counters:any }> {
+export default class Actions extends React.Component<{ actionsConfig: any, fromview:string, content:any, iconOnly?:boolean, from?: any, selected?: any, afterAction?: any, parameters?: any }, { actions: any, counters:any }> {
   constructor(props: any) {
     super(props);
     this.state = { actions: {}, counters:{} };
@@ -98,7 +98,7 @@ export default class Actions extends React.Component<{ actionsConfig: any, fromv
           {this.state.actions && <div className="action-item">
               {Object.values(this.state.actions).map((Action:React.ReactType, i:number)=>{
                 let identifier = Object.keys(this.state.actions)[i];
-                return <Action counter={this.state.counters[identifier]} fromview={this.props.fromview} selected={this.props.selected} afterAction={this.props.afterAction} content={this.props.content} from={this.props.from} />
+                return <Action counter={this.state.counters[identifier]} parameters={this.props.parameters} fromview={this.props.fromview} selected={this.props.selected} afterAction={this.props.afterAction} content={this.props.content} from={this.props.from} />
               })}
             </div> }          
         </React.Suspense>

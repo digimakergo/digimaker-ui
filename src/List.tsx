@@ -419,7 +419,7 @@ export default class List extends React.Component<{ id: number, contenttype: str
                      }
                     {/*todo: give message if it's not selected(may depend on setting) */}
                     {this.state.loading&&<span className="loading"></span>}
-                    <Actions fromview="list" from={{id: this.props.id}} content={null} selected={this.state.list.list.filter((item)=>this.state.selected.includes(item.id))} actionsConfig={this.config.actions} afterAction={(refresh:boolean,config:any)=>this.afterAction(refresh,config)} />
+                    <Actions fromview="list" parameters={{'contenttype':this.props.contenttype}} from={{id: this.props.id}} content={null} selected={this.state.list.list.filter((item)=>this.state.selected.includes(item.id))} actionsConfig={this.config.actions} afterAction={(refresh:boolean,config:any)=>this.afterAction(refresh,config)} />
                     {!this.config.show_table_header&&
                     <span>
                         <i className="fas fa-sort-alpha-up"></i> &nbsp;
