@@ -23,7 +23,22 @@ export default class Relation extends React.Component<{definition:any, validatio
     let def = this.props.definition;
     FetchWithAuth(process.env.REACT_APP_REMOTE_URL + '/relation/optionlist/'+this.props.contenttype+'/'+def.identifier)
         .then((data) => {
-            this.setState({list: data.data.list });
+            let list = data.data.list;
+            let valueField = 'id';
+            if( this.props.definition.parameters.value ){
+              valueField = this.props.definition.parameters.value;
+            }
+
+            let options = [];
+            let selected = null;
+            for( let item of list ){
+              if( item[valueField] == this.state.selected ){
+                selected = {label:item.name, value:item[valueField]};
+              }
+              options.push({label:item.name, value:item[valueField]});
+            }
+
+            this.setState({list: options, selected:selected });
         })
   }
 
@@ -39,24 +54,17 @@ export default class Relation extends React.Component<{definition:any, validatio
         })
   }
 
-  edit(){
-    let options = [];
-    let defaultValue = null;
-    let valueField = 'id';
-    if( this.props.definition.parameters.value ){
-       valueField = this.props.definition.parameters.value;
-    }
-    for( let item of this.state.list ){
-      if( item[valueField] == this.state.selected ){
-        defaultValue = {label:item.name, value:item[valueField]};
-      }
-      options.push({label:item.name, value:item[valueField]});
-    }
+  edit(){  
     //todo: suppoer 'browse' mode, which is defined in settings.
     return  <>
             <label className="field-label">{this.props.definition.name}:</label>
             <div className="field-value">
-                <Select className="fieldtype-relation-select" name={this.props.definition.identifier} options={options} value={defaultValue} onChange={(data:any)=>{this.setState({selected:data.value})}} />
+                <Select isClearable={true} 
+                      className="fieldtype-relation-select"
+                       name={this.props.definition.identifier} 
+                       options={this.state.list} 
+                       value={this.state.selected}
+                      onChange={(data:any)=>{this.setState({selected:data})}} />
             </div>
             </>
   }
