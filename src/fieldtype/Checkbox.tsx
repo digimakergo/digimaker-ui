@@ -17,7 +17,7 @@ constructor(props:any) {
       return (
            <label>
               {!this.state.checked&&<input type="hidden" value="0" name={this.props.definition.identifier} />}
-              <div className="field-label">{this.props.definition.name}:
+              <div className="field-label">{this.props.definition.name}
               {this.props.definition.description&&<i className="icon-info" data-for={this.props.definition.identifier+'-desciption'} data-tip=""></i>}</div>
               {this.props.definition.description&&<ReactTooltip id={this.props.definition.identifier+'-desciption'} effect="solid" place="right" html={true} clickable={true} multiline={true} delayHide={500} className="tip">{this.props.definition.description}</ReactTooltip>}
               <div className="field-value">
