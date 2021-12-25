@@ -5,6 +5,7 @@ import Moment from 'react-moment';
 import 'react-datetime/css/react-datetime.css'
 import moment from 'moment';
 import { timeStamp } from 'console';
+import util from '../util';
 
 let defaultValue = 0;
 
@@ -18,6 +19,9 @@ export default class Datetime extends React.Component<{definition: any, validati
           }else{
             datetime = moment(props.data)
           }
+        }
+        if( datetime.format('YYYY-MM-DD') == '1000-01-01' ){
+          datetime = null;
         }
 
         let dateOnly = (this.props.definition.parameters && this.props.definition.parameters['dateonly'])?true:false;
@@ -60,8 +64,17 @@ export default class Datetime extends React.Component<{definition: any, validati
         this.setState({datetime:datetime, error:''});
       }
 
-      inline(){
+      getDateFormat(){
         let format = "DD.MM.YYYY";
+        let configFormat = util.getConfig()['date_format'];
+        if( configFormat ){
+          format = configFormat;
+        }
+        return format;
+      }
+
+      inline(){
+        let format = this.getDateFormat();
         if( !this.state.dateOnly ){
             format +=" HH:mm";
         }
@@ -84,7 +97,7 @@ export default class Datetime extends React.Component<{definition: any, validati
             <div>
             <label className="field-label">{this.props.definition.name}</label>
             <div className="field-value">
-                <DateTime className='fieldtype-datetime-date' closeOnSelect={true} value={this.state.datetime?this.state.datetime:''} timeFormat={false} dateFormat="DD.MM.YYYY" onChange={value => this.updateValue('date',value)}/>
+                <DateTime className='fieldtype-datetime-date' closeOnSelect={true} value={this.state.datetime?this.state.datetime:''} timeFormat={false} dateFormat={this.getDateFormat()} onChange={value => this.updateValue('date',value)}/>
                 {!this.state.dateOnly&&<span> &nbsp;
                       <input className="fieldtype-datetime-time form-control" defaultValue={this.state.datetime?this.state.datetime.format('HH'):''} type = "text" maxLength={2} onChange={e => this.updateValue('hour',e.target.value)}/>
                       :<input className="fieldtype-datetime-time form-control" defaultValue={this.state.datetime?this.state.datetime.format('mm'):''} type="text" maxLength={2} onChange={e => this.updateValue('minute',e.target.value)}/>
