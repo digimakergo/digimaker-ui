@@ -6,39 +6,10 @@ import {getDefinition} from './util';
 import Registry from './Registry';
 import { Modal, Accordion, Button } from 'react-bootstrap';
 
-export default class Actions extends React.Component<{ actionsConfig: any, fromview:string, content:any, iconOnly?:boolean, from?: any, selected?: any, afterAction?: any, parameters?: any }, { actions: any, counters:any }> {
+export default class Actions extends React.Component<{ actionsConfig: any, fromview:string, content:any, iconOnly?:boolean, from?: any, selected?: any, afterAction?: any, parameters?: any }, {}> {
   constructor(props: any) {
     super(props);
-    this.state = { actions: {}, counters:{} };
-  }
-
-
-  componentDidMount(){
-    let actions = this.props.actionsConfig;
-    let newActions = this.state.actions;
-    if( actions ){
-      actions.map((actionConfig: any) => {
-         if (actionConfig['com'] ) {
-          if( !actionConfig['name'] ){
-            let action = Registry.getComponent(actionConfig['com'])
-            newActions[actionConfig['com']] = action;
-          }
-        }
-      });
-      this.setState({actions: newActions });
-    }
-  }
-
-  showDialog(config:any){
-    event.preventDefault();
-    let identifier = config['com'];
-    let action = Registry.getComponent(identifier);
-    let counters = this.state.counters;
-    if( !counters[identifier] ){
-      counters[identifier] = 0;
-    }
-    counters[identifier] +=1;
-    this.setState({actions: {...this.state.actions, [identifier]:action}, counters: counters });
+    this.state = {};
   }
 
   //render link
@@ -66,7 +37,7 @@ export default class Actions extends React.Component<{ actionsConfig: any, fromv
     let linkText = (<><i className={config.icon ? ("icon " + config.icon) : ("fas fa-tools")}></i>{(!this.props.iconOnly)&&config.name ? config.name : ''}</>);
 
     return (<div className="action-item">
-            {!newWindow&&<Link to={path?path:'#'} title={this.props.iconOnly?config.name :config.title} onClick={this.showDialog.bind(this, config)}>
+            {!newWindow&&<Link to={path} title={this.props.iconOnly?config.name:config.title}>
                 {linkText}
             </Link>}
             {newWindow&&<a href={path} title={config.title} target="_blank">{linkText}</a>}
@@ -87,21 +58,20 @@ export default class Actions extends React.Component<{ actionsConfig: any, fromv
     }
 
     return (
-      (<div>
+      (<div className='actions'>
         {actions.map((actionConfig: any) => {
-          if (actionConfig['link'] || actionConfig['name'] && actionConfig['com']) {
+          if (actionConfig['link']) {
             return this.renderLink(actionConfig);
           }
+
+          if( actionConfig['com'] ){
+            let identifier = actionConfig['com'];
+            let Action = Registry.getComponent(identifier);
+            return <React.Suspense fallback="..."><Action config={actionConfig} parameters={this.props.parameters} fromview={this.props.fromview} selected={this.props.selected} afterAction={this.props.afterAction} content={this.props.content} from={this.props.from} /></React.Suspense>
+          }
+          return '';
          })
-        }
-        <React.Suspense fallback="...">
-          {this.state.actions && <div className="action-item">
-              {Object.values(this.state.actions).map((Action:React.ReactType, i:number)=>{
-                let identifier = Object.keys(this.state.actions)[i];
-                return <Action counter={this.state.counters[identifier]} parameters={this.props.parameters} fromview={this.props.fromview} selected={this.props.selected} afterAction={this.props.afterAction} content={this.props.content} from={this.props.from} />
-              })}
-            </div> }          
-        </React.Suspense>
+        }       
       </div>)
     );
   }

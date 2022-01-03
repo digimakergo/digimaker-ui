@@ -45,7 +45,7 @@ export default class ListRowActions extends React.Component<{content:any,from:an
     }
 
     return <div className="row-action" >
-    <div className="row-action-inline">{this.renderActions( visibleActions, true )}</div>
+    <div className="row-action-inline">{this.renderActions( visibleActions, false )}</div>
     {menuActions.length>0&&<><a href="#" title="Actions" onClick={(e)=>this.click(e)}><i className="fas fa-ellipsis-h"></i></a>
     <div className={'action-menu '+(this.state.menuShown?'':'hide')}>
       {this.renderActions( menuActions, false )}
