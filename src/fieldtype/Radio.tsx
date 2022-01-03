@@ -12,14 +12,7 @@ constructor(props:any) {
     view(){
       return (<>
               <label className="field-label">{this.props.definition.name}: </label>
-              <div className="field-value">
-              <label>
-                <input type="radio" disabled={true} defaultChecked={this.props.data=="1"} />
-                <span>{this.props.definition.parameters.options[0]}</span></label>
-              <label>
-                <input type="radio" disabled={true} defaultChecked={this.props.data=="0"} />
-                <span>{this.props.definition.parameters.options[1]}</span>
-              </label>
+              <div className="field-value"> {this.raw()}
               </div></>)
     }
 
