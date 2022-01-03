@@ -24,7 +24,12 @@ constructor(props:any) {
     }
 
     raw(){
-      return this.props.data=="1"?this.props.definition.parameters.options[0]:this.props.definition.parameters.options[1];
+      if( this.props.data=="1" ){
+         return this.props.definition.parameters.options[0];
+      }else if( this.props.data=="0" ){
+        return this.props.definition.parameters.options[1];
+      }
+      return '';
     }
 
     componentDidMount() {
