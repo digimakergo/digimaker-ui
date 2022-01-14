@@ -60,9 +60,8 @@ export default class Relation extends React.Component<{definition:any, validatio
   }
 
   edit(){  
-    //todo: suppoer 'browse' mode, which is defined in settings.
     let params = this.props.definition.parameters;
-    let mode = params['select']?'select':'browse';
+    let mode = params['editmode']?params['editmode']:'browse';
 
     let browseConfig = util.getConfig().browse;
 
