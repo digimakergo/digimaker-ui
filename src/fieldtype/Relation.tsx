@@ -2,7 +2,7 @@ import * as React from 'react';
 import ReactTooltip from 'react-tooltip';
 import Browse from '../Browse';
 import Select from 'react-select'
-import {FetchWithAuth} from '../util';
+import util, {FetchWithAuth} from '../util';
 
 
 export default class Relation extends React.Component<{definition:any, validation:any, data:any, formdata:any, mode:string, contenttype?:any},{list:any, selected:any, content:any}> {
@@ -12,7 +12,8 @@ export default class Relation extends React.Component<{definition:any, validatio
   }
 
   componentDidMount(){
-    if( this.props.mode == 'edit' ){
+    let parameters = this.props.definition.parameters;
+    if( this.props.mode == 'edit' && parameters['select'] ){
         this.fetchList();
     }else{
       this.fetchExisting();
@@ -54,17 +55,32 @@ export default class Relation extends React.Component<{definition:any, validatio
         })
   }
 
+  confirmDialog(selected:any){
+      this.setState({content: selected});
+  }
+
   edit(){  
     //todo: suppoer 'browse' mode, which is defined in settings.
+    let params = this.props.definition.parameters;
+    let mode = params['select']?'select':'browse';
+
+    let browseConfig = util.getConfig().browse;
+
     return  <>
             <label className="field-label">{this.props.definition.name}:</label>
             <div className="field-value">
-                <Select isClearable={true} 
-                      className="fieldtype-relation-select"
-                       name={this.props.definition.identifier} 
-                       options={this.state.list} 
-                       value={this.state.selected}
-                      onChange={(data:any)=>{this.setState({selected:data})}} />
+            {mode=='browse'&&<>
+                  {this.state.content?<div>{this.state.content.id}, {this.state.content.name}</div>:''}
+                  <Browse config={browseConfig} multi={false} contenttype={[params['type']]} onConfirm={(selected:any)=>this.confirmDialog(selected)} selected={this.state.content} />
+                  <input type="hidden" name={this.props.definition.identifier} value={this.state.content?this.state.content.id:''} />
+                  </>
+                  }
+            {mode=='select'&&<Select isClearable={true} 
+                  className="fieldtype-relation-select"
+                    name={this.props.definition.identifier} 
+                    options={this.state.list} 
+                    value={this.state.selected}
+                  onChange={(data:any)=>{this.setState({selected:data})}} />}
             </div>
             </>
   }
