@@ -71,7 +71,7 @@ export default class Relation extends React.Component<{definition:any, validatio
             {mode=='browse'&&<>
                   {this.state.content?<div>{this.state.content.id}, {this.state.content.name}</div>:''}
                   <Browse config={browseConfig} multi={false} contenttype={[params['type']]} onConfirm={(selected:any)=>this.confirmDialog(selected)} selected={this.state.content} />
-                  <input type="hidden" name={this.props.definition.identifier} value={this.state.content?this.state.content.id:''} />
+                  <input type="hidden" name={this.props.definition.identifier} value={this.state.content?this.state.content[params.value]:''} />
                   </>
                   }
             {mode=='select'&&<Select isClearable={true} 
