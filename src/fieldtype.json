@@ -7,7 +7,7 @@
       ],
       "mode":{
         "compact":["undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify |outdent indent |code link"],
-        "standard":[" undo redo | formatselect fontselect fontsizeselect | bold italic strikethrough blockquote subscript superscript | forecolor backcolor | alignleft aligncenter alignright alignjustify | ullist numlist outdent indent  | dmimage  media | table | code preview | removeformat "]
+        "standard":[" undo redo | formatselect fontselect fontsizeselect | bold italic strikethrough blockquote subscript superscript | forecolor backcolor | alignleft aligncenter alignright alignjustify | ullist numlist outdent indent  | dmimage  media | link | table | code preview | removeformat "]
       }
     }
 }
