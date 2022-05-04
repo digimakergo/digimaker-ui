@@ -1,26 +1,31 @@
 import './digimaker-ui.css';
 
-import React from 'react';
-import { Link } from "react-router-dom";
-import {getDefinition,getFields} from './util';
+import * as React from 'react';
+import { useState } from 'react';
+import { Link } from 'react-router-dom';
+import { getDefinition, getFields } from './util';
 import util from './util';
 import Moment from 'react-moment';
 import FieldRegister from './FieldRegister';
 
-interface RenderPropertiesProps {
+//Render properties which renders field's inline mode.
+//This is same as like render-content when it's not invoked in a table list(as='td').
+const RenderProperties = (props: {
   content: any;
   contenttype: string;
   mode: string;
   fields?: Array<string>;
   as?: string;
-}
+}) => {
+  let def = getDefinition(props.contenttype);
 
-function RenderProperties({content, contenttype, mode, fields, as}: RenderPropertiesProps) {
-  let def = getDefinition(contenttype);
   let config = util.getConfig();
-  fields = fields;
-  if(!fields) {
-    fields = config.viewmode[mode][contenttype];
+  let content = props.content;
+  let fields = [];
+  if (props.fields) {
+    fields = props.fields;
+  } else {
+    fields = config.viewmode[props.mode][props.contenttype];
   }
 
   const renderBaseAttr = (field: string) => {
@@ -42,7 +47,7 @@ function RenderProperties({content, contenttype, mode, fields, as}: RenderProper
       case 'priority':
         return content[field] ? (
           <span title={content[field]}>
-            <i className="fas fa-check"></i>
+            <i className='fas fa-check'></i>
           </span>
         ) : (
           ''
@@ -59,12 +64,12 @@ function RenderProperties({content, contenttype, mode, fields, as}: RenderProper
       let fieldtypeStr = fieldDef.type;
       const Fieldtype: React.ReactType = FieldRegister.getFieldtype(
         fieldtypeStr,
-        contenttype + '/' + fieldDef.identifier
+        props.contenttype + '/' + fieldDef.identifier
       );
       if (Fieldtype) {
         return (
           <div
-            key={content.id}
+            key={props.content.id}
             className={
               'field-' +
               field +
@@ -75,7 +80,7 @@ function RenderProperties({content, contenttype, mode, fields, as}: RenderProper
           >
             <Fieldtype
               definition={fieldDef}
-              data={content[field]}
+              data={props.content[field]}
               mode='inline'
             />
           </div>
@@ -83,7 +88,7 @@ function RenderProperties({content, contenttype, mode, fields, as}: RenderProper
       } else {
         return (
           <div
-            key={content.id}
+            key={props.content.id}
             className={
               'field-' +
               field +
@@ -92,7 +97,7 @@ function RenderProperties({content, contenttype, mode, fields, as}: RenderProper
               fieldtypeStr
             }
           >
-            {content[field]}
+            {props.content[field]}
           </div>
         );
       }
@@ -104,10 +109,10 @@ function RenderProperties({content, contenttype, mode, fields, as}: RenderProper
         </div>
       );
     }
-  }
+  };
 
   let contentFields = getFields(def);
-  if (as == 'td') {
+  if (props.as == 'td') {
     return (
       <>
         {fields.map((field: any) => {
@@ -122,9 +127,9 @@ function RenderProperties({content, contenttype, mode, fields, as}: RenderProper
       <div
         className={
           'contenttype-' +
-          contenttype +
+          props.contenttype +
           ' content-view content-viewmode-' +
-          mode
+          props.mode
         }
       >
         {fields.map((field: any) => {
@@ -137,7 +142,6 @@ function RenderProperties({content, contenttype, mode, fields, as}: RenderProper
       </div>
     );
   }
-}
-
+};
 
 export default RenderProperties;

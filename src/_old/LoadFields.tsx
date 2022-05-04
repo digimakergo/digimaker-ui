@@ -1,64 +1,80 @@
 import './digimaker-ui.css';
-import React, { ReactEventHandler, ReactHTMLElement } from 'react';
+
+import * as React from 'react';
 import FieldRegister from './FieldRegister';
 import ReactTooltip from 'react-tooltip';
 import { FetchWithAuth } from './util';
 
-interface LoadFieldsProps {
-  type: string;
-  validation: any;
-  data: any;
-  editFields?: any;
-  language?: string;
-  mode?: string;
-  beforeField?: any;
-  afterField?: any;
-  onChange?: void;
-}
+export default class LoadFields extends React.Component<
+  {
+    type: string;
+    validation: any;
+    data: any;
+    editFields?: any;
+    language?: string;
+    mode?: string;
+    beforeField?: any;
+    afterField?: any;
+    onChange?: void;
+  },
+  { definition: any; typeArr: string[] }
+> {
+  constructor(props: any) {
+    super(props);
+    this.state = { definition: '', typeArr: [] };
+  }
 
-function LoadFields({type, validation, data, editFields, language, mode, beforeField, afterField, onChange}: LoadFieldsProps) {
-  const [definition, setDefinition] = React.useState('');
-  const [typeArr, setTypeArr] = React.useState([]);
-
-  const fetchData = () => {
-    let languageParams = language
-      ? '?language=' + language
+  //fetch fields definition
+  fetchData() {
+    console.log('remote:' + process.env.REACT_APP_REMOTE_URL);
+    let languageParams = this.props.language
+      ? '?language=' + this.props.language
       : '';
     FetchWithAuth(
       process.env.REACT_APP_REMOTE_URL +
         '/contenttype/get/' +
-        type.split('/')[0] +
+        this.props.type.split('/')[0] +
         languageParams
     ).then((data) => {
-      setDefinition(data.data);
-      setTypeArr(type.split('/'));
+      this.setState({
+        definition: data.data,
+        typeArr: this.props.type.split('/'),
+      });
     });
-  };
+  }
 
-  React.useEffect(() => {
-    fetchData();
-  }, [language]);
+  componentDidUpdate(prevProps) {
+    //todo: fix why it sends twice
+    if (prevProps.language != this.props.language) {
+      this.fetchData();
+    }
+  }
 
-  const fold = (e: React.BaseSyntheticEvent<EventTarget>) => {
+  fold(e) {
     e.preventDefault();
-    const target = e.target;
+    var target = e.target;
     if (target.classList.contains('container-close')) {
       target.classList.remove('container-close');
     } else {
       target.classList.add('container-close');
     }
-  };
+    console.log(target.classList);
+  }
 
-  const renderField = (field: any, containerLevel?: number) => {
+  componentDidMount() {
+    this.fetchData();
+  }
+
+  renderField(field: any, containerLevel: number = 1) {
     if (field.children) {
       return (
         <div
           key={field.identifier}
           className={`field-container level${containerLevel} field-${field.identifier}`}
         >
-          <div className='container-title' onClick={(e) => fold(e)}>
-            {beforeField &&
-              beforeField(field, data, null)}
+          <div className='container-title' onClick={(e) => this.fold(e)}>
+            {this.props.beforeField &&
+              this.props.beforeField(field, this.props.data, null)}
             <a href='#' className='closable'>
               <i className='fas fa-chevron-down'></i>
             </a>
@@ -84,14 +100,14 @@ function LoadFields({type, validation, data, editFields, language, mode, beforeF
                 {field.description}
               </ReactTooltip>
             )}
-            {afterField &&
-              afterField(field, data, null)}
+            {this.props.afterField &&
+              this.props.afterField(field, this.props.data, null)}
           </div>
           <div className='children'>
             {field.children.map((child) => {
               return (
                 <React.Fragment key={child.identifier}>
-                  {renderField(child, containerLevel + 1)}
+                  {this.renderField(child, containerLevel + 1)}
                 </React.Fragment>
               );
             })}
@@ -101,22 +117,22 @@ function LoadFields({type, validation, data, editFields, language, mode, beforeF
     } else {
       const typeStr = field.type;
       const fieldIdentifier = field.identifier;
-      const validationResult = validation;
+      const validationResult = this.props.validation;
 
-      const fieldPath = type.split('/')[0] + '/' + fieldIdentifier;
+      const fieldPath = this.props.type.split('/')[0] + '/' + fieldIdentifier;
       const Fieldtype: React.ReactType = FieldRegister.getFieldtype(
         typeStr,
         fieldPath
       );
       if (Fieldtype) {
-        const BeforeElement: React.ReactType = beforeField
-          ? beforeField(field, data, null)
+        const BeforeElement: React.ReactType = this.props.beforeField
+          ? this.props.beforeField(field, this.props.data, null)
           : null;
-        const AfterElement: React.ReactType = afterField
-          ? afterField(field, data, null)
+        const AfterElement: React.ReactType = this.props.afterField
+          ? this.props.afterField(field, this.props.data, null)
           : null;
         let required = false;
-        if (field.required && mode == 'edit') {
+        if (field.required && this.props.mode == 'edit') {
           required = true;
         }
 
@@ -124,7 +140,7 @@ function LoadFields({type, validation, data, editFields, language, mode, beforeF
         let errorMessage = '';
         let validationPassed = true;
         if (
-          mode == 'edit' &&
+          this.props.mode == 'edit' &&
           validationResult &&
           validationResult.fields &&
           validationResult.fields[fieldIdentifier]
@@ -138,7 +154,9 @@ function LoadFields({type, validation, data, editFields, language, mode, beforeF
             validationPassed = false;
           }
         }
+        let mode = this.props.mode;
         if (mode == 'edit') {
+          let editFields = this.props.editFields;
           if (
             editFields &&
             !editFields.includes('*') &&
@@ -165,9 +183,9 @@ function LoadFields({type, validation, data, editFields, language, mode, beforeF
             >
               <Fieldtype
                 definition={field}
-                data={data && data[fieldIdentifier]}
-                formdata={data}
-                contenttype={type}
+                data={this.props.data && this.props.data[fieldIdentifier]}
+                formdata={this.props.data}
+                contenttype={this.props.type}
                 validation={
                   validationResult && fieldIdentifier in validationResult.fields
                     ? validationResult.fields[fieldIdentifier]
@@ -193,14 +211,15 @@ function LoadFields({type, validation, data, editFields, language, mode, beforeF
     }
   }
 
-    if (!definition) {
+  render() {
+    if (!this.state.definition) {
       return <div className='loading'></div>;
     }
     let parent: any = '';
-    var fields = ((definition as unknown) as {fields: any}).fields;
-    if (typeArr.length > 1) {
+    var fields = this.state.definition.fields;
+    if (this.state.typeArr.length > 1) {
       var identifier: string;
-      identifier = typeArr[1];
+      identifier = this.state.typeArr[1];
       var currentField;
       fields.map((field) => {
         if (field.identifier == identifier) {
@@ -245,22 +264,21 @@ function LoadFields({type, validation, data, editFields, language, mode, beforeF
             )}
           </div>
         )}
-        <div className={'content-fields content-fields-' + mode}>
-          {validation && validation.message && (
+        <div className={'content-fields content-fields-' + this.props.mode}>
+          {this.props.validation && this.props.validation.message && (
             <div className='validation-failed validation-failed-error'>
-              validation.message
+              this.props.validation.message
             </div>
           )}
           {fields.map((field) => {
             return (
               <React.Fragment key={field.identifier}>
-                {renderField(field)}
+                {this.renderField(field)}
               </React.Fragment>
             );
           })}
         </div>
       </>
     );
+  }
 }
-
-export default LoadFields;

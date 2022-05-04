@@ -6,73 +6,92 @@ import {getDefinition} from './util';
 import Registry from './Registry';
 import { Modal, Accordion, Button } from 'react-bootstrap';
 
-export default class Actions extends React.Component<{ actionsConfig: any, fromview:string, content:any, iconOnly?:boolean, from?: any, selected?: any, afterAction?: any, parameters?: any }, {}> {
-  constructor(props: any) {
-    super(props);
-    this.state = {};
-  }
+interface ActionsProps {
+  actionsConfig: any;
+  fromview: string;
+  content: any;
+  iconOnly?: boolean;
+  from?: any;
+  selected?: any;
+  afterAction?: any;
+  parameters?: any;
+}
 
-  //render link
-  renderLink(config: any) {
-    let content = this.props.content;
+function Actions({actionsConfig, fromview, content, iconOnly, from, selected, afterAction, parameters}: ActionsProps) {
+  const renderLink = (config: any) => {
     let path = '';
-    let from = this.props.from;
-    if( config.link ){    
+    if (config.link) {
       let variables = {};
-      if( content ){
-        variables = {...content}; //can support more attribute also.
-        let def = getDefinition( content.content_type );
-        variables["_contenttype_id"] = def.has_location?content.id:(content.content_type+'/'+content.id);
-      }  
-      if(from){
-        for(let key in from){
-            variables["_from_"+key] = from[key];
+      if (content) {
+        variables = { ...content }; //can support more attribute also.
+        let def = getDefinition(content.content_type);
+        variables['_contenttype_id'] = def.has_location
+          ? content.id
+          : content.content_type + '/' + content.id;
+      }
+      if (from) {
+        for (let key in from) {
+          variables['_from_' + key] = from[key];
         }
       }
       path = util.washVariables(config.link, variables); //todo: support component here also
     }
 
-    let newWindow = config.new?true:false;
+    let newWindow = config.new ? true : false;
 
-    let linkText = (<><i className={config.icon ? ("icon " + config.icon) : ("fas fa-tools")}></i>{(!this.props.iconOnly)&&config.name ? config.name : ''}</>);
-
-    return (<div className="action-item">
-            {!newWindow&&<Link to={path} title={this.props.iconOnly?config.name:config.title}>
-                {linkText}
-            </Link>}
-            {newWindow&&<a href={path} title={config.title} target="_blank">{linkText}</a>}
-          </div>);
-  }
-
-  afterAction(){
-
-  }
-
-  render() {
-    let content = this.props.content;
-    let from = this.props.from;
-    let actions = this.props.actionsConfig;
-
-    if (!actions) {
-      return '';
-    }
+    let linkText = (
+      <>
+        <i className={config.icon ? 'icon ' + config.icon : 'fas fa-tools'}></i>
+        {!iconOnly && config.name ? config.name : ''}
+      </>
+    );
 
     return (
-      (<div className='actions'>
-        {actions.map((actionConfig: any) => {
-          if (actionConfig['link']) {
-            return this.renderLink(actionConfig);
-          }
-
-          if( actionConfig['com'] ){
-            let identifier = actionConfig['com'];
-            let Action = Registry.getComponent(identifier);
-            return <React.Suspense fallback="..."><Action config={actionConfig} parameters={this.props.parameters} fromview={this.props.fromview} selected={this.props.selected} afterAction={this.props.afterAction} content={this.props.content} from={this.props.from} /></React.Suspense>
-          }
-          return '';
-         })
-        }       
-      </div>)
+      <div className='action-item'>
+        {!newWindow && (
+          <Link to={path}>{linkText}</Link>
+        )}
+        {newWindow && (
+          <a href={path} target='_blank' rel='noopener noreferrer'>
+            {linkText}
+          </a>
+        )}
+      </div>
     );
+  };
+
+  if (!actionsConfig) {
+    return null;
   }
+
+  return (
+    <div className='actions'>
+      {actionsConfig.map((actions: any) => {
+        if (actions['link']) {
+          return renderLink(actions);
+        }
+
+        if (actions['com']) {
+          let identifier = actions['com'];
+          let Action = Registry.getComponent(identifier);
+          return (
+            <React.Suspense fallback='...'>
+              <Action
+                config={actions}
+                parameters={parameters}
+                fromview={fromview}
+                selected={selected}
+                afterAction={afterAction}
+                content={content}
+                from={from}
+              />
+            </React.Suspense>
+          );
+        }
+        return null;
+      })}
+    </div>
+  );
 }
+
+export default Actions;

@@ -2,19 +2,29 @@ import * as React from 'react';
 import {useAccordionToggle} from 'react-bootstrap/AccordionToggle';
 import { Accordion, Button } from 'react-bootstrap';
 
-export class IconToggle extends React.Component<{className:string, eventKey:string, open?:boolean},{open:boolean}> {
-  constructor(props: any) {
-    super(props);
-    this.state = {open:(props.open==false?false:true)};
-  }
-
-  click(){
-    this.setState({open: !this.state.open});
-  }
-
-  render(){
-    return ( <Accordion.Toggle as={Button} variant="link" bsPrefix="toggle" eventKey={this.props.eventKey} onClick={()=>{this.click()}}>
-    <i className={"foldable "+this.props.className+(this.state.open?' open':'')}></i>
-  </Accordion.Toggle>);
-  }
+interface IconToggleProps {
+  className: string;
+  eventKey: string;
+  open?: boolean;
 }
+
+function IconToggle({className, eventKey, open}: IconToggleProps) {
+  const [openState, setOpenState] = React.useState(open);
+  const toggle = useAccordionToggle(eventKey, () => {
+    setOpenState(!openState);
+  });
+
+  return (
+    <Accordion.Toggle
+      as={Button}
+      eventKey={eventKey}
+      variant='link'
+      bsPrefix='toggle'
+      onClick={toggle}
+    >
+      <i className={`foldable ${className}${openState ? ' open' : ''}`}></i>
+    </Accordion.Toggle>
+  );
+}
+
+export default IconToggle;
