@@ -32,13 +32,12 @@ export default class LoadFields extends React.Component<{ type: string, validati
 
     fold(e){
       e.preventDefault();
-      var target = e.target;
+      var target = e.currentTarget;
       if( target.classList.contains( 'container-close' ) ){
           target.classList.remove('container-close');
       }else{
           target.classList.add('container-close');
       }
-      console.log(target.classList);
     }
 
     componentDidMount() {
