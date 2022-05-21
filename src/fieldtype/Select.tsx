@@ -71,7 +71,10 @@ export default class FieldtypeSelect extends React.Component<{definition:any, va
     let def = this.props.definition;    
 
     return  <>
-            <label className="field-label">{this.props.definition.name}:</label>
+            <label className="field-label">{this.props.definition.name}
+            {this.props.definition.description&&<i className="icon-info" data-for={this.props.definition.identifier+'-desciption'} data-tip=""></i>}
+            {this.props.definition.description&&<ReactTooltip id={this.props.definition.identifier+'-desciption'} effect="solid" place="right" html={true} clickable={true} multiline={true} delayHide={500} className="tip">{this.props.definition.description}</ReactTooltip>}
+            :</label>
             <div className="field-value">
                 <Select className="fieldtype-relation-select" 
                         isMulti={this.state.isMulti}
