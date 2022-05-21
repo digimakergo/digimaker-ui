@@ -35,7 +35,9 @@ export default class LoadFields extends React.Component<{ type: string, validati
       var target = e.currentTarget;
       if( target.classList.contains( 'container-close' ) ){
           target.classList.remove('container-close');
+          target.classList.add('container-open');
       }else{
+          target.classList.remove('container-open');
           target.classList.add('container-close');
       }
     }
@@ -47,7 +49,7 @@ export default class LoadFields extends React.Component<{ type: string, validati
     renderField(field: any,containerLevel:number=1) {
         if (field.children) {
             return (<div key={field.identifier} className={`field-container level${containerLevel} field-${field.identifier}`}>
-            <div className="container-title" onClick={(e)=>this.fold(e)}>
+            <div className="container-title container-close" onClick={(e)=>this.fold(e)}>
               {this.props.beforeField&&this.props.beforeField(field, this.props.data, null)}
               <a href="#" className="closable">
                 <i className="fas fa-chevron-down"></i>
