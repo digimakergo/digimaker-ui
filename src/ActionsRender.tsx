@@ -63,10 +63,9 @@ export function ActionsRender({actionsConfig, actionProps, iconOnly}: ActionsPro
       if (actionProps.fromview=="content"||actionProps.fromview=="inline") {
         let content = (actionProps.params as ContentActionParams).content;
         variables = {...content}; //can support more attribute also.
-        let def = getDefinition(content.content_type);
-        variables['_contenttype_id'] = def.has_location
-          ? content.id
-          : content.content_type + '/' + content.id;
+        let def = getDefinition( content.metadata.contenttype );
+        variables["_location_id"] = def.has_location?content.location.id:content.location_id;
+        variables["_contenttype_id"] = def.has_location?content.id:(content.metadata.contenttype+'/'+content.id);
       }
       let from = actionProps.from;
       if (from) {

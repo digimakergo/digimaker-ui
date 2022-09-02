@@ -206,6 +206,8 @@ const util = {
 
  cookieKey:'refreshToken',
 
+ _vars: {},
+
  getRefreshToken:()=>{
     return cookies.get(util.cookieKey)
  },
@@ -243,6 +245,10 @@ const util = {
    return config;
  },
 
+ getName:(content:any)=>{
+    return content.metadata.name;
+ },
+
  //get allowed type under the parent content. condition example: "id/3:article or subtype/images:article"
  //only support id(3 is an ancestor id in the example) and subtype(images is the subtype of parent)
  getAllowedType:(content:any, condition:string)=>{
@@ -257,7 +263,7 @@ const util = {
       let value = arr[1];
       //when it's id
       if( fieldCond.length == 1 ){      
-        if( content.hierarchy.split('/').includes( fieldCond[0] ) ){
+        if( content.location.hierarchy.split('/').includes( fieldCond[0] ) ){
           return value;
         }else{
           return false;

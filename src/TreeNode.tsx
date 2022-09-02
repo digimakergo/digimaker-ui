@@ -117,7 +117,7 @@ function TreeNodeItem({data, selectedId, onClick, renderItem, onOpenClose}: Tree
           <span className='tree-text' title={node.name}>
             <i
               className={
-                'nodeicon far icon-' + node.content_type + ' ' + subtype
+                'nodeicon far icon-' + node.contenttype + ' ' + subtype
               }
             ></i>
             <span>{node.name}</span>
