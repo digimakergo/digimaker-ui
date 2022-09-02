@@ -2,6 +2,7 @@ import * as React from 'react';
 import Moment from 'react-moment';
 import FileUpload from '../FileUpload'
 import ReactTooltip from 'react-tooltip';
+import util from '../util';
 
 export default class Image extends React.Component<{definition:any, validation:any, mode: string, data:any},{data:any}> {
 
@@ -16,8 +17,8 @@ export default class Image extends React.Component<{definition:any, validation:a
 
     inline(){
       if(this.state.data){
-        let thumbnailPath = process.env.REACT_APP_THUMB_PATH.replace("{imagepath}", this.state.data);
-        thumbnailPath = process.env.REACT_APP_ASSET_URL + "/"+thumbnailPath;
+        let vars = {...util._vars, 'imagepath':this.state.data}; 
+        let thumbnailPath = util.washVariables(process.env.REACT_APP_THUMB_PATH, vars);
         return <img className="fieldtype-image-img" src={thumbnailPath} />;
       }else{
         return '';
@@ -48,7 +49,7 @@ export default class Image extends React.Component<{definition:any, validation:a
                                               onSuccess={(data)=>{this.updated(data)}} />
                 {this.state.data&&<>
                   {(this.state.data==this.props.data) && this.inline()}
-                  {(this.state.data!=this.props.data) && <img src={process.env.REACT_APP_ASSET_URL + "/"+this.state.data} /> }
+                  {(this.state.data!=this.props.data) && <img src={util.washVariables(process.env.REACT_APP_ASSET_URL, {...util._vars, 'imagepath':this.state.data} )} /> }
                 </>}
                 </div>
             </>

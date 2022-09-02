@@ -21,8 +21,9 @@ export default class Actions extends React.Component<{ actionsConfig: any, fromv
       let variables = {};
       if( content ){
         variables = {...content}; //can support more attribute also.
-        let def = getDefinition( content.content_type );
-        variables["_contenttype_id"] = def.has_location?content.id:(content.content_type+'/'+content.id);
+        let def = getDefinition( content.metadata.contenttype );
+        variables["_location_id"] = def.has_location?content.location.id:content.location_id;
+        variables["_contenttype_id"] = def.has_location?content.id:(content.metadata.contenttype+'/'+content.id);
       }  
       if(from){
         for(let key in from){
