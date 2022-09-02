@@ -85,6 +85,8 @@ function List({id, contenttype, config, onLinkClick, onRenderRow}: ListProps) {
     }
   }
 
+  setConfig();
+
   const getSortbyStr = (sortby: Array<Array<string>>) => {
     let arr: Array<string> = [];
     sortby.map((item) => {
@@ -124,7 +126,7 @@ function List({id, contenttype, config, onLinkClick, onRenderRow}: ListProps) {
   };
 
   const fetchData = () => {
-    let sortby = 'sortby=' + getSortbyStr(sortby);
+    let sortbyStr = 'sortby=' + getSortbyStr(sortby);
     let limit = '';
     let filter = '';
     let pagination = config.pagination;
@@ -145,7 +147,7 @@ function List({id, contenttype, config, onLinkClick, onRenderRow}: ListProps) {
         '&level=' +
         config.level +
         '&' +
-        sortby +
+        sortbyStr +
         limit +
         filter
     ).then((data) => {
@@ -460,23 +462,23 @@ function List({id, contenttype, config, onLinkClick, onRenderRow}: ListProps) {
   }
 
   const renderList = (data) => {
-    let totalPage = Math.ceil(list.count / this.config.pagination);
+    let totalPage = Math.ceil(list.count / config.pagination);
     return (
       <div key={counter}>
-        {this.config.show_header && (
+        {config.show_header && (
           <h3>
-            {this.config.show_header_icon && (
-              <FieldtypeIcon contenttype={this.contenttype} />
+            {config.show_header_icon && (
+              <FieldtypeIcon contenttype={contenttype} />
             )}
             {def.name}({list.count})
           </h3>
         )}
         {(() => {
-          switch (this.config.viewmode) {
+          switch (config.viewmode) {
             case 'block':
-              return this.renderBlocks(data);
+              return renderBlocks(data);
             case 'list':
-              return this.renderTable(data);
+              return renderTable(data);
             default:
               return '';
           }
@@ -533,7 +535,7 @@ function List({id, contenttype, config, onLinkClick, onRenderRow}: ListProps) {
                 title='Reload data'
                 onClick={(e) => {
                   e.preventDefault();
-                  this.refresh();
+                  refresh();
                 }}
               >
                 <i className='fas fa-sync'></i>
