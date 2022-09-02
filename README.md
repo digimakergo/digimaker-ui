@@ -1,9 +1,37 @@
-digimaker-ui is a react ui components for [Digimaker CMF](https://github.com/digimakergo/digimaker), including displaying, editing, field, content and related utils.
+---
+hidden: true
+---
 
+# digimaker-ui
 
-NPM Package: digimaker-ui (https://www.npmjs.com/package/digimaker-ui)
+## Getting Started
 
+Install dependencies,
 
-Documentation, visit: https://digimaker.org/doc/references/digimaker-ui
+```bash
+$ npm i
+```
 
-For digimaker documentation, visit https://digimaker.org/doc
+Start the dev server,
+
+```bash
+$ npm start
+```
+
+Build documentation,
+
+```bash
+$ npm run docs:build
+```
+
+Run test,
+
+```bash
+$ npm test
+```
+
+Build library via `father`,
+
+```bash
+$ npm run build
+```
