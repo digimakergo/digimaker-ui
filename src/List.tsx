@@ -13,7 +13,18 @@ import update from 'immutability-helper';
 interface ListProps {
   id: number;
   contenttype: string;
-  config: any;
+  config: {
+    request_url?: string;
+    sort_default: Array<string>;
+    sort: any;
+    columns: Array<string>;
+    show_header?: boolean;
+    show_table_header?: boolean;
+    actions: any;
+    row_actions?: any;
+    pagination: number;
+    row_more: any
+  };
   onLinkClick?: any;
   onRenderRow?: any;
 }
