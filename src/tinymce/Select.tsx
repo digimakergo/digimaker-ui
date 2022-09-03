@@ -1,13 +1,12 @@
 import * as React from 'react';
 import {Redirect} from 'react-router-dom';
 import List from '../List';
-import DMInit from 'digimaker-ui/DMInit';
 import Browse from '../Browse';
 import util from '../util';
 import {FetchWithAuth} from '../util';
 import { env } from 'process';
 
-export default class Select extends React.Component<{data:string}, {contenttype:string,selected: any, width: string, height: string}> {
+export default class Select extends React.Component<{data:string, browseConfig:any}, {contenttype:string,selected: any, width: string, height: string}> {
     private sentData = {image: '', width:'', height:''};
 
     constructor(props: any) {
@@ -49,12 +48,12 @@ export default class Select extends React.Component<{data:string}, {contenttype:
 
     render(){
         let browseConfig = util.getConfig().browse;
-        return <DMInit>            
+        return <div>
             <Browse contenttype={[this.state.contenttype]} selected={this.state.selected} trigger={true} inline={true} multi={false} config={browseConfig}  onConfirm={(selected)=>{this.selectImage(selected)}} />            
             <div className="tinymce-image-settings">
                 Width: <input defaultValue={this.state.width} size={3} onChange={(e)=>{this.sentData['width']=e.target.value;this.send()}} type="text" />
                 Height: <input defaultValue={this.state.height} size={3} onChange={(e)=>{this.sentData['height']=e.target.value;this.send()}}  type="text" />                
             </div>
-            </DMInit>
+            </div>;
     }
 }
