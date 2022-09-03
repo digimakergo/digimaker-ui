@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { FetchWithAuth, useDialog, Dialog, getDefinition } from '../util';
+import { FetchWithAuth, Dialog, getDefinition } from '../util';
 
 const Delete = (props) => {
   const [shown, setShown] = React.useState(false);

@@ -13,7 +13,7 @@ export default class Move extends React.Component<{config:any, content:any, from
   getContainerTypes(contenttype:string){
     //todo: use other way to get list since this one is not reliable
     let filterConfig = util.getConfig().browse.filter;
-    let result = util.getSettings( filterConfig, contenttype ).contenttype;
+    let result = util.getSettings( filterConfig, contenttype, "" ).contenttype;
     return result;
   }
 

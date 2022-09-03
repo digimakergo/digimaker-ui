@@ -213,7 +213,7 @@ const util = {
 
  alertFunc:null,
 
- alert:(message:any, title:string, type:string)=>{
+ alert:(message:any, title:string, type?:string)=>{
   if( util.alertFunc ){
     util.alertFunc( message, type, title );
   }else{

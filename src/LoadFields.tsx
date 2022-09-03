@@ -56,7 +56,7 @@ function LoadFields({type, validation, data, editFields, language, mode, beforeF
           key={field.identifier}
           className={`field-container level${containerLevel} field-${field.identifier}`}
         >
-          <div className='container-title' onClick={(e) => fold(e)}>
+          <div className='container-title' onClick={(e:any) => fold(e)}>
             {beforeField &&
               beforeField(field, data, null)}
             <a href='#' className='closable'>
