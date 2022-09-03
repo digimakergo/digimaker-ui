@@ -96,7 +96,9 @@ function List({id, contenttype, config, onLinkClick, onRenderRow}: ListProps) {
     }
   }
 
-  setConfig();
+  useEffect(() => {
+    setConfig();
+  }, []);
 
   const getSortbyStr = (sortby: Array<Array<string>>) => {
     let arr: Array<string> = [];
