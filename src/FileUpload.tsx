@@ -1,11 +1,21 @@
 import * as React from 'react';
 
 interface FileUploadProps {
+  /** Form field name, similar to input name attribute */
   name: string;
+  /** Service, eg. content */
   service: string;
+
+  /** Accept format by browser, eg. image/\* or png,jpg. Check file input 'accept' in html */
   format: string;
+
+  /** Default value, eg. file relative path */
   value: string;
+
+  /** support multi select */
   multi?: boolean;
+
+  /** success callback. fileInfo{nameUploaded - uploaded name} object as parameter */
   onSuccess?: any;
 }
 
