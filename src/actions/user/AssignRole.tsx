@@ -1,7 +1,7 @@
 import * as React from 'react';
-import {FetchWithAuth} from '../util';
-import util from '../util';
-import Browse from '../Browse';
+import {FetchWithAuth} from '../../util';
+import util from '../../util';
+import Browse from '../../Browse';
 
 
 export default class AssignRole extends React.Component<{from:any, changed:boolean, selected?:any, afterAction?:any}, {triggered:boolean}> {

@@ -1,8 +1,8 @@
 import * as React from 'react';
-import {FetchWithAuth} from '../util';
-import util from '../util';
-import Browse from '../Browse';
-import {Dialog} from '../util';
+import {FetchWithAuth} from '../../util';
+import util from '../../util';
+import Browse from '../../Browse';
+import {Dialog} from '../../util';
 
 
 
