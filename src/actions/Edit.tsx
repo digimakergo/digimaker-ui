@@ -2,9 +2,9 @@ import * as React from 'react';
 import Moment from 'react-moment';
 import { RouteProps } from 'react-router';
 import { Link, Redirect } from "react-router-dom";
-import LoadFields from 'digimaker-ui/LoadFields';
-import Registry from 'digimaker-ui/Registry';
-import {FetchWithAuth} from 'digimaker-ui/util';
+import LoadFields from '../LoadFields';
+import Registry from '../Registry';
+import {FetchWithAuth} from '../util';
 
 export default class Edit extends React.Component<{id:number, contenttype?:string, afterAction:any}, {content:any,validation:{}}> {
 

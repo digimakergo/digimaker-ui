@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Collapse, Button } from 'react-bootstrap';
-import util from 'digimaker-ui/util';
+import util from '../util';
 import DateTime from 'react-datetime';
 import moment from 'moment'
 

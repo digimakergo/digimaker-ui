@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {FetchWithAuth} from 'digimaker-ui/util';
+import {FetchWithAuth} from '../util';
 
 export default class Copy extends React.Component<{from:any, changed:boolean, selected?:any}, {triggered:boolean}> {
 

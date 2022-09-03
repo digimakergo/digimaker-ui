@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {FetchWithAuth} from 'digimaker-ui/util';
+import {FetchWithAuth} from '../util';
 
 export default class SetToTop extends React.Component<{from:any, content:any, afterAction:any}, {}> {
   private priortyStep = 100;

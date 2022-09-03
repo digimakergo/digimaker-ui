@@ -2,9 +2,9 @@ import * as React from 'react';
 import Moment from 'react-moment';
 import { RouteProps } from 'react-router';
 import { Link, Redirect } from "react-router-dom";
-import LoadFields from 'digimaker-ui/LoadFields';
-import {FetchWithAuth} from 'digimaker-ui/util';
-import util from 'digimaker-ui/util';
+import LoadFields from '../LoadFields';
+import {FetchWithAuth} from '../util';
+import util from '../util';
 
 
 export default class Create extends React.Component<{parent:number, contenttype:string, afterAction:any}, {validation:{}}> {

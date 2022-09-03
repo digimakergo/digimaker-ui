@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {FetchWithAuth, Dialog} from 'digimaker-ui/util';
+import {FetchWithAuth, Dialog} from '../util';
 
 
 export default class SetPriority extends React.Component<{from:any, content:any, afterAction:any}, {error:string, dialog:boolean, value:string, newValue:string}> {

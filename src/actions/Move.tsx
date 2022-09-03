@@ -1,7 +1,7 @@
 import * as React from 'react';
-import {FetchWithAuth} from 'digimaker-ui/util';
-import Browse from 'digimaker-ui/Browse';
-import util from 'digimaker-ui/util';
+import {FetchWithAuth} from '../util';
+import Browse from '../Browse';
+import util from '../util';
 
 export default class Move extends React.Component<{config:any, content:any, from:any, counter:number, afterAction:any; selected?:any}, {shown:boolean, operating:boolean}> {
 
