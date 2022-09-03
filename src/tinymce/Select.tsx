@@ -1,10 +1,10 @@
 import * as React from 'react';
 import {Redirect} from 'react-router-dom';
-import List from 'digimaker-ui/List';
+import List from '../List';
 import DMInit from 'digimaker-ui/DMInit';
-import Browse from 'digimaker-ui/Browse';
-import util from 'digimaker-ui/util';
-import {FetchWithAuth} from 'digimaker-ui/util';
+import Browse from '../Browse';
+import util from '../util';
+import {FetchWithAuth} from '../util';
 import { env } from 'process';
 
 export default class Select extends React.Component<{data:string}, {contenttype:string,selected: any, width: string, height: string}> {
