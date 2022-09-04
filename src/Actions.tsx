@@ -12,7 +12,12 @@ export interface ListActionParams{
    listConfig: any; //todo: define
 
    /** after action for refresh list */
-   afterAction: (refresh:boolean, newConfig:any)=>void; //todo: define 'any'
+   afterAction: (refresh:boolean, newConfig:ListAfterActionConfig)=>void; //todo: define 'any'
+}
+
+export interface ListAfterActionConfig{
+  filter:any; //todo: define any
+  sort: any; //todo: define any
 }
 
 export interface ActionProps{
