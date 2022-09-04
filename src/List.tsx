@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Moment from 'react-moment';
 import {FetchWithAuth, getDefinition, getFields, getCommonFieldName} from './util';
 import ListRowActions from './ListRowActions';
-import Actions from './Actions';
+import Actions, { ListAfterActionConfig } from './Actions';
 import FieldRegister from './FieldRegister';
 import RenderProperties from './RenderProperties';
 import FieldtypeIcon from './FieldtypeIcon';
@@ -18,11 +18,12 @@ interface ActionsType {
   com: string | JSX.Element;
 }
 
+
 interface ListProps {
   id: number;
   contenttype: string;
   request_url?: string;
-  sort_default: string[];
+  sort_default: string[][];
   sort: any;
   columns: string[];
   show_header?: boolean;
@@ -52,7 +53,7 @@ function List({id, contenttype, onLinkClick, onRenderRow, ...props}: ListProps) 
     actions: props.actions || [],
     pagination: props.pagination || 0,
   } as any);
-  const [sortby, setSortby] = useState<Array<string>>(
+  const [sortby, setSortby] = useState<Array<Array<string>>>(
     props['sort_default']
   );
   const [selected, setSelected] = useState<number[]>([]);
@@ -132,7 +133,7 @@ function List({id, contenttype, onLinkClick, onRenderRow, ...props}: ListProps) 
   }
 
   //callback after an action is done.
-  const afterAction = (isRefresh: boolean, config: any = {}) => {
+  const afterAction = (isRefresh: boolean, config?: ListAfterActionConfig) => {
     if (isRefresh) {
       const configObj = { ...config };
       setConfigObject({
@@ -644,7 +645,7 @@ function List({id, contenttype, onLinkClick, onRenderRow, ...props}: ListProps) 
             selected.includes(item.id)
           ),
           listConfig:config,
-          afterAction: (refresh: boolean, config: any) =>
+          afterAction: (refresh: boolean, config: ListAfterActionConfig ) =>
             afterAction(refresh, config)          
           }
           }
