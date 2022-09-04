@@ -22,9 +22,9 @@ interface ListProps {
   id: number;
   contenttype: string;
   request_url?: string;
-  sort_default: Array<string>;
+  sort_default: string[];
   sort: any;
-  columns: Array<string>;
+  columns: string[];
   show_header?: boolean;
   show_table_header?: boolean;
   actions: Partial<ActionsType>[];
