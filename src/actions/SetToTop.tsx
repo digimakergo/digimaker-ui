@@ -1,16 +1,19 @@
 import * as React from 'react';
+import { ActionProps, ContentActionParams } from '../Actions';
 import {FetchWithAuth} from '../util';
 
-export default class SetToTop extends React.Component<{from:any, content:any, afterAction:any}, {}> {
+export default class SetToTop extends React.Component<ActionProps, {}> {
   private priortyStep = 100;
+  private params: ContentActionParams;
 
-  constructor(props: any) {
+  constructor(props: ActionProps) {
       super(props);
+      this.params = props.params as ContentActionParams;
   }
 
 
   removePriority(){
-    let content = this.props.content;
+    let content = this.params.content;
     this.setPriority(content.id, 0);
   }
 
@@ -18,13 +21,13 @@ export default class SetToTop extends React.Component<{from:any, content:any, af
     FetchWithAuth(process.env.REACT_APP_REMOTE_URL + '/content/setpriority?params='+id+','+priority)
       .then((data:any)=>{
           if( data.error === false ){
-            this.props.afterAction();
+            this.params.afterAction(true);
           }
       });
   }
 
   setToTop(){
-    let content = this.props.content;
+    let content = this.params.content;
     FetchWithAuth(process.env.REACT_APP_REMOTE_URL + '/content/list/'+content.content_type+'?parent='+content.parent_id+'&sortby=priority%20desc&limit=1&offset=0')
       .then((data:any)=>{
         if( data.error === false ){
@@ -49,7 +52,7 @@ export default class SetToTop extends React.Component<{from:any, content:any, af
   }
 
   render(){
-    let priority = this.props.content.priority;
+    let priority = this.params.content.priority;
     return (<div><a href="#" onClick={(e)=>this.click( e,priority )}>
                 {priority!=0&&<><i className="fas fa-times"></i> Remove priority</>}
                 {priority==0&&<><i className="fas fa-long-arrow-alt-up"></i> Set top priority</>}

@@ -4,11 +4,19 @@ import util from './util';
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import Actions from './Actions';
 
+/** props for ListRowActionsProps */
 interface ListRowActionsProps {
+  /** Selected content */
   content: any;
+  /** from object */
   from: any;
+
+  /** action config array */
   config: any;
-  afterAction: any;
+  /** refresh after action callback */
+  afterAction: (refresh:boolean)=>void;
+
+  /** visiable number, rest is in pop up menu */
   visibleNumber?: number;
 }
 
@@ -20,20 +28,24 @@ function ListRowActions({content, from, config, afterAction, visibleNumber}: Lis
     setMenuShown(!menuShown);
   };
 
-  const setPropsAfterAction = () => {
+  const setPropsAfterAction = (refresh:boolean) => {
     setMenuShown(false);
-    afterAction(true);
+    afterAction(refresh);
   };
 
   const renderActions = (actionConfig: any, iconOnly: boolean) => {
     return (
       <Actions
-        content={content}
         iconOnly={iconOnly}
-        from={from}
-        fromview='inline'
-        selected={content}
-        afterAction={() => setPropsAfterAction()}
+        actionProps={{
+          from: from,
+          fromview: 'inline',
+          params:{
+            content:content,
+            afterAction: (refresh:boolean, jumpToParent: boolean) => setPropsAfterAction(refresh)
+          }
+        }
+        }
         actionsConfig={actionConfig}
       />
     );

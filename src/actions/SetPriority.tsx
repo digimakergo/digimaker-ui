@@ -1,12 +1,14 @@
 import * as React from 'react';
+import { ActionProps, ContentActionParams } from '../Actions';
 import {FetchWithAuth, Dialog} from '../util';
 
 
-export default class SetPriority extends React.Component<{from:any, content:any, afterAction:any}, {error:string, dialog:boolean, value:string, newValue:string}> {
+export default class SetPriority extends React.Component<ActionProps, {error:string, dialog:boolean, value:string, newValue:string}> {
 
-    constructor(props){
+    constructor(props:ActionProps){
         super(props);
-        this.state = {error:'', dialog:false, value:props.content.priority, newValue:props.content.priority};
+        let priority = (props.params as ContentActionParams).content.priority;
+        this.state = {error:'', dialog:false, value:priority, newValue:priority};
     }
 
     showDialog =()=>{
@@ -19,7 +21,7 @@ export default class SetPriority extends React.Component<{from:any, content:any,
     }
 
     submit = ()=>{
-        FetchWithAuth(process.env.REACT_APP_REMOTE_URL + '/content/setpriority?params='+this.props.content.id+','+this.state.value)
+        FetchWithAuth(process.env.REACT_APP_REMOTE_URL + '/content/setpriority?params='+(this.props.params as ContentActionParams).content.id+','+this.state.value)
         .then((data:any)=>{
             if( data.error === false ){
                 this.setState({dialog:false, newValue:this.state.value});

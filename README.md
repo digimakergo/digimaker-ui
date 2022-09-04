@@ -4,34 +4,15 @@ hidden: true
 
 # digimaker-ui
 
-## Getting Started
+digimaker-ui is the ui components for Digimaker CMF, developed in React. It provides client features like create, edit, delete, actions and other editorial features.
 
-Install dependencies,
+By default it's using boostrap for styling ui, we are supporting other ui framework like mui.
 
-```bash
-$ npm i
-```
+Components:
+- List(include block view)
+- TreeNode
+- Browse
+- Util. eg. FileUpload
+- Views: content view, version view
+- Actions: create, edit, delete, filter, move, copy, set to top, set priority, assign/unassign role, disable user
 
-Start the dev server,
-
-```bash
-$ npm start
-```
-
-Build documentation,
-
-```bash
-$ npm run docs:build
-```
-
-Run test,
-
-```bash
-$ npm test
-```
-
-Build library via `father`,
-
-```bash
-$ npm run build
-```
