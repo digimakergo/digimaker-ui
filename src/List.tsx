@@ -610,17 +610,20 @@ function List({id, contenttype, config, onLinkClick, onRenderRow}: ListProps) {
         {/*todo: give message if it's not selected(may depend on setting) */}
         {loading && <span className='loading'></span>}
         <Actions
-          fromview='list'
-          parameters={{ contenttype: contenttype }}
-          from={{ id: id }}
-          content={null}
-          selected={list.list.filter((item) =>
+        actionProps={{
+          fromview:'list',
+          from: { id: id, list_contenttype: contenttype },
+          params:{
+            selected: list.list.filter((item) =>
             selected.includes(item.id)
-          )}
-          actionsConfig={config.actions}
-          afterAction={(refresh: boolean, config: any) =>
-            afterAction(refresh, config)
+          ),
+          listConfig:config,
+          afterAction: (refresh: boolean, config: any) =>
+            afterAction(refresh, config)          
           }
+          }
+        }          
+          actionsConfig={config.actions}          
         />
         {!config.show_table_header && (
           <span>

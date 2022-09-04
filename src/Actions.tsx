@@ -4,31 +4,59 @@ import ReactTooltip from "react-tooltip";
 import util from './util';
 import {getDefinition} from './util';
 import Registry from './Registry';
-import { Modal, Accordion, Button } from 'react-bootstrap';
 
-interface ActionsProps {
-  actionsConfig: any;
-  fromview: string;
-  content: any;
-  iconOnly?: boolean;
-  from?: any;
-  selected?: any;
-  afterAction?: any;
-  parameters?: any;
+export interface ListActionParams{
+   /** selected content list */
+   selected: Array<any>; //todo: define any as content
+   /** config of the list, include eg. sort array */
+   listConfig: any; //todo: define
+
+   /** after action for refresh list */
+   afterAction: (refresh:boolean, newConfig:any)=>void; //todo: define 'any'
 }
 
-function Actions({actionsConfig, fromview, content, iconOnly, from, selected, afterAction, parameters}: ActionsProps) {
+export interface ActionProps{
+  /** the view when it's trigged */
+  fromview: "list"|"content"|"inline";
+  /** params when being trigged */
+  params: ListActionParams|ContentActionParams;
+  /** from object.eg:{id: 22} */
+  from?: {id: number, list_contenttype?:string};
+  counter?:number
+}
+
+export interface ContentActionParams{
+   /** from object */
+   from?: any;//eg.{id:22}
+
+   /** content on */
+   content:any; //todo: define 'any'
+   /** After action callback */
+   afterAction: (refresh:boolean, jumpToParent?: boolean)=>void;
+}
+
+
+interface ActionsProps {
+  /** action configs */
+  actionsConfig: any;
+  actionProps:ActionProps;
+  iconOnly?: boolean;
+}
+
+function Actions({actionsConfig, actionProps, iconOnly}: ActionsProps) {
   const renderLink = (config: any) => {
     let path = '';
     if (config.link) {
       let variables = {};
-      if (content) {
-        variables = { ...content }; //can support more attribute also.
+      if (actionProps.fromview=="content"||actionProps.fromview=="inline") {
+        let content = (actionProps.params as ContentActionParams).content;
+        variables = {...content}; //can support more attribute also.
         let def = getDefinition(content.content_type);
         variables['_contenttype_id'] = def.has_location
           ? content.id
           : content.content_type + '/' + content.id;
       }
+      let from = actionProps.from;
       if (from) {
         for (let key in from) {
           variables['_from_' + key] = from[key];
@@ -66,7 +94,7 @@ function Actions({actionsConfig, fromview, content, iconOnly, from, selected, af
 
   return (
     <div className='actions'>
-      {actionsConfig.map((actions: any) => {
+      {actionsConfig.map((actions: any, i:number) => {
         if (actions['link']) {
           return renderLink(actions);
         }
@@ -77,13 +105,8 @@ function Actions({actionsConfig, fromview, content, iconOnly, from, selected, af
           return (
             <React.Suspense fallback='...'>
               <Action
-                config={actions}
-                parameters={parameters}
-                fromview={fromview}
-                selected={selected}
-                afterAction={afterAction}
-                content={content}
-                from={from}
+                {...{...actionProps, counter: i}}
+                config = {actions}
               />
             </React.Suspense>
           );

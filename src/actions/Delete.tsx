@@ -1,9 +1,11 @@
 import * as React from 'react';
 import { FetchWithAuth, Dialog, getDefinition } from '../util';
+import {ActionProps, ContentActionParams, ListActionParams} from '../Actions';
 
-const Delete = (props) => {
+const Delete = (props:ActionProps) => {
   const [shown, setShown] = React.useState(false);
-  const selected = props.selected;
+  const params = props.params as ContentActionParams;
+  const selected = params.content;
   const def = getDefinition(selected.content_type);
 
   const body = () => {
@@ -19,21 +21,21 @@ const Delete = (props) => {
   }
 
   const submit = () => {
-    let idStr = props.selected.id;
-    let params = '';
+    let idStr = selected.id;
+    let paramsStr = '';
     if( def.has_location ){
-      params = 'id='+idStr;
+      paramsStr = 'id='+idStr;
     }else{
-      params = 'cid='+idStr+'&type='+ props.selected.content_type
+      paramsStr = 'cid='+idStr+'&type='+ selected.content_type
     }
-    FetchWithAuth(process.env.REACT_APP_REMOTE_URL + '/content/delete?'+params)
+    FetchWithAuth(process.env.REACT_APP_REMOTE_URL + '/content/delete?'+paramsStr)
       .then((data) => {
         if( data.error === false ){
           let jumpToParent = false;
           if (props.fromview=='content') {
             jumpToParent = true;
           }
-          props.afterAction(true, jumpToParent); 
+          params.afterAction(true, jumpToParent); 
          }
         }
       );
@@ -41,7 +43,7 @@ const Delete = (props) => {
 
   return (
     <div className='action-item'>
-    <a href="javascript:void(0)" onClick={()=>setShown(true)}><i className="fas fa-trash"></i>{props.config['name']}</a>
+    <a href="javascript:void(0)" onClick={()=>setShown(true)}><i className="fas fa-trash"></i>Delete</a>
     {shown&&<Dialog key={props.counter} title={"Delete "+def.name} onClose={()=>setShown(false)} onSubmit={submit}>
       {body()}
     </Dialog>}</div>
