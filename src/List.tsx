@@ -20,19 +20,44 @@ interface ActionsType {
 
 
 interface ListProps {
+  /** parent id of the list */
   id: number;
+
+  /** list's content type */
   contenttype: string;
+
+  /** request url. useful when you use customized api */
   request_url?: string;
+
+  /** default sort eg. [["published", "desc"]] */
   sort_default: string[][];
+
+  /** sortable columns(an arrow will appear on the column). eg {"published":"desc", "priority":"desc"}, where "desc" is the default order */
   sort: any;
+  
+  /** columns which is the fields */
   columns: string[];
+
+  /** show content type name as header, default false */
   show_header?: boolean;
+
+  /** show table head names(eg. 'Name') and sort icons */
   show_table_header?: boolean;
+
+  /** List actions above, eg. create, delete after selection */
   actions: Partial<ActionsType>[];
+
+  /** Actions on each record */
   row_actions?: Partial<ActionsType>[];
-  pagination: number;
-  onLinkClick?: any;
-  onRenderRow?: any;
+
+  /** Pagination, 0 means no pagination */
+  pagination: number; //todo: check if 0 is working
+
+  /** callback when clicking link(eg. link on name) */
+  onLinkClick?: (content:any)=>void;
+
+  /** onRenderRow, return classes(eg. "dm-row dm-row-image") */
+  onRenderRow?: (content:any)=>string;
 }
 
 function List({id, contenttype, onLinkClick, onRenderRow, ...props}: ListProps) {
