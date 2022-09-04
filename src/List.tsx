@@ -11,11 +11,11 @@ import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import update from 'immutability-helper';
 
 interface ActionsType {
-  link: string;
+  link?: string;
   name: string;
   icon: string;
   title: string;
-  com: string | JSX.Element;
+  com?: string | JSX.Element;
 }
 
 
