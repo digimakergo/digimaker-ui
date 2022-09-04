@@ -10,90 +10,113 @@ import {DDCard} from './DDCard';
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import update from 'immutability-helper';
 
+interface ActionsType {
+  link: string;
+  name: string;
+  icon: string;
+  title: string;
+  com: string | JSX.Element;
+}
+
 interface ListProps {
   id: number;
   contenttype: string;
-  config: {
-    request_url?: string;
-    sort_default: Array<string>;
-    sort: any;
-    columns: Array<string>;
-    show_header?: boolean;
-    show_table_header?: boolean;
-    actions: any;
-    row_actions?: any;
-    pagination: number;
-    row_more: any
-  };
+  request_url?: string;
+  sort_default: Array<string>;
+  sort: any;
+  columns: Array<string>;
+  show_header?: boolean;
+  show_table_header?: boolean;
+  actions: Partial<ActionsType>[];
+  row_actions?: Partial<ActionsType>[];
+  pagination: number;
   onLinkClick?: any;
   onRenderRow?: any;
 }
 
-function List({id, contenttype, config, onLinkClick, onRenderRow}: ListProps) {
+function List({id, contenttype, onLinkClick, onRenderRow, ...props}: ListProps) {
   const [def, setDef] = useState(null);
   const [loading, setLoading] = useState(true);
   const [counter, setCounter] = useState(0);
   const [list, setList] = useState<any>();
   const [actionNew, setActionNew] = useState(false);
   const [currentPage, setCurrentPage] = useState(0);
-  const [sortby, setSortby] = useState<Array<Array<string>>>(
-    config['sort_default']
+  const [config, setConfigObject] = useState({
+    request_url: props.request_url || '',
+    sort_default: props.sort_default || [],
+    sort: props.sort || [],
+    columns: props.columns || [],
+    show_header: props.show_header || false,
+    show_table_header: props.show_table_header || false,
+    row_actions: props.row_actions || [],
+    actions: props.actions || [],
+    pagination: props.pagination || 0,
+  } as any);
+  const [sortby, setSortby] = useState<Array<string>>(
+    props['sort_default']
   );
   const [selected, setSelected] = useState<number[]>([]);
   const [filter, setFilter] = useState<string[]>([]);
 
   const setConfig = () => {
-    config = config || {};
+    let _config = {};
 
     if (config['request_url'] == undefined) {
-      config['request_url'] = 'content/list/' + contenttype;
+      _config['request_url'] = 'content/list/' + contenttype;
     }
     if (!config['sort_default']) {
-      config['sort_default'] = [['id', 'desc']];
+      _config['sort_default'] = ['id', 'desc'];
     }
     if (config['can_select'] == undefined) {
-      config['can_select'] = true;
+      _config['can_select'] = true;
     }
     if (config['pagination'] == undefined) {
-      config['pagination'] = '-1';
+      _config['pagination'] = '-1';
     }
     if (config['sort'] == undefined) {
-      config['sort'] = [];
+      _config['sort'] = [];
     }
     if (config['row_actions'] == undefined) {
-      config['row_actions'] = [];
+      _config['row_actions'] = [];
     }
 
     if (config['row_actions_visible'] == undefined) {
-      config['row_actions_visible'] = 0;
+      _config['row_actions_visible'] = 0;
     }
 
     if (config['show_table_header'] == undefined) {
-      config['show_table_header'] = true;
+      _config['show_table_header'] = true;
     }
 
     if (config['show_header_icon'] == undefined) {
-      config['show_header_icon'] = true;
+      _config['show_header_icon'] = true;
     }
 
     if (config['columns'] == undefined) {
-      config['columns'] = [];
+      _config['columns'] = [];
     }
     if (config['viewmode'] == undefined) {
-      config['viewmode'] = 'list';
+      _config['viewmode'] = 'list';
     }
     if (config['block_fields'] == undefined) {
-      config['block_fields'] = [];
+      _config['block_fields'] = [];
     }
     if (config['level'] == undefined) {
-      config['level'] = 1;
+      _config['level'] = 1;
     }
     if (config['can_dd'] == undefined) {
-      config['can_dd'] = true;
+      _config['can_dd'] = true;
     }
     if (config['filter'] == undefined) {
-      config['filter'] = [];
+      _config['filter'] = [];
     }
+
+    setConfigObject(prevConfig => {
+      return {
+        ...prevConfig,
+        ..._config
+      }
+    });
   }
 
   useEffect(() => {
@@ -112,7 +135,10 @@ function List({id, contenttype, config, onLinkClick, onRenderRow}: ListProps) {
   const afterAction = (isRefresh: boolean, config: any = {}) => {
     if (isRefresh) {
       const configObj = { ...config };
-      config = { ...configObj, ...config };
+      setConfigObject({
+        ...configObj,
+        ...config
+      })
       refresh();
     }
   }
