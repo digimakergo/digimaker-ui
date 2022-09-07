@@ -668,7 +668,7 @@ function List({id, contenttype, onLinkClick, onRenderRow, ...props}: ListProps) 
             selected.includes(item.id)
           ),
           listConfig:config,
-          afterAction: (config: ListAfterActionConfig ) =>
+          afterAction: (config?: ListAfterActionConfig ) =>
             afterAction(config)          
           }
           }

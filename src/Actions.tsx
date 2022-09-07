@@ -12,7 +12,7 @@ export interface ListActionParams{
    listConfig: any; //todo: define
 
    /** after action it will refresh list */
-   afterAction: (newConfig:ListAfterActionConfig)=>void; //todo: define 'any'
+   afterAction: (newConfig?:ListAfterActionConfig)=>void; //todo: define 'any'
 }
 
 export interface ListAfterActionConfig{

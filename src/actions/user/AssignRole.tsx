@@ -2,9 +2,10 @@ import * as React from 'react';
 import {FetchWithAuth} from '../../util';
 import util from '../../util';
 import Browse from '../../Browse';
+import { ActionProps, ListActionParams } from '../../Actions';
 
 
-export default class AssignRole extends React.Component<{from:any, changed:boolean, selected?:any, afterAction?:any}, {triggered:boolean}> {
+export default class AssignRole extends React.Component<ActionProps, {triggered:boolean}> {
 
   constructor(props: any) {
       super(props);
@@ -21,7 +22,8 @@ export default class AssignRole extends React.Component<{from:any, changed:boole
       FetchWithAuth(process.env.REACT_APP_REMOTE_URL + '/access/assign/'+this.props.from.id+'/'+target.cid)
           .then((data) => {
             if( data.error === false ){
-              this.props.afterAction(true, false)
+              let listParams = this.props.params as ListActionParams
+              .afterAction()
             }
           });
     }
