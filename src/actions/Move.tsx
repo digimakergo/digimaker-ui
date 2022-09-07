@@ -2,8 +2,10 @@ import * as React from 'react';
 import {FetchWithAuth} from '../util';
 import Browse from '../Browse';
 import util from '../util';
+import { ActionProps, ContentActionParams} from '../Actions';
 
-export default class Move extends React.Component<{config:any, content:any, from:any, counter:number, afterAction:any; selected?:any}, {shown:boolean, operating:boolean}> {
+export default class Move extends React.Component<ActionProps, {shown:boolean, operating:boolean}> {
+
 
   constructor(props: any) {
       super(props);
@@ -20,11 +22,13 @@ export default class Move extends React.Component<{config:any, content:any, from
   selectedTarget(target){
       if(target){
         this.setState({operating: true});
-        FetchWithAuth(process.env.REACT_APP_REMOTE_URL + "/content/move/"+this.props.content.id+"/"+target.id)
+        let params = this.props.params as ContentActionParams;
+        let id = params.content.id;
+        FetchWithAuth(process.env.REACT_APP_REMOTE_URL + "/content/move/"+id+"/"+target.id)
             .then((data) => {
               if( data.error === false ){
                 this.setState({operating: false});
-                this.props.afterAction(true, false)
+                params.afterAction();
               }
             })
       }
@@ -32,11 +36,13 @@ export default class Move extends React.Component<{config:any, content:any, from
   }
 
   render(){
+    let params = this.props.params as ContentActionParams;
+
     return <div>
         <a href="javascript:void(0)" onClick={()=>this.setState({shown:true})}>
-        <i className={this.props.config['icon']}></i>{this.props.config['name']}</a>
+        <i className="icon-move"></i>Move</a>
         {this.state.operating&&<div>Loading...</div>}
-        {this.state.shown&&<Browse key={this.props.counter} trigger={true} config={util.getConfig().browse} contenttype={this.getContainerTypes(this.props.content.content_type)} onConfirm={(target:any)=>{this.selectedTarget(target)}} onCancel={()=>this.setState({shown:false})} />}
+        {this.state.shown&&<Browse key={this.props.counter} trigger={true} config={util.getConfig().browse} contenttype={this.getContainerTypes(params.content.content_type)} onConfirm={(target:any)=>{this.selectedTarget(target)}} onCancel={()=>this.setState({shown:false})} />}
         </div>
   }
 }
