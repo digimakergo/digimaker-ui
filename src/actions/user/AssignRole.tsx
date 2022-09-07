@@ -22,8 +22,8 @@ export default class AssignRole extends React.Component<ActionProps, {triggered:
       FetchWithAuth(process.env.REACT_APP_REMOTE_URL + '/access/assign/'+this.props.from.id+'/'+target.cid)
           .then((data) => {
             if( data.error === false ){
-              let listParams = this.props.params as ListActionParams
-              .afterAction()
+              let listParams = this.props.params as ListActionParams;
+              listParams.afterAction();
             }
           });
     }

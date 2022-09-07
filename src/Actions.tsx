@@ -27,6 +27,8 @@ export interface ActionProps{
   params: ListActionParams|ContentActionParams;
   /** from object.eg:{id: 22} */
   from?: {id: number, list_contenttype?:string};
+  
+  /** item counter when invoking the actions, starting from 0 */
   counter?:number
 }
 
@@ -44,11 +46,12 @@ export interface ContentActionParams{
 interface ActionsProps {
   /** action configs */
   actionsConfig: any;
+  /** action properties, can be list/content/inline */
   actionProps:ActionProps;
   iconOnly?: boolean;
 }
 
-function Actions({actionsConfig, actionProps, iconOnly}: ActionsProps) {
+export function Actions({actionsConfig, actionProps, iconOnly}: ActionsProps) {
   const renderLink = (config: any) => {
     let path = '';
     if (config.link) {
