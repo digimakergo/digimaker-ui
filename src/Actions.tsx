@@ -11,8 +11,8 @@ export interface ListActionParams{
    /** config of the list, include eg. sort array */
    listConfig: any; //todo: define
 
-   /** after action for refresh list */
-   afterAction: (refresh:boolean, newConfig:ListAfterActionConfig)=>void; //todo: define 'any'
+   /** after action it will refresh list */
+   afterAction: (newConfig:ListAfterActionConfig)=>void; //todo: define 'any'
 }
 
 export interface ListAfterActionConfig{
@@ -36,8 +36,8 @@ export interface ContentActionParams{
 
    /** content on */
    content:any; //todo: define 'any'
-   /** After action callback */
-   afterAction: (refresh:boolean, jumpToParent?: boolean)=>void;
+   /** After action callback. redirect is useful when deleting itself. Note that redirect will be ignore in inline mode(list row) so it's safe to call true */
+   afterAction: (redirect?: boolean)=>void;
 }
 
 
