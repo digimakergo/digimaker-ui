@@ -15,21 +15,19 @@ A list can have actions above the records(see `actions` property), or in row(see
 ## Usage
 ```js
 //Show article under 10, with "name", "published", "modified" columns
-
 const listOption = {
    contenttype: "article"
    columns: ["name", "published", "modified"],
    sort_default: ["priority desc", "modified desc"],
-};
+   };
 <List id={10} {...listOption} />
-
 
 //Action with actions - link and component
 const articleActions = [
    {"link":"/main/edit/{id}", "name":"edit"},
-   (actionProps:ActionProps)=><Copy {...actionProps} />];
+   (actionProps:ActionProps)=><Copy {...actionProps} />
+   ];
 <List id={10} {...listOption} row_actions={articleActions} />
-
 
 ```
 

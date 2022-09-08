@@ -36,7 +36,7 @@ interface ListProps {
   actions: Partial<ActionConfigType>[];
 
   /** Actions on each record */
-  row_actions?: Partial<ActionsType>[];
+  row_actions?: Partial<ActionConfigType>[];
 
   /** Pagination, 0 means no pagination */
   pagination: number; //todo: check if 0 is working
