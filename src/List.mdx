@@ -14,20 +14,21 @@ A list can have actions above the records(see `actions` property), or in row(see
 
 ## Usage
 ```js
-//Show article under 10, which "name", "published", "modified" columns
-const columns = ["name", "published", "modified"];
-const sortDefault = ["priority desc", "modified desc"]
-<List id={10} contenttype="article" columns={columns} sort_default={sortDefault} />
+//Show article under 10, with "name", "published", "modified" columns
 
-//Action with link
-const articleActions = [{"link":"/main/edit/{id}", "name":"edit", icon:"fas fa-edit"}];
-<List id={10} contenttype="article" columns={columns} sort_default={sortDefault} row_actions={articleActions} />
+const listOption = {
+   contenttype: "article"
+   columns: ["name", "published", "modified"],
+   sort_default: ["priority desc", "modified desc"],
+};
+<List id={10} {...listOption} />
 
-//Action with action component
-const articleActions = [{"com":<Copy />, "name":"Copy", "icon":"fas fa-copy"}];
-const articleActions = [<Action icon="fa fa-edit" name="Copy" component={Copy}];
-const articleActions = [{"com":(actionProps:ActionProps)=><Copy {...actionProps} />, "name":"Copy", "icon":"fas fa-copy"}];
-<List id={10} contenttype="article" columns={columns} sort_default={sortDefault} row_actions={articleActions} />
+
+//Action with actions - link and component
+const articleActions = [
+   {"link":"/main/edit/{id}", "name":"edit"},
+   (actionProps:ActionProps)=><Copy {...actionProps} />];
+<List id={10} {...listOption} row_actions={articleActions} />
 
 
 ```

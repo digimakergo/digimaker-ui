@@ -4,6 +4,10 @@ import ReactTooltip from "react-tooltip";
 import util from './util';
 import {getDefinition} from './util';
 import Registry from './Registry';
+import { ReactNode } from 'react';
+
+export type LinkActionConfigType = { link:string, name: string|ReactNode, newWindow?:boolean};
+export type ActionConfigType=LinkActionConfigType|((ActionProps)=>ReactNode);
 
 export interface ListActionParams{
    /** selected content list */
@@ -45,7 +49,7 @@ export interface ContentActionParams{
 
 interface ActionsProps {
   /** action configs */
-  actionsConfig: any;
+  actionsConfig: Partial<ActionConfigType>[];
   /** action properties, can be list/content/inline */
   actionProps:ActionProps;
   iconOnly?: boolean;
@@ -102,24 +106,31 @@ export function Actions({actionsConfig, actionProps, iconOnly}: ActionsProps) {
 
   return (
     <div className='actions'>
-      {actionsConfig.map((actions: any, i:number) => {
-        if (actions['link']) {
-          return renderLink(actions);
+      {actionsConfig.map(
+        (action:ActionConfigType, i:number) => {
+        if ( 'link' in action) {
+          return renderLink(action);
+        }else if( typeof action === 'function' ){
+          let A = action as (ActionProps)=>ReactNode;
+          let ele = A({...{...actionProps, counter: i}});
+          return ele;
+        }else{
+          console.warn("uknown action config: "+Object.entries(action));
         }
 
-        if (actions['com']) {
-          let identifier = actions['com'];
-          let Action = Registry.getComponent(identifier);
-          return (
-            <React.Suspense fallback='...'>
-              <Action
-                {...{...actionProps, counter: i}}
-                config = {actions}
-              />
-            </React.Suspense>
-          );
-        }
-        return null;
+        // if (action['com']) {
+        //   let identifier = action['com'];
+        //   let Action = Registry.getComponent(identifier);
+        //   return (
+        //     <React.Suspense fallback='...'>
+        //       <Action
+        //         {...{...actionProps, counter: i}}
+        //         config = {action}
+        //       />
+        //     </React.Suspense>
+        //   );
+        // }
+        // return null;
       })}
     </div>
   );

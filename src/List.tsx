@@ -1,23 +1,11 @@
-import React, { useEffect, useState } from 'react';
-import Moment from 'react-moment';
+import React, { ReactNode, useEffect, useState } from 'react';
 import {FetchWithAuth, getDefinition, getFields, getCommonFieldName} from './util';
 import ListRowActions from './ListRowActions';
-import Actions, { ListAfterActionConfig } from './Actions';
-import FieldRegister from './FieldRegister';
+import Actions, { ActionConfigType, ListAfterActionConfig } from './Actions';
 import RenderProperties from './RenderProperties';
 import FieldtypeIcon from './FieldtypeIcon';
 import {DDCard} from './DDCard';
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import update from 'immutability-helper';
-
-interface ActionsType {
-  link?: string;
-  name: string;
-  icon?: string;
-  title?: string;
-  com?: string | JSX.Element;
-}
-
 
 interface ListProps {
   /** parent id of the list */
@@ -45,7 +33,7 @@ interface ListProps {
   show_table_header?: boolean;
 
   /** List actions above, eg. create, delete after selection */
-  actions: Partial<ActionsType>[];
+  actions: Partial<ActionConfigType>[];
 
   /** Actions on each record */
   row_actions?: Partial<ActionsType>[];
