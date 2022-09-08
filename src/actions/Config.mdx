@@ -3,3 +3,36 @@ name: Config actions
 route: /actions/Config
 menu: Actions
 ---
+import { Playground, Props } from 'docz'
+import Delete from './Delete'
+import {ActionProps} from '../Actions'
+
+
+# Config actions
+digimaker-ui supports 2 types of actions, link and component for configuration.
+
+### Link action
+Below is a link example
+```js
+const articleActions = [{"link":"/main/edit/{id}", "name":"edit"}];
+```
+
+#### link
+variables of link:
+- content/inline: properties of the content(if it's from content/inline)(eg. {id}.
+Note:
+> Note: special variable: {_contenttype_id} is contenttype with id(eg. image/10) - for non-location content mainly).
+- list: 
+  - {_from_id}, 
+  - {_from_list_contenttype} from 'list'.
+
+
+#### name
+a string which is show, or reactNode where you can have your own rendering
+
+
+### Component action
+Here is an example of component action where everything is customized. See [Implement an action](./Implement) for more.
+```js
+const articleActions = [(actionProps:ActionProps)=><Copy {...actionProps} />];
+```
