@@ -21,7 +21,7 @@ interface ListProps {
   sort_default: string[][];
 
   /** sortable columns(an arrow will appear on the column). eg {"published":"desc", "priority":"desc"}, where "desc" is the default order */
-  sort: any;
+  sort: {string:string};
   
   /** columns which is the fields */
   columns: string[];
@@ -33,15 +33,19 @@ interface ListProps {
   show_table_header?: boolean;
 
   /** List actions above, eg. create, delete after selection */
-  actions: Partial<ActionConfigType>[];
+  actions?: Partial<ActionConfigType>[];
 
   /** Actions on each record */
   row_actions?: Partial<ActionConfigType>[];
 
-  level: number;
+  /** Level of under parent. */
+  level?: number;
 
-  /** Pagination, 0 means no pagination */
-  pagination: number; //todo: check if 0 is working
+  /** view mode of the list, default is 'list'(row based) */
+  viewmode?:'list'|'block';
+
+  /** Pagination, 0 means no pagination(1000 as limit) */
+  pagination?: number;
 
   /** callback when clicking link(eg. link on name) */
   onLinkClick?: (content:any)=>void;
@@ -69,9 +73,9 @@ function List({id, contenttype, onLinkClick, onRenderRow, ...props}: ListProps) 
     show_header_icon: true,
     row_actions: props.row_actions || [],
     actions: props.actions || [],
-    pagination: props.pagination || -1,
+    pagination: props.pagination || 0,
     level: props.level || 1,
-    viewmode: 'list',
+    viewmode: props.viewmode||'list',
     block_fields: [],
     can_dd: true,
     filter: []
@@ -125,8 +129,10 @@ function List({id, contenttype, onLinkClick, onRenderRow, ...props}: ListProps) 
     let limit = '';
     let filter = '';
     let pagination = config.pagination;
-    if (pagination !== -1) {
+    if (pagination !== 0) {
       limit = `&limit=${pagination}&offset=${pagination * currentPage}`;
+    }else{
+      limit = `&limit=1000`;
     }
     let filterQuery = config.filter;
     if (filterQuery) {
