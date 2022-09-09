@@ -18,10 +18,10 @@ interface ListProps {
   request_url?: string;
 
   /** default sort eg. [["published", "desc"]] */
-  sort_default: string[][];
+  sort_default?: string[][];
 
   /** sortable columns(an arrow will appear on the column). eg {"published":"desc", "priority":"desc"}, where "desc" is the default order */
-  sort: {string:string};
+  sort?: {string:string};
   
   /** columns which is the fields */
   columns: string[];
