@@ -50,6 +50,8 @@ interface ListProps {
   /** Actions on each record */
   row_actions?: Partial<ActionsType>[];
 
+  level: number;
+
   /** Pagination, 0 means no pagination */
   pagination: number; //todo: check if 0 is working
 
@@ -68,89 +70,31 @@ function List({id, contenttype, onLinkClick, onRenderRow, ...props}: ListProps) 
   const [actionNew, setActionNew] = useState(false);
   const [currentPage, setCurrentPage] = useState(0);
   const [config, setConfigObject] = useState({
-    request_url: props.request_url || '',
-    sort_default: props.sort_default || [],
+    request_url: props.request_url || `content/list/${contenttype}`,
+    sort_default: props.sort_default || ['id', 'desc'],
+    row_actions_visible: 0,
+    can_select: true,
     sort: props.sort || [],
     columns: props.columns || [],
-    show_header: props.show_header || false,
-    show_table_header: props.show_table_header || false,
+    show_header: props.show_header,
+    show_table_header: true,
+    show_header_icon: true,
     row_actions: props.row_actions || [],
     actions: props.actions || [],
-    pagination: props.pagination || 0,
+    pagination: props.pagination || -1,
+    level: props.level || 1,
+    viewmode: 'list',
+    block_fields: [],
+    can_dd: true,
+    filter: []
   } as any);
-  const [sortby, setSortby] = useState<Array<Array<string>>>(
+  const [sortby, setSortby] = useState<string[][]>(
     props['sort_default']
   );
   const [selected, setSelected] = useState<number[]>([]);
-  const [filter, setFilter] = useState<string[]>([]);
 
-  const setConfig = () => {
-    let _config = {};
-
-    if (config['request_url'] == undefined) {
-      _config['request_url'] = 'content/list/' + contenttype;
-    }
-    if (!config['sort_default']) {
-      _config['sort_default'] = ['id', 'desc'];
-    }
-    if (config['can_select'] == undefined) {
-      _config['can_select'] = true;
-    }
-    if (config['pagination'] == undefined) {
-      _config['pagination'] = '-1';
-    }
-    if (config['sort'] == undefined) {
-      _config['sort'] = [];
-    }
-    if (config['row_actions'] == undefined) {
-      _config['row_actions'] = [];
-    }
-
-    if (config['row_actions_visible'] == undefined) {
-      _config['row_actions_visible'] = 0;
-    }
-
-    if (config['show_table_header'] == undefined) {
-      _config['show_table_header'] = true;
-    }
-
-    if (config['show_header_icon'] == undefined) {
-      _config['show_header_icon'] = true;
-    }
-
-    if (config['columns'] == undefined) {
-      _config['columns'] = [];
-    }
-    if (config['viewmode'] == undefined) {
-      _config['viewmode'] = 'list';
-    }
-    if (config['block_fields'] == undefined) {
-      _config['block_fields'] = [];
-    }
-    if (config['level'] == undefined) {
-      _config['level'] = 1;
-    }
-    if (config['can_dd'] == undefined) {
-      _config['can_dd'] = true;
-    }
-    if (config['filter'] == undefined) {
-      _config['filter'] = [];
-    }
-
-    setConfigObject(prevConfig => {
-      return {
-        ...prevConfig,
-        ..._config
-      }
-    });
-  }
-
-  useEffect(() => {
-    setConfig();
-  }, []);
-
-  const getSortbyStr = (sortby: Array<Array<string>>) => {
-    let arr: Array<string> = [];
+  const getSortbyStr = (sortby: string[][]) => {
+    let arr: string[] = [];
     sortby.map((item) => {
       arr.push(item.join(' '));
     });
@@ -177,13 +121,13 @@ function List({id, contenttype, onLinkClick, onRenderRow, ...props}: ListProps) 
     let filterQuery = '';
 
     if (filter) {
-      Object.keys(filter).map((key: any, index: number) => {
+      Object.keys(filter).map((key: any, _index: number) => {
         if (Array.isArray(filter[key])) {
           // if(key=="created"|| key=="modified")
           filterQuery +=
-            '&' + key + '=' + filter[key][0] + ':' + filter[key][1];
+            `&${key}=${filter[key][0]}:${filter[key][1]}`;
         } else {
-          filterQuery += '&' + key + '=' + filter[key];
+          filterQuery += `&${key}=${filter[key]}`;
         }
       });
       return filterQuery;
@@ -191,12 +135,12 @@ function List({id, contenttype, onLinkClick, onRenderRow, ...props}: ListProps) 
   };
 
   const fetchData = () => {
-    let sortbyStr = 'sortby=' + getSortbyStr(sortby);
+    let sortbyStr = `sortby=${getSortbyStr(sortby)}`;
     let limit = '';
     let filter = '';
     let pagination = config.pagination;
-    if (pagination != -1) {
-      limit = '&limit=' + pagination + '&offset=' + pagination * currentPage;
+    if (pagination !== -1) {
+      limit = `&limit=${pagination}&offset=${pagination * currentPage}`;
     }
     let filterQuery = config.filter;
     if (filterQuery) {
@@ -204,17 +148,7 @@ function List({id, contenttype, onLinkClick, onRenderRow, ...props}: ListProps) 
     }
     setLoading(true);
     FetchWithAuth(
-      process.env.REACT_APP_REMOTE_URL +
-        '/' +
-        config.request_url +
-        '?parent=' +
-        id +
-        '&level=' +
-        config.level +
-        '&' +
-        sortbyStr +
-        limit +
-        filter
+      `${process.env.REACT_APP_REMOTE_URL}/${config.request_url}?parent=${id}&level=${config.level}&${sortbyStr}${limit}${filter}`
     ).then((data) => {
       resetActionState();
       setLoading(false);
@@ -229,23 +163,23 @@ function List({id, contenttype, onLinkClick, onRenderRow, ...props}: ListProps) 
 
   const sort = (e, column) => {
     e.preventDefault();
-    let newSortBy: Array<Array<any>> = [];
+    let newSortBy: any[][] = [];
 
     //create new sort or change sort based on column
     let createSort = (sort?: any) => {
       let order = config.sort[column];
-      if (sort && sort[0] == column) {
-        order = sort[1] == 'desc' ? 'asc' : 'desc';
+      if (sort && sort[0] === column) {
+        order = sort[1] === 'desc' ? 'asc' : 'desc';
       }
       return [column, order];
     };
 
     //if there is swift key, keep the first sort
     if (e.shiftKey && sortby.length >= 1) {
-      if (sortby.length == 2) {
+      if (sortby.length === 2) {
         newSortBy[0] = sortby[0];
         newSortBy[1] = createSort(sortby[1]);
-      } else if (sortby.length == 1) {
+      } else if (sortby.length === 1) {
         newSortBy = [sortby[0], createSort()];
       }
     } else {
@@ -263,7 +197,7 @@ function List({id, contenttype, onLinkClick, onRenderRow, ...props}: ListProps) 
 
   const select = (id) => {
     if (selected.includes(id)) {
-      let index = selected.findIndex((item) => item == id);
+      let index = selected.findIndex((item) => item === id);
       selected.splice(index, 1);
     } else {
       selected.push(id);
@@ -300,17 +234,17 @@ function List({id, contenttype, onLinkClick, onRenderRow, ...props}: ListProps) 
               {config.can_select && (
                 <th className='center' onClick={() => selectAll()}>
                   <a href='#'>
-                    <i className='far fa-check-square'></i>
+                    <i className='far fa-check-square' />
                   </a>
                 </th>
               )}
               {config.columns.map((column) => {
                 let sortable = config.sort[column] ? true : false;
                 let sortOrder = '';
-                if (sortby[0][0] == column) {
+                if (sortby[0][0] === column) {
                   sortOrder = sortby[0][1];
-                } else if (sortby[1] && sortby[1][0] == column) {
-                  sortOrder = 'sort-second ' + sortby[1][1];
+                } else if (sortby[1] && sortby[1][0] === column) {
+                  sortOrder = `sort-second ${sortby[1][1]}`;
                 }
                 let columnName = fieldsDef[column]
                   ? fieldsDef[column].name
@@ -323,7 +257,7 @@ function List({id, contenttype, onLinkClick, onRenderRow, ...props}: ListProps) 
                         onClick={(e) => {
                           sort(e, column);
                         }}
-                        className={'column-sortable ' + sortOrder}
+                        className={`column-sortable ${sortOrder}`}
                       >
                         {columnName}
                       </a>
@@ -333,8 +267,8 @@ function List({id, contenttype, onLinkClick, onRenderRow, ...props}: ListProps) 
                   </th>
                 ); //todo: use name from definition.
               })}
-              {config['row_actions'].length > 0 && <th></th>}
-              <th></th>
+              {config['row_actions'].length > 0 && <th />}
+              <th />
             </tr>
           )}
           {renderRows(data)}
@@ -365,7 +299,7 @@ function List({id, contenttype, onLinkClick, onRenderRow, ...props}: ListProps) 
     setList(newObj);
   };
 
-  const dropCard = (targetIndex: number) => {
+  const dropCard = (_targetIndex: number) => {
     let newList = list.list;
     let oldList = listBeforeMove;
     //compare change
@@ -376,22 +310,20 @@ function List({id, contenttype, onLinkClick, onRenderRow, ...props}: ListProps) 
     for (let i in newList) {
       let item = newList[i];
       let id = item.id;
-      if (id != oldList[i].id) {
+      if (id !== oldList[i].id) {
         let newPriority = oldList[i].priority;
-        change.push(id + ',' + newPriority);
+        change.push(`${id},${newPriority}`);
       }
     }
 
-    if (change.length == 0) {
+    if (change.length === 0) {
       return;
     }
     //send to server
     FetchWithAuth(
-      process.env.REACT_APP_REMOTE_URL +
-        '/content/setpriority?params=' +
-        change.join('%3B')
+      `${process.env.REACT_APP_REMOTE_URL}/content/setpriority?params=${change.join('%3B')}`
     )
-      .then((data) => {
+      .then((_data) => {
         listBeforeMove = null;
         refresh();
       })
@@ -402,7 +334,7 @@ function List({id, contenttype, onLinkClick, onRenderRow, ...props}: ListProps) 
   }
 
   const renderRows = (list) => {
-    let fieldsDef = getFields(def);
+    let _fieldsDef = getFields(def);
 
     let renderCells = (content: any) => {
       return (
@@ -441,7 +373,7 @@ function List({id, contenttype, onLinkClick, onRenderRow, ...props}: ListProps) 
       );
     };
 
-    let rows: Array<any> = [];
+    let rows: any[] = [];
     for (let i = 0; i < list.length; i++) {
       let content = list[i];
       let rowClasses = onRenderRow
@@ -449,9 +381,9 @@ function List({id, contenttype, onLinkClick, onRenderRow, ...props}: ListProps) 
         : '';
       let canDD =
         config['can_dd'] &&
-        content.priority != 0 &&
-        sortby[0][0] == 'priority' &&
-        sortby[0][1] == 'desc';
+        content.priority !== 0 &&
+        sortby[0][0] === 'priority' &&
+        sortby[0][1] === 'desc';
       if (canDD) {
         rows.push(
           <DDCard
@@ -479,7 +411,7 @@ function List({id, contenttype, onLinkClick, onRenderRow, ...props}: ListProps) 
             onClick={(e) => linkClick(e, content)}
           >
             {renderCells(content)}
-            <td></td>
+            <td />
           </tr>
         );
       }
@@ -488,10 +420,10 @@ function List({id, contenttype, onLinkClick, onRenderRow, ...props}: ListProps) 
   }
 
   const renderBlocks = (list) => {
-    let blocks: Array<any> = [];
-    let rows: Array<any> = [];
+    let blocks: any[] = [];
+    let rows: any[] = [];
     let fieldsDef = getFields(def);
-    let cells: Array<any> = [];
+    let cells: any[] = [];
 
     for (let item of list) {
       let fields = config['block_fields'];
@@ -500,7 +432,7 @@ function List({id, contenttype, onLinkClick, onRenderRow, ...props}: ListProps) 
         : '';
       cells.push(
         <div
-          className={'blockview-cell ' + rowClasses}
+          className={`blockview-cell ${rowClasses}`}
           onClick={(e) => linkClick(e, item)}
         >
           <RenderProperties
@@ -559,7 +491,7 @@ function List({id, contenttype, onLinkClick, onRenderRow, ...props}: ListProps) 
                   setCurrentPage(0);
                 }}
               >
-                <i className='fas fa-step-backward'></i>
+                <i className='fas fa-step-backward' />
               </a>
               <a
                 href='#'
@@ -571,7 +503,7 @@ function List({id, contenttype, onLinkClick, onRenderRow, ...props}: ListProps) 
                   }
                 }}
               >
-                <i className='fas fa-chevron-left'></i>
+                <i className='fas fa-chevron-left' />
               </a>
               <a
                 href='#'
@@ -583,7 +515,7 @@ function List({id, contenttype, onLinkClick, onRenderRow, ...props}: ListProps) 
                   }
                 }}
               >
-                <i className='fas fa-chevron-right'></i>
+                <i className='fas fa-chevron-right' />
               </a>
               <a
                 href='#'
@@ -593,7 +525,7 @@ function List({id, contenttype, onLinkClick, onRenderRow, ...props}: ListProps) 
                   setCurrentPage(totalPage - 1);
                 }}
               >
-                <i className='fas fa-step-forward'></i>
+                <i className='fas fa-step-forward' />
               </a>
               <a
                 href='#'
@@ -603,7 +535,7 @@ function List({id, contenttype, onLinkClick, onRenderRow, ...props}: ListProps) 
                   refresh();
                 }}
               >
-                <i className='fas fa-sync'></i>
+                <i className='fas fa-sync' />
               </a>
 
               <span className='pagination-info'>
@@ -618,7 +550,7 @@ function List({id, contenttype, onLinkClick, onRenderRow, ...props}: ListProps) 
   }
 
   const renderEmpties = (count: number) => {
-    let list: Array<any> = [];
+    let list: any[] = [];
     for (let i = 0; i < count; i++) {
       list.push(
         <tr className='empty-row'>
@@ -633,17 +565,14 @@ function List({id, contenttype, onLinkClick, onRenderRow, ...props}: ListProps) 
     setActionNew(true);
   };
 
-  if (!list || !def) {
-    return <div className='loading'></div>;
+  if (!(list && def)) {
+    return <div className='loading' />;
   }
 
   return (
     <div
       className={
-        'listmode-' +
-        config.viewmode +
-        ' listtype-' +
-        contenttype
+        `listmode-${config.viewmode} listtype-${contenttype}`
       }
     >
       <div className='content-list-tools'>
@@ -655,12 +584,12 @@ function List({id, contenttype, onLinkClick, onRenderRow, ...props}: ListProps) 
               selectAll();
             }}
           >
-            <i className='fas fa-check-square'></i>
+            <i className='fas fa-check-square' />
             Select
           </a>
         )}
         {/*todo: give message if it's not selected(may depend on setting) */}
-        {loading && <span className='loading'></span>}
+        {loading && <span className='loading' />}
         <Actions
         actionProps={{
           fromview:'list',
@@ -679,7 +608,7 @@ function List({id, contenttype, onLinkClick, onRenderRow, ...props}: ListProps) 
         />
         {!config.show_table_header && (
           <span>
-            <i className='fas fa-sort-alpha-up'></i> &nbsp;
+            <i className='fas fa-sort-alpha-up' /> &nbsp;
             <select className='form-control'>
               <option>Published</option>
               <option>Modified</option>
@@ -688,7 +617,7 @@ function List({id, contenttype, onLinkClick, onRenderRow, ...props}: ListProps) 
         )}
       </div>
 
-      {list.count == 0 && (
+      {list.count === 0 && (
         <div className='alert alert-info'>No {def.name} found.</div>
       )}
       {list.count > 0 && renderList(list.list)}
