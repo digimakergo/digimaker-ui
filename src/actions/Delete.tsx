@@ -31,11 +31,11 @@ const Delete = (props:ActionProps) => {
     FetchWithAuth(process.env.REACT_APP_REMOTE_URL + '/content/delete?'+paramsStr)
       .then((data) => {
         if( data.error === false ){
-          let jumpToParent = false;
           if (props.fromview=='content') {
-            jumpToParent = true;
+            params.afterAction(true); 
+          }else{
+            params.afterAction();
           }
-          params.afterAction(true, jumpToParent); 
          }
         }
       );

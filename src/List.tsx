@@ -1,23 +1,11 @@
-import React, { useEffect, useState } from 'react';
-import Moment from 'react-moment';
+import React, { ReactNode, useEffect, useState } from 'react';
 import {FetchWithAuth, getDefinition, getFields, getCommonFieldName} from './util';
 import ListRowActions from './ListRowActions';
-import Actions, { ListAfterActionConfig } from './Actions';
-import FieldRegister from './FieldRegister';
+import Actions, { ActionConfigType, ListAfterActionConfig } from './Actions';
 import RenderProperties from './RenderProperties';
 import FieldtypeIcon from './FieldtypeIcon';
 import {DDCard} from './DDCard';
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import update from 'immutability-helper';
-
-interface ActionsType {
-  link?: string;
-  name: string;
-  icon: string;
-  title: string;
-  com?: string | JSX.Element;
-}
-
 
 interface ListProps {
   /** parent id of the list */
@@ -45,10 +33,10 @@ interface ListProps {
   show_table_header?: boolean;
 
   /** List actions above, eg. create, delete after selection */
-  actions: Partial<ActionsType>[];
+  actions: Partial<ActionConfigType>[];
 
   /** Actions on each record */
-  row_actions?: Partial<ActionsType>[];
+  row_actions?: Partial<ActionConfigType>[];
 
   level: number;
 
@@ -102,15 +90,13 @@ function List({id, contenttype, onLinkClick, onRenderRow, ...props}: ListProps) 
   }
 
   //callback after an action is done.
-  const afterAction = (isRefresh: boolean, config?: ListAfterActionConfig) => {
-    if (isRefresh) {
+  const afterAction = ( config?: ListAfterActionConfig) => {
       const configObj = { ...config };
       setConfigObject({
         ...configObj,
         ...config
       })
       refresh();
-    }
   }
 
   const resetActionState = () => {
@@ -362,7 +348,7 @@ function List({id, contenttype, onLinkClick, onRenderRow, ...props}: ListProps) 
             <td className='list-row-tool'>
               <ListRowActions
                 visibleNumber={config['row_actions_visible']}
-                afterAction={(refresh: boolean) => afterAction(refresh)}
+                afterAction={() => afterAction()}
                 from={{ id: id }}
                 content={content}
                 config={config['row_actions']}
@@ -445,7 +431,7 @@ function List({id, contenttype, onLinkClick, onRenderRow, ...props}: ListProps) 
             <span className='list-row-tool'>
               <ListRowActions
                 visibleNumber={config['row_actions_visible']}
-                afterAction={(refresh: boolean) => afterAction(refresh)}
+                afterAction={(config?: ListAfterActionConfig ) => afterAction(config)}
                 content={item}
                 from={{ id }}
                 config={config['row_actions']}
@@ -599,8 +585,8 @@ function List({id, contenttype, onLinkClick, onRenderRow, ...props}: ListProps) 
             selected.includes(item.id)
           ),
           listConfig:config,
-          afterAction: (refresh: boolean, config: ListAfterActionConfig ) =>
-            afterAction(refresh, config)          
+          afterAction: (config?: ListAfterActionConfig ) =>
+            afterAction(config)          
           }
           }
         }          

@@ -4,6 +4,10 @@ import ReactTooltip from "react-tooltip";
 import util from './util';
 import {getDefinition} from './util';
 import Registry from './Registry';
+import { ReactNode } from 'react';
+
+export type LinkActionConfigType = { link:string, name: string|ReactNode, newWindow?:boolean};
+export type ActionConfigType=LinkActionConfigType|((ActionProps)=>ReactNode);
 
 export interface ListActionParams{
    /** selected content list */
@@ -11,8 +15,8 @@ export interface ListActionParams{
    /** config of the list, include eg. sort array */
    listConfig: any; //todo: define
 
-   /** after action for refresh list */
-   afterAction: (refresh:boolean, newConfig:ListAfterActionConfig)=>void; //todo: define 'any'
+   /** after action it will refresh list */
+   afterAction: (newConfig?:ListAfterActionConfig)=>void; //todo: define 'any'
 }
 
 export interface ListAfterActionConfig{
@@ -27,6 +31,8 @@ export interface ActionProps{
   params: ListActionParams|ContentActionParams;
   /** from object.eg:{id: 22} */
   from?: {id: number, list_contenttype?:string};
+  
+  /** item counter when invoking the actions, starting from 0 */
   counter?:number
 }
 
@@ -36,19 +42,20 @@ export interface ContentActionParams{
 
    /** content on */
    content:any; //todo: define 'any'
-   /** After action callback */
-   afterAction: (refresh:boolean, jumpToParent?: boolean)=>void;
+   /** After action callback. redirect is useful when deleting itself. Note that redirect will be ignore in inline mode(list row) so it's safe to call true */
+   afterAction: (redirect?: boolean)=>void;
 }
 
 
 interface ActionsProps {
   /** action configs */
-  actionsConfig: any;
+  actionsConfig: Partial<ActionConfigType>[];
+  /** action properties, can be list/content/inline */
   actionProps:ActionProps;
   iconOnly?: boolean;
 }
 
-function Actions({actionsConfig, actionProps, iconOnly}: ActionsProps) {
+export function Actions({actionsConfig, actionProps, iconOnly}: ActionsProps) {
   const renderLink = (config: any) => {
     let path = '';
     if (config.link) {
@@ -99,24 +106,31 @@ function Actions({actionsConfig, actionProps, iconOnly}: ActionsProps) {
 
   return (
     <div className='actions'>
-      {actionsConfig.map((actions: any, i:number) => {
-        if (actions['link']) {
-          return renderLink(actions);
+      {actionsConfig.map(
+        (action:ActionConfigType, i:number) => {
+        if ( 'link' in action) {
+          return renderLink(action);
+        }else if( typeof action === 'function' ){
+          let A = action as (ActionProps)=>ReactNode;
+          let ele = A({...{...actionProps, counter: i}});
+          return ele;
+        }else{
+          console.warn("uknown action config: "+Object.entries(action));
         }
 
-        if (actions['com']) {
-          let identifier = actions['com'];
-          let Action = Registry.getComponent(identifier);
-          return (
-            <React.Suspense fallback='...'>
-              <Action
-                {...{...actionProps, counter: i}}
-                config = {actions}
-              />
-            </React.Suspense>
-          );
-        }
-        return null;
+        // if (action['com']) {
+        //   let identifier = action['com'];
+        //   let Action = Registry.getComponent(identifier);
+        //   return (
+        //     <React.Suspense fallback='...'>
+        //       <Action
+        //         {...{...actionProps, counter: i}}
+        //         config = {action}
+        //       />
+        //     </React.Suspense>
+        //   );
+        // }
+        // return null;
       })}
     </div>
   );

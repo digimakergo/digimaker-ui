@@ -8,6 +8,32 @@ import List from './List'
 
 # List
 
+List is the component showing all under contents. It can be used for both location content(eg. article) and non-location content(eg. image)
+
+A typical List use includes `columns`, `sort`, `sort_default`, `pagination`.
+
+A list can have actions above the records(see `actions` property), or in row(see `row_actions` property). For more about actions see [Config actions](./actions/Config), [Implement an action](./actions/Implement)
+
+## Usage
+```js
+//Show article under 10, with "name", "published", "modified" columns
+const listOption = {
+   contenttype: "article"
+   columns: ["name", "published", "modified"],
+   sort_default: ["priority desc", "modified desc"],
+   };
+<List id={10} {...listOption} />
+
+//Action with actions - link and component
+const articleActions = [
+   {"link":"/main/edit/{id}", "name":"edit"},
+   (actionProps:ActionProps)=><Copy {...actionProps} />
+   ];
+<List id={10} {...listOption} row_actions={articleActions} />
+
+```
+
+## Properties
 <Props of={List} />
 
 ## Basic usage

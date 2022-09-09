@@ -8,13 +8,13 @@ import Actions from './Actions';
 interface ListRowActionsProps {
   /** Selected content */
   content: any;
-  /** from object */
+  /** from object,{id:111} */
   from: any;
 
   /** action config array */
   config: any;
-  /** refresh after action callback */
-  afterAction: (refresh:boolean)=>void;
+  /** refresh after it's called */
+  afterAction: ()=>void;
 
   /** visiable number, rest is in pop up menu */
   visibleNumber?: number;
@@ -28,9 +28,9 @@ function ListRowActions({content, from, config, afterAction, visibleNumber}: Lis
     setMenuShown(!menuShown);
   };
 
-  const setPropsAfterAction = (refresh:boolean) => {
+  const setPropsAfterAction = () => {
     setMenuShown(false);
-    afterAction(refresh);
+    afterAction();
   };
 
   const renderActions = (actionConfig: any, iconOnly: boolean) => {
@@ -42,7 +42,7 @@ function ListRowActions({content, from, config, afterAction, visibleNumber}: Lis
           fromview: 'inline',
           params:{
             content:content,
-            afterAction: (refresh:boolean, jumpToParent: boolean) => setPropsAfterAction(refresh)
+            afterAction: (redirection: boolean) => setPropsAfterAction()
           }
         }
         }
