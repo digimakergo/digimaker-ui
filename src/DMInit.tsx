@@ -30,7 +30,7 @@ export interface ContentTypeSettingType{
 
 
 interface DMInitProps {
-  contenttypeSetting: (string)=> ContentTypeSettingType;
+  contenttypeSetting: (contenttype: string)=> ContentTypeSettingType;
   children: JSX.Element|JSX.Element[];
 }
 
