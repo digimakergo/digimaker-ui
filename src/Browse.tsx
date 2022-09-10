@@ -15,14 +15,31 @@ import List from './List';
 
 export interface BrowseProps {
   config:any;
+  /** content types when browsing */
   contenttype:Array<string>;
+
+  /** Parent id */
   parent?:number; 
+
+  /** true means it's already triggered, otherwise it shows a button to trigger */
   trigger?:boolean;
+
+  /** when confirmed */
   onConfirm: any;
+
+  /** when cancel */
   onCancel?:any; 
+
+  /** can multi select or not */
   multi?:boolean;
+
+  /** selected a list of content */
   selected?: any;
+
+  /** inline will not show dialog, but embed in line */
   inline?: boolean;
+
+  /** button text */
   buttonText?:string;
 }
 

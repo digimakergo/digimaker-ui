@@ -73,7 +73,7 @@ export default class RelationList extends React.Component<{definition:any, valid
         types.push(relatedType);
     }
 
-    //todo: make config from outside.
+    //todo: make config from outside or callback in app(eg. parent id, it can be based on current content context).
     return  <>
             <label className="field-label">{this.props.definition.name}:</label>
             <div className="field-value">
