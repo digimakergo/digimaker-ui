@@ -1,3 +1,4 @@
 export default {
-    typescript: true
+    typescript: true,
+    title: 'digimaker-ui',
   }

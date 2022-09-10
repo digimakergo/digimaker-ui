@@ -3,6 +3,7 @@ import Cookies from 'universal-cookie';
 import Registry from './Registry';
 import { Modal, Button} from 'react-bootstrap';
 import { useState } from 'react';
+import { ContentTypeSettingType } from './DMInit';
 
 const cookies = new Cookies();
 
@@ -164,6 +165,7 @@ export const Dialog = (props:{title:string, type?:string, onClose?:any, onSubmit
 
 let config:any = null;
 
+
 //util for general operations
 const util = {
   //put replace variable with real value.eg. "this is {id}" with {'id': 5} will be "this is 5"
@@ -224,6 +226,8 @@ const util = {
  setConfig:(conf:any)=>{
    config = conf;
  },
+
+ getContentTypeSetting:null as (contenttype:string)=>ContentTypeSettingType,
 
  getConfig:()=>{
    return config;

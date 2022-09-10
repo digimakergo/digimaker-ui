@@ -13,7 +13,20 @@ import List from './List';
 //config:
 // treetype: ["folder"]
 
-const Browse = (props:any)=>{
+export interface BrowseProps {
+  config:any;
+  contenttype:Array<string>;
+  parent?:number; 
+  trigger?:boolean;
+  onConfirm: any;
+  onCancel?:any; 
+  multi?:boolean;
+  selected?: any;
+  inline?: boolean;
+  buttonText?:string;
+}
+
+const Browse = (props:BrowseProps)=>{
   const [trigger, setTrigger] = useState(props.trigger?true:false);
 
   return (<>{!props.trigger&&<button className="btn btn-link btn-sm" onClick={(e) => {e.preventDefault();setTrigger(!trigger);}}>
@@ -26,14 +39,14 @@ export default Browse;
 
 //todo: add filter
 //Dialog of the browse
-class Dialog extends React.Component<{config:any, contenttype:Array<string>, trigger:boolean, onConfirm: any, onCancel?:any, multi:boolean, selected: any, inline: boolean }, { contenttype:string, shown: boolean, showTree:boolean, data: any, list: any, parent: number, selected: any }> {
+class Dialog extends React.Component<BrowseProps, { contenttype:string, shown: boolean, showTree:boolean, data: any, list: any, parent: number, selected: any }> {
 
   private config:any;
 
   constructor(props: any) {
     super(props);
     this.setConfig( props.config, props.contenttype[0] );
-    this.state = { shown: props.trigger?true:false, contenttype:props.contenttype[0], showTree:false, data: '', list: '', parent: (this.config.list['parent']?this.config.list['parent']:1), selected: props.selected };
+    this.state = { shown: props.trigger?true:false, contenttype:props.contenttype[0], showTree:false, data: '', list: '', parent: (this.props.parent||1), selected: props.selected };
   }
 
   setConfig( config, contenttype ){
@@ -157,6 +170,8 @@ class Dialog extends React.Component<{config:any, contenttype:Array<string>, tri
   }
 
   renderBody(){
+    let browseList = util.getContentTypeSetting(this.state.contenttype).browselist;
+
     let selected = this.props.multi?this.state.selected:(this.state.selected?[this.state.selected]:null);
     return <><div className="selected">{selected&&selected.map((content: any, index:any) => {
       return <><RenderProperties content={content} contenttype={this.state.contenttype} mode="inline" /><span className="close" onClick={(e)=>this.unselect(index)}></span></>
@@ -177,7 +192,7 @@ class Dialog extends React.Component<{config:any, contenttype:Array<string>, tri
           <a href="#" onClick={(e:any)=>{e.preventDefault();this.setState({showTree:!this.state.showTree});}}>
             <i className={this.state.showTree?"fas fa-chevron-left":"fas fa-chevron-right"}></i>
           </a>
-          <List id={this.state.parent} key={this.state.parent+this.state.contenttype} onRenderRow={(content:any)=>this.selectedRowClass(content)} contenttype={this.state.contenttype} {...this.config.list} level={100} onLinkClick={(content) => this.select(content)} />
+          <List id={this.state.parent} key={this.state.parent+this.state.contenttype} onRenderRow={(content:any)=>this.selectedRowClass(content)} contenttype={this.state.contenttype} {...browseList} level={100} onLinkClick={(content) => this.select(content)} />
         </div>
       </div>
     </div></>

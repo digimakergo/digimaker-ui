@@ -10,17 +10,20 @@ import FieldRegister from './FieldRegister';
 interface RenderPropertiesProps {
   content: any;
   contenttype: string;
-  mode: string;
+  mode: 'inline'|'block';
   fields?: Array<string>;
   as?: string;
 }
 
 function RenderProperties({content, contenttype, mode, fields, as}: RenderPropertiesProps) {
   let def = getDefinition(contenttype);
-  let config = util.getConfig();
-  fields = fields;
+  let config = util.getContentTypeSetting(contenttype);
   if(!fields) {
-    fields = config.viewmode[mode][contenttype];
+    if(mode == 'inline'){
+      fields = config.inline_fields;
+    }else if( mode == 'block'){
+      fields = config.block_fields;
+    }
   }
 
   const renderBaseAttr = (field: string) => {

@@ -76,7 +76,6 @@ function List({id, contenttype, onLinkClick, onRenderRow, ...props}: ListProps) 
     pagination: props.pagination || 0,
     level: props.level || 1,
     viewmode: props.viewmode||'list',
-    block_fields: [],
     can_dd: true,
     filter: []
   } as any);
@@ -418,7 +417,6 @@ function List({id, contenttype, onLinkClick, onRenderRow, ...props}: ListProps) 
     let cells: any[] = [];
 
     for (let item of list) {
-      let fields = config['block_fields'];
       let rowClasses = onRenderRow
         ? onRenderRow(item)
         : '';
@@ -431,7 +429,6 @@ function List({id, contenttype, onLinkClick, onRenderRow, ...props}: ListProps) 
             content={item}
             contenttype={contenttype}
             mode='block'
-            fields={fields}
           />
           {config['row_actions'].length > 0 && (
             <span className='list-row-tool'>
