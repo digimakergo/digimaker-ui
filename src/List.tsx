@@ -54,7 +54,13 @@ interface ListProps {
   onRenderRow?: (content:any)=>string;
 }
 
-function List({id, contenttype, onLinkClick, onRenderRow, ...props}: ListProps) {
+const defaultProps = {
+  level: 1,
+  sort_default: ['id', 'desc'],
+  viewmode: 'list'
+};
+
+const List = ({id, contenttype, onLinkClick, onRenderRow, ...props}: ListProps ) => {
   const [def, setDef] = useState(null);
   const [loading, setLoading] = useState(true);
   const [counter, setCounter] = useState(0);
@@ -614,4 +620,5 @@ function List({id, contenttype, onLinkClick, onRenderRow, ...props}: ListProps) 
   );
 }
 
+List.defaultProps = defaultProps;
 export default List;
