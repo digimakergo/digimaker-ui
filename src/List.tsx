@@ -18,7 +18,7 @@ interface ListProps {
   request_url?: string;
 
   /** default sort eg. [["published", "desc"]] */
-  sort_default?: string[][];
+  sort_default?: string[];
 
   /** sortable columns(an arrow will appear on the column). eg {"published":"desc", "priority":"desc"}, where "desc" is the default order */
   sort?: {string:string};
@@ -54,13 +54,7 @@ interface ListProps {
   onRenderRow?: (content:any)=>string;
 }
 
-const defaultProps = {
-  level: 1,
-  sort_default: ['id', 'desc'],
-  viewmode: 'list'
-};
-
-const List = ({id, contenttype, onLinkClick, onRenderRow, ...props}: ListProps ) => {
+const List = ({id, contenttype, onLinkClick, onRenderRow, level = 1, sort_default = ['id', 'desc'], viewmode = 'list', ...props}: ListProps ) => {
   const [def, setDef] = useState(null);
   const [loading, setLoading] = useState(true);
   const [counter, setCounter] = useState(0);
@@ -69,7 +63,7 @@ const List = ({id, contenttype, onLinkClick, onRenderRow, ...props}: ListProps )
   const [currentPage, setCurrentPage] = useState(0);
   const [config, setConfigObject] = useState({
     request_url: props.request_url || `content/list/${contenttype}`,
-    sort_default: props.sort_default || ['id', 'desc'],
+    sort_default,
     row_actions_visible: 0,
     can_select: true,
     sort: props.sort || [],
@@ -80,8 +74,8 @@ const List = ({id, contenttype, onLinkClick, onRenderRow, ...props}: ListProps )
     row_actions: props.row_actions || [],
     actions: props.actions || [],
     pagination: props.pagination || 0,
-    level: props.level || 1,
-    viewmode: props.viewmode||'list',
+    level,
+    viewmode,
     can_dd: true,
     filter: []
   } as any);
@@ -620,5 +614,4 @@ const List = ({id, contenttype, onLinkClick, onRenderRow, ...props}: ListProps )
   );
 }
 
-List.defaultProps = defaultProps;
 export default List;
