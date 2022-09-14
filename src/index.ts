@@ -1,15 +1,10 @@
 export * as Actions from './Actions';
 export * as Browse from './Browse';
-export * as DDCard from './DDCard';
-export * as DMinit from './DMinit';
+export * as DMInit from './DMInit';
 export * as FieldRegister from './FieldRegister';
-export * as FieldtypeIcon from './FieldtypeIcon';
 export * as FileUpload from './FileUpload';
-export * as IconToggle from './IconToggle';
 export * as List from './List';
-export * as ListRowActions from './ListRowActions';
-export * as LoadFields from './LoadFields';
+export * as RenderFields from './RenderFields';
 export * as Registry from './Registry';
-export * as RenderProperties from './RenderProperties';
 export * as TreeNode from './TreeNode';
 export * as ViewContent from './ViewContent';
