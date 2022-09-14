@@ -2,7 +2,7 @@ import * as React from 'react';
 import Moment from 'react-moment';
 import { RouteProps } from 'react-router';
 import { Link, Redirect } from "react-router-dom";
-import LoadFields from '../LoadFields';
+import RenderFields from '../RenderFields';
 import {FetchWithAuth} from '../util';
 import util from '../util';
 
@@ -67,7 +67,7 @@ export default class Create extends React.Component<{parent:number, contenttype:
 
                     <div className="form-main">
                         <h2>Create {this.props.contenttype}</h2>
-                        <LoadFields type={this.props.contenttype} validation={this.state.validation} data='' mode='edit'/>
+                        <RenderFields type={this.props.contenttype} validation={this.state.validation} data='' mode='edit'/>
                     </div>
                 </form>
             </div>

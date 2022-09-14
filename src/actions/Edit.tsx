@@ -2,7 +2,7 @@ import * as React from 'react';
 import Moment from 'react-moment';
 import { RouteProps } from 'react-router';
 import { Link, Redirect } from "react-router-dom";
-import LoadFields from '../LoadFields';
+import RenderFields from '../RenderFields';
 import Registry from '../Registry';
 import {FetchWithAuth} from '../util';
 
@@ -89,7 +89,7 @@ export default class Edit extends React.Component<{id:number, contenttype?:strin
                         <h2>Edit {content.name}</h2>
                         {Com!=null?<Com />:''}
 
-                        <LoadFields mode='edit' type={content.content_type} data={content} validation={this.state.validation}  />
+                        <RenderFields mode='edit' type={content.content_type} data={content} validation={this.state.validation}  />
                     </div>
                 </form>
             </div>

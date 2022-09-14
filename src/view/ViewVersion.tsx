@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Moment from 'react-moment';
 import { RouteProps } from 'react-router';
-import LoadFields from '../LoadFields';
+import RenderFields from '../RenderFields';
 
 export default class ViewContent extends React.Component<RouteProps,{version:any, error: string}> {
 
@@ -57,7 +57,7 @@ export default class ViewContent extends React.Component<RouteProps,{version:any
        <div>
             <h2>{data.name}</h2>
             <div className="metainfo">Version {version.version} by {version.author} on <Moment unix format="DD.MM.YYYY HH:mm">{version.created}</Moment></div>
-            <LoadFields type={version.content_type} validation='' mode='view' data={data} afterField={()=>{}} />
+            <RenderFields type={version.content_type} validation='' mode='view' data={data} afterField={()=>{}} />
        </div>
     );
   }

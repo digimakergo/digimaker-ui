@@ -1,0 +1,24 @@
+---
+name: Field types
+route: /FieldTypes
+menu: Fieldtypes
+---
+
+import { Playground, Props } from 'docz'
+
+# Field types
+
+Field types are component rending field in view(including inline) or edit mode. It's possible to have your own implemention of a field type.
+
+### Customize your field type
+
+```js
+//Put below when you start the app.
+
+//register an image fieldtype component
+FieldRegister.registerComponent( 'image', Image );
+
+//register a customize image component in article's cover_image(identifier)
+FieldRegister.register( 'article/cover_image', CoverImage )
+
+```

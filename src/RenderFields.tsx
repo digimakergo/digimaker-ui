@@ -4,7 +4,7 @@ import FieldRegister from './FieldRegister';
 import ReactTooltip from 'react-tooltip';
 import { FetchWithAuth } from './util';
 
-interface LoadFieldsProps {
+interface RenderFieldsProps {
   type: string;
   validation: any;
   data: any;
@@ -16,7 +16,7 @@ interface LoadFieldsProps {
   onChange?: void;
 }
 
-function LoadFields({type, validation, data, editFields, language, mode, beforeField, afterField, onChange}: LoadFieldsProps) {
+function RenderFields({type, validation, data, editFields, language, mode, beforeField, afterField, onChange}: RenderFieldsProps) {
   const [definition, setDefinition] = React.useState('');
   const [typeArr, setTypeArr] = React.useState([]);
 
@@ -263,4 +263,4 @@ function LoadFields({type, validation, data, editFields, language, mode, beforeF
     );
 }
 
-export default LoadFields;
+export default RenderFields;

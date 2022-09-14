@@ -1,6 +1,3 @@
----
-hidden: true
----
 
 # digimaker-ui
 
@@ -15,4 +12,3 @@ Components:
 - Util. eg. FileUpload
 - Views: content view, version view
 - Actions: create, edit, delete, filter, move, copy, set to top, set priority, assign/unassign role, disable user
-
