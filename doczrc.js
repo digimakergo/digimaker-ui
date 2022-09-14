@@ -9,6 +9,9 @@ export default {
     ],
     ignore:['README.md'],
     themeConfig: {
+      footer: {
+        navigation: false,
+      },
       menu: {
         headings: {
           rightSide: true,
