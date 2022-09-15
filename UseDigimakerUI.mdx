@@ -1,0 +1,101 @@
+---
+name: Use digimaker-ui
+route: /use-digimaker-ui
+
+---
+
+import { Hint } from '@nejcm/docz-theme-extended';
+
+# Use digimaker-ui
+
+## Setting up
+
+
+## Use components
+You can use digimaker-ui compoents separately(eg. list & actions, browse, etc) or build a whole admin from it.
+```js
+//List article under 3, with actions
+<List id={3} contenttype="article" columns={["name", "published"]} 
+    row_actions={[{link:"/view/{id}", name:'View'}, (props)=><Add ..props />]} />
+
+//browse all images
+<Browse contenttype="image" onConfirm={(selected)=>{}} />
+
+//Show content tree
+<TreeNode root={3} contenttype={["folder", "usergroup"]} />
+```
+
+## Build editorial/admin ui
+
+Using routing is a good approach because url path gives great flexiablilty.
+
+It's a good idea to create a general component&route showing a content(call it `Main`, with path eg. /main/3).
+
+See [dmdemo admin as example](./)
+
+### Route
+First we register all Main component like path /main/4
+```js
+//App.tsx
+<div>
+<div>{/*Left menu*/}</div>
+<Route path="/main/:id" component={Main} />
+</div>
+```
+
+### Main component
+In the Main component, it will fetch content based on id, and shows list of children based on configuration.
+
+
+<Hint type="info" variant="outer">
+You can add actions above lists(even if every list has its actions), show content, or add side action. Also you can show lists as tabs.
+</Hint>
+
+```js
+//Main.tsx
+import Config from './Config';
+
+const Main = (props)=>{
+    const location = useLocation();
+    const [content, setContent] = '';
+
+    useEffect(() => {
+    util.FetchByID(props.match.params.id).then(data=>setContent(data));
+  }, [location]);
+
+
+    if(!content){
+        return <div>Loading</div>
+    }
+    return <div>
+        {Config.listTypes(content).map((contenttype)=>
+            <List id={content.id} contenttype={contenttype} {...Config.listConfig(content)} /> )}
+    </div>
+}
+```
+
+### Config file
+The config file will set rule of showing lists and each list's column, sorting, actions etc. 
+<Hint type="info" variant="outer">
+It's easy to show list based on parent's fields, eg. showing article if parent's `children_type` is article.
+</Hint>
+
+```js
+//Config.ts
+const Config = {
+    listTypes: (content)=>{
+        if( content.content_type == 'folder' ){
+            return ["article"];
+        }
+        return ["folder"];
+    },
+    listConfig: (content)=>{
+        return {           
+            actions:[], //action above list 
+            columns: [ 'name', 'published' ],
+        }
+    }
+},
+
+export default Config;
+```

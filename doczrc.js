@@ -3,6 +3,7 @@ export default {
     title: 'digimaker-ui',
     menu: [
       'Introduction',
+      'Use digimaker-ui',      
       { name: 'Components', menu: [] },
       { name: 'Actions', menu: [] },
       { name: 'Fieldtypes', menu: [] }
