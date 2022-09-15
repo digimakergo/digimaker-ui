@@ -99,3 +99,25 @@ const Config = {
 
 export default Config;
 ```
+
+### Edit/Create
+
+There are typically 2 ways to achieve edit/create, url or dialog. Below is an example of routing path `/create/{parent}/{contenttype}` to create.
+
+For dialog-like action, you can [implement your own action](./actions/Implement) wraps of our `Create`/`Edit` component in dialog, and then register the action in list row, or other places.
+
+```js
+import Create from 'digimaker-ui/actions/Create';
+import Edit from 'digimaker-ui/actions/Edit';
+
+//...
+<Route path="/create/:parent/:contenttype" render={route=>
+    <Create key={Date.now()} parent={parseInt(route.match.params.parent)} 
+    contenttype={route.match.params.contenttype} 
+     afterAction={(status, params)=>redirect(route.history, params)} />} />
+<Route path="/edit/:contenttype/:id" exact render={route=>
+    <Edit id={parseInt(route.match.params.id)} contenttype={route.match.params.contenttype}
+     afterAction={(status, params)=>redirect(route.history, params)} />} />
+<Route path="/edit/:id" exact render={route=><Edit id={parseInt(route.match.params.id)} 
+        afterAction={(status, params)=>redirect(route.history, params)} />} />
+```
