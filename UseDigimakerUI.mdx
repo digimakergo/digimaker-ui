@@ -10,6 +10,17 @@ import { Hint } from '@nejcm/docz-theme-extended';
 
 ## Setting up
 
+### env set up
+Before using, you need to set up env variables. Below is an example of .env file
+```
+REACT_APP_REMOTE_URL=/api
+REACT_APP_ASSET_URL=http://localhost:9200/var
+#imagepath will be replaced by the real image path
+REACT_APP_THUMB_PATH=images/thumbnail/{imagepath}
+```
+
+### DMInit
+All digimaker-ui's components should be inside DMInit(doesn't need to direct under). See properties of [DMInit](../DMInit) for different uses.
 
 ## Use components
 You can use digimaker-ui compoents separately(eg. list & actions, browse, etc) or build a whole admin from it.
