@@ -64,8 +64,6 @@ export default class RelationList extends React.Component<{definition:any, valid
     }
     let relatedType = def.parameters.type;
 
-    let browseConfig = util.getConfig().browse;
-
     let ids = [];
     let types = [];
     for( let item of this.state.list ){
@@ -73,11 +71,10 @@ export default class RelationList extends React.Component<{definition:any, valid
         types.push(relatedType);
     }
 
-    //todo: make config from outside or callback in app(eg. parent id, it can be based on current content context).
     return  <>
             <label className="field-label">{this.props.definition.name}:</label>
             <div className="field-value">
-            <Browse config={browseConfig} multi={true} contenttype={[relatedType]} onConfirm={(selected:Array<any>)=>this.confirmDialog(selected)} selected={this.state.list} />
+            <Browse multi={true} contenttype={[relatedType]} onConfirm={(selected:Array<any>)=>this.confirmDialog(selected)} selected={this.state.list} />
               <ReactSortable
                  className="list"
                  list={this.state.list}

@@ -14,7 +14,6 @@ import List from './List';
 // treetype: ["folder"]
 
 export interface BrowseProps {
-  config:any;
   /** content types when browsing */
   contenttype:Array<string>;
 
@@ -62,22 +61,10 @@ class Dialog extends React.Component<BrowseProps, { contenttype:string, shown: b
 
   constructor(props: any) {
     super(props);
-    this.setConfig( props.config, props.contenttype[0] );
     this.state = { shown: props.trigger?true:false, contenttype:props.contenttype[0], showTree:false, data: '', list: '', parent: (this.props.parent||1), selected: props.selected };
   }
 
-  setConfig( config, contenttype ){
-    let result = {};
-    for( let item in config ){
-      result[item] = util.getSettings( config[item], contenttype, "browse-"+item );
-    }
-    this.config = result;
-  }
-
-  componentDidUpdate(prevProps){
-    if( prevProps.contenttype.join('') != this.props.contenttype.join('') ){
-      this.setConfig( this.props.config, this.props.contenttype[0] );
-    }
+  componentDidUpdate(prevProps){   
     if(this.props.selected != prevProps.selected){
       this.setState({selected:this.props.selected});
     }
@@ -91,7 +78,8 @@ class Dialog extends React.Component<BrowseProps, { contenttype:string, shown: b
   }
 
   fetchData() {
-    FetchWithAuth(process.env.REACT_APP_REMOTE_URL + '/content/treemenu/'+this.state.parent+'?type='+this.config.filter.contenttype.join(','))
+    //todo: make tree filter by config(in addition to type config).
+    FetchWithAuth(process.env.REACT_APP_REMOTE_URL + '/content/treemenu/'+this.state.parent+'?type=folder')
       .then((data) => {
         this.setState({ data: data.data });
       })

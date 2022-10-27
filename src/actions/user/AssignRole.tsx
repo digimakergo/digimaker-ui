@@ -31,7 +31,7 @@ export default class AssignRole extends React.Component<ActionProps, {triggered:
 
   render(){
     return <div>
-            <Browse trigger={true} config={util.getConfig().browse} contenttype={["user"]} onConfirm={(target:any)=>{this.selectedTarget(target)}} />
+            <Browse trigger={true} contenttype={["user"]} onConfirm={(target:any)=>{this.selectedTarget(target)}} />
           </div>
   }
 }

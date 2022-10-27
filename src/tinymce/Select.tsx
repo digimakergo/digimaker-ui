@@ -47,9 +47,8 @@ export default class Select extends React.Component<{data:string, browseConfig:a
 
 
     render(){
-        let browseConfig = util.getConfig().browse;
         return <div>
-            <Browse contenttype={[this.state.contenttype]} selected={this.state.selected} trigger={true} inline={true} multi={false} config={browseConfig}  onConfirm={(selected)=>{this.selectImage(selected)}} />            
+            <Browse contenttype={[this.state.contenttype]} selected={this.state.selected} trigger={true} inline={true} multi={false} onConfirm={(selected)=>{this.selectImage(selected)}} />            
             <div className="tinymce-image-settings">
                 Width: <input defaultValue={this.state.width} size={3} onChange={(e)=>{this.sentData['width']=e.target.value;this.send()}} type="text" />
                 Height: <input defaultValue={this.state.height} size={3} onChange={(e)=>{this.sentData['height']=e.target.value;this.send()}}  type="text" />                

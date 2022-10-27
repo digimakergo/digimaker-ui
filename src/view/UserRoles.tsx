@@ -65,7 +65,7 @@ export default class UserRoles extends React.Component<{content:any},{browse:boo
           <h3>
             Roles &nbsp;
             <a href="#" onClick={(e)=>this.addRole(e)}><i className="fas fa-plus"></i> Add</a>
-            {this.state.browse&&<Browse config={util.getConfig().browse} multi={true} selected={this.state.data} onConfirm={(selected)=>this.confirmAdding(selected)} onCancel={()=>this.setState({browse:false})} trigger={true} contenttype={["role"]} />}
+            {this.state.browse&&<Browse multi={true} selected={this.state.data} onConfirm={(selected)=>this.confirmAdding(selected)} onCancel={()=>this.setState({browse:false})} trigger={true} contenttype={["role"]} />}
           </h3>
           <ul>
           {this.state.data.map( (item)=><li>
