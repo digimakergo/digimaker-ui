@@ -3,7 +3,7 @@ import Cookies from 'universal-cookie';
 import Registry from './Registry';
 import { Modal, Button} from 'react-bootstrap';
 import { useState } from 'react';
-import { ContentTypeSettingType } from './DMInit';
+import { ViewSettingsType } from './DMInit';
 
 const cookies = new Cookies();
 
@@ -227,7 +227,7 @@ const util = {
    config = conf;
  },
 
- getViewSettings:null as (contenttype:string)=>ContentTypeSettingType,
+ getViewSettings:null as (contenttype:string)=>ViewSettingsType,
 
  getConfig:()=>{
    return config;

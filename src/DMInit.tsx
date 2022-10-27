@@ -19,7 +19,7 @@ export interface BrowseListProps{
       sort?:{string:string};  
 }
 
-export interface ContentTypeSettingType{
+export interface ViewSettingsType{
   /** fields when displayed as inlined. eg. when selected */
   inline_fields: string[];
 
@@ -30,7 +30,7 @@ export interface ContentTypeSettingType{
 
 
 interface DMInitProps {
-  viewSettings: (contenttype: string)=> ContentTypeSettingType;
+  viewSettings: (contenttype: string)=> ViewSettingsType;
   children: JSX.Element|JSX.Element[];
 }
 
