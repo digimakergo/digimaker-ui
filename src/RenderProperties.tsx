@@ -17,7 +17,7 @@ interface RenderPropertiesProps {
 
 function RenderProperties({content, contenttype, mode, fields, as}: RenderPropertiesProps) {
   let def = getDefinition(contenttype);
-  let config = util.getContentTypeSetting(contenttype);
+  let config = util.getViewSettings(contenttype);
   if(!fields) {
     if(mode == 'inline'){
       fields = config.inline_fields;

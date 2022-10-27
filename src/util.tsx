@@ -227,7 +227,7 @@ const util = {
    config = conf;
  },
 
- getContentTypeSetting:null as (contenttype:string)=>ContentTypeSettingType,
+ getViewSettings:null as (contenttype:string)=>ContentTypeSettingType,
 
  getConfig:()=>{
    return config;
@@ -374,7 +374,10 @@ const util = {
      util._settingCache[cacheKey] = result;
    }
    return util._settingCache[cacheKey];
- }
+ },
+ fetchByID:(id:number )=>{  
+    return FetchWithAuth(`${process.env.REACT_APP_REMOTE_URL}/content/get/${id}`);
+},
 
 }
 

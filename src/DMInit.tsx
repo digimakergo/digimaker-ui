@@ -30,7 +30,7 @@ export interface ContentTypeSettingType{
 
 
 interface DMInitProps {
-  contenttypeSetting: (contenttype: string)=> ContentTypeSettingType;
+  viewSettings: (contenttype: string)=> ContentTypeSettingType;
   children: JSX.Element|JSX.Element[];
 }
 
@@ -40,7 +40,7 @@ const DMInit = (props:DMInitProps)=>{
   const [error, setError] = useState(false);
 
   useEffect(() => {
-    util.getContentTypeSetting = props.contenttypeSetting;
+    util.getViewSettings = props.viewSettings;
     FetchWithAuth(process.env.REACT_APP_REMOTE_URL + '/contenttype/get')
         .then((data) => {
           let def = data.data;

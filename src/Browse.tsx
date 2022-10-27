@@ -175,7 +175,7 @@ class Dialog extends React.Component<BrowseProps, { contenttype:string, shown: b
   }
 
   renderBody(){
-    let browseList = util.getContentTypeSetting(this.state.contenttype).browselist;
+    let browseList = util.getViewSettings(this.state.contenttype).browselist;
 
     let selected = this.props.multi?this.state.selected:(this.state.selected?[this.state.selected]:null);
     return <><div className="selected">{selected&&selected.map((content: any, index:any) => {
