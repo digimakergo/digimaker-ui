@@ -43,6 +43,7 @@ export default class RichText extends React.Component<{ definition: any, validat
             onChange={(e, editor)=>this.setState({data:editor.getContent()})}
             init={{
               menubar: false,
+              relative_urls: false,
               height:'300px',
               plugins: Fieldtype.richtext.plugins,
               external_plugins: {
