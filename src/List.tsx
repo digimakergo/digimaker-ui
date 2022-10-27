@@ -18,7 +18,7 @@ interface ListProps {
   request_url?: string;
 
   /** default sort eg. [["published", "desc"]] */
-  sort_default?: string[];
+  sort_default?: Array<Array<string>>;
 
   /** sortable columns(an arrow will appear on the column). eg {"published":"desc", "priority":"desc"}, where "desc" is the default order */
   sort?: {string:string};
@@ -54,7 +54,7 @@ interface ListProps {
   onRenderRow?: (content:any)=>string;
 }
 
-const List = ({id, contenttype, onLinkClick, onRenderRow, level = 1, sort_default = ['id', 'desc'], viewmode = 'list', ...props}: ListProps ) => {
+const List = ({id, contenttype, onLinkClick, onRenderRow, level = 1, sort_default = [['id', 'desc']], viewmode = 'list', ...props}: ListProps ) => {
   const [def, setDef] = useState(null);
   const [loading, setLoading] = useState(true);
   const [counter, setCounter] = useState(0);
@@ -80,7 +80,7 @@ const List = ({id, contenttype, onLinkClick, onRenderRow, level = 1, sort_defaul
     filter: []
   } as any);
   const [sortby, setSortby] = useState<string[][]>(
-    props['sort_default']
+    sort_default
   );
   const [selected, setSelected] = useState<number[]>([]);
 
