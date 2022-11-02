@@ -57,8 +57,6 @@ export default Browse;
 //Dialog of the browse
 class Dialog extends React.Component<BrowseProps, { contenttype:string, shown: boolean, showTree:boolean, data: any, list: any, parent: number, selected: any }> {
 
-  private config:any;
-
   constructor(props: any) {
     super(props);
     this.state = { shown: props.trigger?true:false, contenttype:props.contenttype[0], showTree:false, data: '', list: '', parent: (this.props.parent||1), selected: props.selected };
