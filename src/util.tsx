@@ -11,6 +11,10 @@ const cookies = new Cookies();
 let accessToken: any = null; //access token, which is a promise<string>
 
 export function FetchWithAuth(url: string, reqObj?: any) {
+  if( !(url.startsWith('/') || url.startsWith('http:') || url.startsWith('https:') ) ){
+    url = process.env.REACT_APP_REMOTE_URL+'/'+url;
+  }
+
   return GetAccessToken()
      .catch(err => {
       console.error(err); // todo: rediction or prompt message here or outside? returning a renderable error component might be good?
