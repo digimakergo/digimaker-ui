@@ -426,6 +426,7 @@ const List = ({id, contenttype, onLinkClick, onRenderRow, level = 1, sort_defaul
         <div
           className={`blockview-cell ${rowClasses}`}
           onClick={(e) => linkClick(e, item)}
+          key={item.id}
         >
           <RenderProperties
             content={item}
@@ -450,7 +451,7 @@ const List = ({id, contenttype, onLinkClick, onRenderRow, level = 1, sort_defaul
   }
 
   const renderList = (data) => {
-    let totalPage = Math.ceil(list.count / config.pagination);
+    let totalPage = config.pagination?Math.ceil(list.count / config.pagination):0;
     return (
       <div key={counter}>
         {config.show_header && (
