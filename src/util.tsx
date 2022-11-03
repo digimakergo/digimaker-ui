@@ -204,6 +204,10 @@ const util = {
     return cookies.get(util.cookieKey)
  },
 
+ setRefreshToken:(token:string)=>{
+  return cookies.set(util.cookieKey, token)
+},
+
  //set key in cookie, useful when there is multi site in one domain.
  setCookieKey:(key:string)=>{
     util.cookieKey = key;
