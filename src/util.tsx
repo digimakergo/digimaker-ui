@@ -3,6 +3,7 @@ import Cookies from 'universal-cookie';
 import Registry from './Registry';
 import { Modal, Button} from 'react-bootstrap';
 import { useState } from 'react';
+import { ViewSettingsType } from './DMInit';
 
 const cookies = new Cookies();
 
@@ -164,6 +165,7 @@ export const Dialog = (props:{title:string, type?:string, onClose?:any, onSubmit
 
 let config:any = null;
 
+
 //util for general operations
 const util = {
   //put replace variable with real value.eg. "this is {id}" with {'id': 5} will be "this is 5"
@@ -213,7 +215,7 @@ const util = {
 
  alertFunc:null,
 
- alert:(message:any, title:string, type:string)=>{
+ alert:(message:any, title:string, type?:string)=>{
   if( util.alertFunc ){
     util.alertFunc( message, type, title );
   }else{
@@ -224,6 +226,8 @@ const util = {
  setConfig:(conf:any)=>{
    config = conf;
  },
+
+ getViewSettings:null as (contenttype:string)=>ViewSettingsType,
 
  getConfig:()=>{
    return config;
@@ -370,7 +374,10 @@ const util = {
      util._settingCache[cacheKey] = result;
    }
    return util._settingCache[cacheKey];
- }
+ },
+ fetchByID:(id:number )=>{  
+    return FetchWithAuth(`${process.env.REACT_APP_REMOTE_URL}/content/get/${id}`);
+},
 
 }
 

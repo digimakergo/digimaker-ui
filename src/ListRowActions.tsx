@@ -1,55 +1,95 @@
-import * as React from 'react';
+import React, {useState} from 'react';
 import Moment from 'react-moment';
 import util from './util';
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import Actions from './Actions';
 
-export default class ListRowActions extends React.Component<{content:any,from:any,config:any,afterAction:any, visibleNumber?:number}, {menuShown:boolean}> {
-  constructor(props: any) {
-      super(props);
-      this.state={menuShown:false};
-  }
+/** props for ListRowActionsProps */
+interface ListRowActionsProps {
+  /** Selected content */
+  content: any;
+  /** from object,{id:111} */
+  from: any;
 
-  click(e:any){
-    e.preventDefault();
-    this.setState({menuShown:!this.state.menuShown});
-  }
+  /** action config array */
+  config: any;
+  /** refresh after it's called */
+  afterAction: ()=>void;
 
-  afterAction(){
-    this.setState({menuShown: false});
-    this.props.afterAction(true);
-  }
-
-  renderActions(actionConfig:any, iconOnly:boolean){
-    return <Actions content={this.props.content} iconOnly={iconOnly} from={this.props.from} fromview="inline" selected={this.props.content} afterAction={()=>this.afterAction()} actionsConfig={actionConfig} />
-  }
-
-  render(){
-    let config = this.props.config;
-    let visibleNumber = this.props.visibleNumber?this.props.visibleNumber:3;
-    if( config.length < visibleNumber ){
-      visibleNumber = config.length;
-    }
-
-    if(!config){
-      return '';
-    }
-    let visibleActions:any = [];
-    let menuActions:any = [];
-
-    for( let i=0; i<visibleNumber; i++ ){
-      visibleActions.push( config[i] );
-    }
-    for( let i=visibleNumber; i<config.length; i++ ){
-      menuActions.push( config[i] );
-    }
-
-    return <div className="row-action" >
-    <div className="row-action-inline">{this.renderActions( visibleActions, false )}</div>
-    {menuActions.length>0&&<><a href="#" title="Actions" onClick={(e)=>this.click(e)}><i className="fas fa-ellipsis-h"></i></a>
-    <div className={'action-menu '+(this.state.menuShown?'':'hide')}>
-      {this.renderActions( menuActions, false )}
-    </div></>}
-    </div>
-  }
+  /** visiable number, rest is in pop up menu */
+  visibleNumber?: number;
 }
+
+function ListRowActions({content, from, config, afterAction, visibleNumber}: ListRowActionsProps) {
+  const [menuShown, setMenuShown] = useState(false);
+
+  const click = (e: any) => {
+    e.preventDefault();
+    setMenuShown(!menuShown);
+  };
+
+  const setPropsAfterAction = () => {
+    setMenuShown(false);
+    afterAction();
+  };
+
+  const renderActions = (actionConfig: any, iconOnly: boolean) => {
+    return (
+      <Actions
+        iconOnly={iconOnly}
+        actionProps={{
+          from: from,
+          fromview: 'inline',
+          params:{
+            content:content,
+            afterAction: (redirection: boolean) => setPropsAfterAction()
+          }
+        }
+        }
+        actionsConfig={actionConfig}
+      />
+    );
+  };
+
+  visibleNumber = visibleNumber || 3;
+
+  if (config.length < visibleNumber) {
+    visibleNumber = config.length;
+  }
+
+  if (!config) {
+    return null;
+  }
+
+  let visibleActions: any = [];
+  let menuActions: any = [];
+
+  for (let i = 0; i < visibleNumber; i++) {
+    visibleActions.push(config[i]);
+  }
+  for (let i = visibleNumber; i < config.length; i++) {
+    menuActions.push(config[i]);
+  }
+
+  return (
+    <div className='row-action'>
+      <div className='row-action-inline'>
+        {renderActions(visibleActions, false)}
+      </div>
+      {menuActions.length > 0 && (
+        <>
+          <a href='#' title='Actions' onClick={(e) => click(e)}>
+            <i className='fas fa-ellipsis-h'></i>
+          </a>
+          <div
+            className={'action-menu ' + (menuShown ? '' : 'hide')}
+          >
+            {renderActions(menuActions, false)}
+          </div>
+        </>
+      )}
+    </div>
+  );
+}
+
+export default ListRowActions;

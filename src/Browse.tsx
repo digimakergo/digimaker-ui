@@ -13,7 +13,36 @@ import List from './List';
 //config:
 // treetype: ["folder"]
 
-const Browse = (props:any)=>{
+export interface BrowseProps {
+  /** content types when browsing */
+  contenttype:Array<string>;
+
+  /** Parent id */
+  parent?:number; 
+
+  /** true means it's already triggered, otherwise it shows a button to trigger */
+  trigger?:boolean;
+
+  /** when confirmed */
+  onConfirm: any;
+
+  /** when cancel */
+  onCancel?:any; 
+
+  /** can multi select or not */
+  multi?:boolean;
+
+  /** selected a list of content */
+  selected?: any;
+
+  /** inline will not show dialog, but embed in line */
+  inline?: boolean;
+
+  /** button text */
+  buttonText?:string;
+}
+
+const Browse = (props:BrowseProps)=>{
   const [trigger, setTrigger] = useState(props.trigger?true:false);
 
   return (<>{!props.trigger&&<button className="btn btn-link btn-sm" onClick={(e) => {e.preventDefault();setTrigger(!trigger);}}>
@@ -26,28 +55,14 @@ export default Browse;
 
 //todo: add filter
 //Dialog of the browse
-class Dialog extends React.Component<{config:any, contenttype:Array<string>, trigger:boolean, onConfirm: any, onCancel?:any, multi:boolean, selected: any, inline: boolean }, { contenttype:string, shown: boolean, showTree:boolean, data: any, list: any, parent: number, selected: any }> {
-
-  private config:any;
+class Dialog extends React.Component<BrowseProps, { contenttype:string, shown: boolean, showTree:boolean, data: any, list: any, parent: number, selected: any }> {
 
   constructor(props: any) {
     super(props);
-    this.setConfig( props.config, props.contenttype[0] );
-    this.state = { shown: props.trigger?true:false, contenttype:props.contenttype[0], showTree:false, data: '', list: '', parent: (this.config.list['parent']?this.config.list['parent']:1), selected: props.selected };
+    this.state = { shown: props.trigger?true:false, contenttype:props.contenttype[0], showTree:false, data: '', list: '', parent: (this.props.parent||1), selected: props.selected };
   }
 
-  setConfig( config, contenttype ){
-    let result = {};
-    for( let item in config ){
-      result[item] = util.getSettings( config[item], contenttype, "browse-"+item );
-    }
-    this.config = result;
-  }
-
-  componentDidUpdate(prevProps){
-    if( prevProps.contenttype.join('') != this.props.contenttype.join('') ){
-      this.setConfig( this.props.config, this.props.contenttype[0] );
-    }
+  componentDidUpdate(prevProps){   
     if(this.props.selected != prevProps.selected){
       this.setState({selected:this.props.selected});
     }
@@ -61,7 +76,8 @@ class Dialog extends React.Component<{config:any, contenttype:Array<string>, tri
   }
 
   fetchData() {
-    FetchWithAuth(process.env.REACT_APP_REMOTE_URL + '/content/treemenu/'+this.state.parent+'?type='+this.config.filter.contenttype.join(','))
+    //todo: make tree filter by config(in addition to type config).
+    FetchWithAuth(process.env.REACT_APP_REMOTE_URL + '/content/treemenu/'+this.state.parent+'?type=folder')
       .then((data) => {
         this.setState({ data: data.data });
       })
@@ -157,6 +173,8 @@ class Dialog extends React.Component<{config:any, contenttype:Array<string>, tri
   }
 
   renderBody(){
+    let browseList = util.getViewSettings(this.state.contenttype).browselist;
+
     let selected = this.props.multi?this.state.selected:(this.state.selected?[this.state.selected]:null);
     return <><div className="selected">{selected&&selected.map((content: any, index:any) => {
       return <><RenderProperties content={content} contenttype={this.state.contenttype} mode="inline" /><span className="close" onClick={(e)=>this.unselect(index)}></span></>
@@ -177,7 +195,7 @@ class Dialog extends React.Component<{config:any, contenttype:Array<string>, tri
           <a href="#" onClick={(e:any)=>{e.preventDefault();this.setState({showTree:!this.state.showTree});}}>
             <i className={this.state.showTree?"fas fa-chevron-left":"fas fa-chevron-right"}></i>
           </a>
-          <List id={this.state.parent} key={this.state.parent+this.state.contenttype} onRenderRow={(content:any)=>this.selectedRowClass(content)} contenttype={this.state.contenttype} config={this.config.list} onLinkClick={(content) => this.select(content)} />
+          <List id={this.state.parent} key={this.state.parent+this.state.contenttype} onRenderRow={(content:any)=>this.selectedRowClass(content)} contenttype={this.state.contenttype} {...browseList} level={100} onLinkClick={(content) => this.select(content)} />
         </div>
       </div>
     </div></>

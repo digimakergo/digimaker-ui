@@ -1,0 +1,39 @@
+---
+name: DMInit
+route: /DMInit
+menu: Components
+---
+
+import { Playground, Props } from 'docz'
+import DMInit from './DMInit'
+
+# DMInit
+
+DMInit is a component which initializes digimaker-ui. All the rendering is suggested to be inside this.
+
+DMInit can be put into App.tsx directly.
+
+<Props table={true} of={DMInit} />
+
+## Basic usage
+```js
+//set setting for inline/block mode
+<DMInit contenttypeSetting={(contenttype: string)=>{
+    if( contenttype == 'image' ){
+        return {inline_fields:["image"], block_fields:["name","image"],browselist:{viewmode: 'block', columns:["name"], sort_default:[["priority", "desc"]] }};
+    }else{
+        return {inline_fields:["name"],browselist:{viewmode: 'list', columns:["name", "published"], sort_default:[["priority", "desc"]] }}};
+    }
+}}>
+
+<div class="left">
+    LEFT MENU
+</div>
+<div class="right">
+    <Main />
+</div>
+</DMInit>
+```
+
+<Playground>
+</Playground>

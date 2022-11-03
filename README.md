@@ -1,9 +1,14 @@
-digimaker-ui is a react ui components for [Digimaker CMF](https://github.com/digimakergo/digimaker), including displaying, editing, field, content and related utils.
 
+# digimaker-ui
 
-NPM Package: digimaker-ui (https://www.npmjs.com/package/digimaker-ui)
+digimaker-ui is the ui components for Digimaker CMF, developed in React. It provides client features like create, edit, delete, actions and other editorial features.
 
+By default it's using boostrap for styling ui, we are supporting other ui framework like mui.
 
-Documentation, visit: https://digimaker.org/doc/references/digimaker-ui
-
-For digimaker documentation, visit https://digimaker.org/doc
+Components:
+- List(include block view)
+- TreeNode
+- Browse
+- Util. eg. FileUpload
+- Views: content view, version view
+- Actions: create, edit, delete, filter, move, copy, set to top, set priority, assign/unassign role, disable user
