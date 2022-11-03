@@ -177,7 +177,7 @@ class Dialog extends React.Component<BrowseProps, { contenttype:string, shown: b
 
     let selected = this.props.multi?this.state.selected:(this.state.selected?[this.state.selected]:null);
     return <><div className="selected">{selected&&selected.map((content: any, index:any) => {
-      return <><RenderProperties content={content} contenttype={this.state.contenttype} mode="inline" /><span className="close" onClick={(e)=>this.unselect(index)}></span></>
+      return <><RenderProperties key={content.id} content={content} contenttype={this.state.contenttype} mode="inline" /><span className="close" onClick={(e)=>this.unselect(index)}></span></>
     })}</div>
     {this.props.contenttype.length>1&&<div>
       <select onChange={(e:any)=>this.changeContentype(e.target.value)}>
