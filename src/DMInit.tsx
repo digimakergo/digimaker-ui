@@ -3,9 +3,10 @@ import util from './util';
 import {FetchWithAuth} from './util';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
+import { ListProps } from "./List";
 
 
-export interface BrowseListProps{
+export interface BrowseListProps extends ListProps{
       /** viewmode of list, default is list */
       viewmode?: "list"|"block";
 

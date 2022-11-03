@@ -195,7 +195,7 @@ class Dialog extends React.Component<BrowseProps, { contenttype:string, shown: b
           <a href="#" onClick={(e:any)=>{e.preventDefault();this.setState({showTree:!this.state.showTree});}}>
             <i className={this.state.showTree?"fas fa-chevron-left":"fas fa-chevron-right"}></i>
           </a>
-          <List id={this.state.parent} key={this.state.parent+this.state.contenttype} onRenderRow={(content:any)=>this.selectedRowClass(content)} contenttype={this.state.contenttype} {...browseList} level={100} onLinkClick={(content) => this.select(content)} />
+          <List {...browseList} id={this.state.parent} key={this.state.parent+this.state.contenttype} onRenderRow={(content:any)=>this.selectedRowClass(content)} contenttype={this.state.contenttype} level={100} onLinkClick={(content) => this.select(content)} />
         </div>
       </div>
     </div></>
