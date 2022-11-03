@@ -7,7 +7,7 @@ import FieldtypeIcon from './FieldtypeIcon';
 import {DDCard} from './DDCard';
 import update from 'immutability-helper';
 
-interface ListProps {
+export interface ListProps {
   /** parent id of the list */
   id: number;
 
@@ -184,7 +184,7 @@ const List = ({id, contenttype, onLinkClick, onRenderRow, level = 1, sort_defaul
     fetchData();
     let data = getDefinition(contenttype);
     setDef(data);
-  }, [sortby]);
+  }, [sortby, currentPage]);
 
   const select = (id) => {
     if (selected.includes(id)) {
@@ -486,7 +486,7 @@ const List = ({id, contenttype, onLinkClick, onRenderRow, level = 1, sort_defaul
                 <i className='fas fa-step-backward' />
               </a>
               <a
-                href='#'
+                href='/'
                 className='page-previous'
                 onClick={(e) => {
                   e.preventDefault();
@@ -498,7 +498,7 @@ const List = ({id, contenttype, onLinkClick, onRenderRow, level = 1, sort_defaul
                 <i className='fas fa-chevron-left' />
               </a>
               <a
-                href='#'
+                href='/'
                 className='page-next'
                 onClick={(e) => {
                   e.preventDefault();
@@ -510,7 +510,7 @@ const List = ({id, contenttype, onLinkClick, onRenderRow, level = 1, sort_defaul
                 <i className='fas fa-chevron-right' />
               </a>
               <a
-                href='#'
+                href='/'
                 className='page-last'
                 onClick={(e) => {
                   e.preventDefault();
@@ -520,7 +520,7 @@ const List = ({id, contenttype, onLinkClick, onRenderRow, level = 1, sort_defaul
                 <i className='fas fa-step-forward' />
               </a>
               <a
-                href='#'
+                href='/'
                 title='Reload data'
                 onClick={(e) => {
                   e.preventDefault();
