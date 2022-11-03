@@ -11,8 +11,9 @@ export default class SetPriority extends React.Component<ActionProps, {error:str
         this.state = {error:'', dialog:false, value:priority, newValue:priority};
     }
 
-    showDialog =()=>{
+    showDialog =(e)=>{
         this.setState({dialog: true});
+        e.preventDefault();
     }
 
     input = (e)=>{
@@ -31,7 +32,7 @@ export default class SetPriority extends React.Component<ActionProps, {error:str
 
     render(){
         return <>
-        <a href="javascript:void(0)" onClick={this.showDialog} title="Set priority"><i className="fas fa-sort-amount-down"></i> {this.state.newValue}</a>
+        <a href="#" onClick={this.showDialog} title="Set priority"><i className="fas fa-sort-amount-down"></i> {this.state.newValue}</a>
         {this.state.dialog&&
          <Dialog title={"Set priority"} onSubmit={this.submit}>
              <label>New priority: </label>

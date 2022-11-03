@@ -193,7 +193,7 @@ const List = ({id, contenttype, onLinkClick, onRenderRow, level = 1, sort_defaul
     } else {
       selected.push(id);
     }
-    setSelected(selected);
+    setSelected([...selected]);
   }
 
   const selectAll = () => {
@@ -221,7 +221,7 @@ const List = ({id, contenttype, onLinkClick, onRenderRow, level = 1, sort_defaul
       <table className='table'>
         <tbody>
           {config['show_table_header'] && (
-            <tr>
+            <tr key={config.columns.join(',')}>
               {config.can_select && (
                 <th className='center' onClick={() => selectAll()}>
                   <a href='#'>
@@ -338,6 +338,7 @@ const List = ({id, contenttype, onLinkClick, onRenderRow, level = 1, sort_defaul
               <input
                 type='checkbox'
                 checked={selected.includes(content.id)}
+                onChange={() =>{}}
                 value='1'
               />
             </td>
@@ -398,6 +399,7 @@ const List = ({id, contenttype, onLinkClick, onRenderRow, level = 1, sort_defaul
       } else {
         rows.push(
           <tr
+            key={content.id}
             className={rowClasses}
             onClick={(e) => linkClick(e, content)}
           >

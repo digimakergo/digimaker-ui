@@ -56,7 +56,7 @@ interface ActionsProps {
 }
 
 export function Actions({actionsConfig, actionProps, iconOnly}: ActionsProps) {
-  const renderLink = (config: any) => {
+  const renderLink = (config: any, i:number) => {
     let path = '';
     if (config.link) {
       let variables = {};
@@ -87,7 +87,7 @@ export function Actions({actionsConfig, actionProps, iconOnly}: ActionsProps) {
     );
 
     return (
-      <div className='action-item'>
+      <div className='action-item' key={i}>
         {!newWindow && (
           <Link to={path}>{linkText}</Link>
         )}
@@ -109,10 +109,10 @@ export function Actions({actionsConfig, actionProps, iconOnly}: ActionsProps) {
       {actionsConfig.map(
         (action:ActionConfigType, i:number) => {
         if ( 'link' in action) {
-          return renderLink(action);
+          return renderLink(action, i);
         }else if( typeof action === 'function' ){
           let A = action as (ActionProps)=>ReactNode;
-          let ele = A({...{...actionProps, counter: i}});
+          let ele = A({...{...actionProps, counter: i, key:i}});
           return ele;
         }else{
           console.warn("uknown action config: "+Object.entries(action));
