@@ -97,8 +97,10 @@ class Dialog extends React.Component<BrowseProps, { contenttype:string, shown: b
 
   submit() {
     const confirmSuccess = this.props.onConfirm(this.state.selected);
-    if( confirmSuccess !== false ){
-      this.setState({ selected:this.props.selected, shown: false });    
+    this.setState({ selected:this.props.selected }); 
+    //close if onConfirm doesn't return false
+    if( confirmSuccess !== false ){   
+      this.setState({ shown: false }); 
     }
   }
 
