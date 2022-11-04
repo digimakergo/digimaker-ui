@@ -5,19 +5,28 @@ import Collapse from 'react-bootstrap/Collapse'
 //TreeNode which render tree based on data from server.
 //selected: number|array<number> for selected id
 //renderItem is to render what's inside(eg. if you want to remove icon or output node id, or additional link ).
-interface TreeNodeProps {
+export interface TreeNodeProps {
+  /** Data returned from content/treemenu  */
   data: any;
-  selectedId?: any;
+  
+  /** selected content id, can be multiple(eg. parent&child both selected) */
+  selectedId?: number|Array<number>;
+
+  /** Show root node or not */
   showRoot?: boolean;
-  renderItem?: any;
-  onClick?: any;
+
+  /** Customized render */
+  renderItem?:  (node:any)=>JSX.Element;
+
+  /** onClick event */
+  onClick?: (e:any, node:any)=>void;
 }
 
 interface TreeNodeItemProps {
   data: any;
-  selectedId?: any;
-  onClick?: any;
-  renderItem?: any;
+  selectedId?: number|Array<number>;  
+  onClick?: (e:any, node:any)=>void;
+  renderItem?:  (node:any)=>JSX.Element;
   onOpenClose?: any;
 }
 
