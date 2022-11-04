@@ -1,0 +1,6 @@
+
+0.2.0-beta.4
+- Added Main for main page example
+- Browse onConfirm callback supporting return false to prevent hiding dialog
+- FetchWithAuth supports like url like 'content/get/3' with full url
+- Support util.setRefreshToken( token )
