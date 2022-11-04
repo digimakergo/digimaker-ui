@@ -1,0 +1,91 @@
+---
+name: Main
+route: /Main
+menu: Components
+---
+
+import { Playground, Props } from 'docz'
+import Main from './Main'
+
+# Main
+
+Main provide the 'main' area of admin site.
+
+## Usage
+```js
+//main settings
+const mainConfig = {
+    folder: {
+      actions: [
+        (actionProps:ActionProps)=><SetPriority {...actionProps} />
+      ]
+    },
+    frontpage: {
+      list: ['frontpage_block'],
+    },  
+    role: {
+      view: true,
+    },
+    article: {
+      view: true,
+      metainfo:true,
+      actions: [      
+        (actionProps:ActionProps)=><Move {...actionProps} />
+      ],
+    },
+    user: {
+      view: true,
+      viewComponent: UserRoles,    
+    },
+  };
+
+const getMainConfig =(content:any)=>{
+    return mainConfig[content.content_type]
+}
+
+//list settings
+const getListConfig = (_parent: any, contenttype: string)=>{
+  const commonSettings = {
+    show_header: true,
+    show_table_header: true,
+    pagination: 10,
+    sort:[],
+    row_actions: [
+      {
+        link: '/edit/{_contenttype_id}?from=/main/{_from_id}',
+        name: 'Edit',
+        icon: 'icon-edit',
+      },
+      (actionProps:ActionProps)=><Delete {...actionProps} />
+    ]
+  }
+
+//main in route
+<Route
+    path='/main/:id'
+    exact={true}
+    render={(route) => (
+        <Main
+            onLoad={(content)=>{     
+                //set current content for left menu use.           
+                setCurrent(content);
+            }}										    
+            id={parseInt(route.match.params.id)}
+            getMainConfig={getMainConfig}
+            getListConfig={getListConfig}
+            redirect={(url: string) =>
+                commonAfterAction(route.history, 0, [url])}
+        />
+    )}
+/>
+
+```
+
+## Properties
+<Props table={true} isToggle={true} of={Main} />
+
+## Basic usage
+
+<Playground>
+   <Main />
+</Playground>

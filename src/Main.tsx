@@ -11,7 +11,7 @@ import ReactTooltip from "react-tooltip";
 import { getDefinition } from "./util";
 import Moment from "react-moment";
 
-export interface MainProps {
+export interface MainSettings {
     /** Openside or not */
     openSide?:boolean;
 
@@ -35,15 +35,17 @@ export interface MainProps {
     sideActions?:Partial<ActionConfigType>[];
 }
 
-export default class Main extends React.Component<
-	{
-		id: number;
-		contenttype?: string;
-		getMainConfig: (content: any) => MainProps;
-		getListConfig: (parent: any, contenttype: string) => ListProps;
-		onLoad?:(content:any)=>void;
-		redirect: (url: string) => void;
-	},
+interface MainProps {
+	id: number;
+	contenttype?: string;
+	getMainConfig: (content: any) => MainSettings;
+	getListConfig: (parent: any, contenttype: string) => ListProps;
+	onLoad?:(content:any)=>void;
+	redirect: (url: string) => void;
+}
+
+class Main extends React.Component<
+	MainProps,
 	{ content: any; sideOpen: any }
 > {
 	constructor(props: any) {
@@ -299,7 +301,7 @@ export default class Main extends React.Component<
 	}
 }
 
-export class MetaInfo extends React.Component<{content:any}> {
+class MetaInfo extends React.Component<{content:any}> {
     render () {
       return (
            <div>
@@ -319,3 +321,5 @@ export class MetaInfo extends React.Component<{content:any}> {
     }
   }
   
+
+  export default Main;
