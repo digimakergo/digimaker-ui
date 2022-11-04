@@ -1,10 +1,11 @@
 ---
-name: Field types
+name: Customize field type
 route: /FieldTypes
 menu: Fieldtypes
 ---
 
 import { Playground, Props } from 'docz'
+import Text from './fieldtype/Text'
 
 # Field types
 
@@ -22,3 +23,13 @@ FieldRegister.registerComponent( 'image', Image );
 FieldRegister.register( 'article/cover_image', CoverImage )
 
 ```
+
+### Implementation
+```js
+const CustomField = (props:FieldtypeProps)=>{
+    //render in mode(edit/view/inline)
+}
+```
+
+Below is FieldtypeProps properties:
+<Props table={true} isToggle={true} of={Text} />

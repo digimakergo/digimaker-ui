@@ -5,18 +5,32 @@ import ReactTooltip from 'react-tooltip';
 import { FetchWithAuth } from './util';
 
 interface RenderFieldsProps {
+  /** field type */
   type: string;
-  validation: any;
+
+  /** validation result returned from server. used in edit mode */
+  validation?: any;
+
+  /** field data */
   data: any;
+
+  /** array of field identifier to be edited */
   editFields?: any;
+
+  /** edit langauge */
   language?: string;
-  mode?: string;
+
+  /** render mode */
+  mode?: 'edit'|'view';
+
+  /** before rendering one field */
   beforeField?: any;
+
+  /** after rendering one field */
   afterField?: any;
-  onChange?: void;
 }
 
-function RenderFields({type, validation, data, editFields, language, mode, beforeField, afterField, onChange}: RenderFieldsProps) {
+const RenderFields = ({type, validation, data, editFields, language, mode, beforeField, afterField}: RenderFieldsProps) => {
   const [definition, setDefinition] = React.useState('');
   const [typeArr, setTypeArr] = React.useState([]);
 

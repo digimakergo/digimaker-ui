@@ -1,6 +1,7 @@
-import * as React from 'react';
+import React from 'react';
+import { useEffect, useState } from 'react';
 
-interface FileUploadProps {
+export interface FileUploadProps {
   /** Form field name, similar to input name attribute */
   name: string;
   /** Service, eg. content */
@@ -19,12 +20,12 @@ interface FileUploadProps {
   onSuccess?: any;
 }
 
-function FileUpload({name, service, format, value, multi, onSuccess}: FileUploadProps) {
-  const [uploadState, setUploadState] = React.useState(0);
-  const [filename, setFilename] = React.useState('');
-  const [error, setError] = React.useState('');
+const FileUpload = ({name, service, format, value, multi, onSuccess}: FileUploadProps) => {
+  const [uploadState, setUploadState] = useState(0);
+  const [filename, setFilename] = useState('');
+  const [error, setError] = useState('');
 
-  React.useEffect(() => {
+  useEffect(() => {
     setFilename(value);
   }, [value]);
 
@@ -116,6 +117,6 @@ function FileUpload({name, service, format, value, multi, onSuccess}: FileUpload
         />
     </span>
   )
-}
+};
 
 export default FileUpload;

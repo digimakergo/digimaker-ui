@@ -13,6 +13,28 @@ import Datetime from './fieldtype/Datetime';
 import Relation from './fieldtype/Relation';
 import Select from './fieldtype/Select';
 
+export interface FieldtypeProps{
+    /** field definition */
+    definition:any;
+
+    /** validation in this field */
+    validation?:any; 
+
+    /** data on this field */
+    data:any;
+    
+    /** mode */
+    mode:string;
+
+    /** contenttype the field in */
+    contenttype: string;
+
+    /** whole data */
+    formdata:any;
+
+    /** whole validation */
+    formValidation:any;             
+}
 
 export default class FieldRegister{
         static fieldtypeMap = {};
