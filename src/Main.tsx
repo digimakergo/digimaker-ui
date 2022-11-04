@@ -10,6 +10,7 @@ import { FetchWithAuth } from "./util";
 import ReactTooltip from "react-tooltip";
 import { getDefinition } from "./util";
 import Moment from "react-moment";
+import { useEffect } from "react";
 
 export interface MainSettings {
     /** Openside or not */
@@ -36,269 +37,259 @@ export interface MainSettings {
 }
 
 interface MainProps {
+	/** id of the content */
 	id: number;
+
+	/** Content type, used for non-location content */
 	contenttype?: string;
+
+	/** Callback to get main config, return MainSettings */
 	getMainConfig: (content: any) => MainSettings;
+
+	/** Callback to get list on this main, return ListProps */
 	getListConfig: (parent: any, contenttype: string) => ListProps;
+
+	/** Invoked when content is fetched. Useful for leftmenu selection for example */
 	onLoad?:(content:any)=>void;
+
+	/** Redirect callback. for route use. */
 	redirect: (url: string) => void;
 }
 
-class Main extends React.Component<
-	MainProps,
-	{ content: any; sideOpen: any }
-> {
-	constructor(props: any) {
-		super(props);
-		this.state = { content: "", sideOpen: null };
-	}
+
+const Main = (props:MainProps) =>{
+	const [content, setContent] = React.useState(null);
+	const [sideOpen, setSideOpen] = React.useState(null);
+
 	//fetch content
-	fetchData() {
+	const fetchData = () => {
 		let url = "/content/get";
-		if (this.props.contenttype) {
-			url = `${url}/${this.props.contenttype}/${this.props.id}`;
+		if (props.contenttype) {
+			url = `${url}/${props.contenttype}/${props.id}`;
 		} else {
-			url = `${url}/${this.props.id}`;
+			url = `${url}/${props.id}`;
 		}
+
 		FetchWithAuth(process.env.REACT_APP_REMOTE_URL + url)
 			.then((data) => {
 				let content = data.data;
-				if( this.props.onLoad ){
-					this.props.onLoad(content)
+				if( props.onLoad ){
+					props.onLoad(content)
 				}
 
-				let sideOpenConfig = this.state.sideOpen;
-				let mainConfig = this.getMainConfig(content);
-				sideOpenConfig = mainConfig["openSide"] ? 1 : 0;
+				let mainConfig = props.getMainConfig(content);
+				let sideOpenConfig = mainConfig["openSide"] ? true : false;
 
-				this.setState({ content: content, sideOpen: sideOpenConfig });
+				setContent(content);
+				setSideOpen(sideOpenConfig)
 			})
 			.catch((err) => {
-				this.setState(() => {
 					throw err;
-				});
 			});
 	}
 
-	componentDidMount() {
-		this.fetchData();
-	}
+	useEffect(()=>{
+		fetchData();
+	},[props.id]);
 
-	componentDidUpdate(prevProps, prevState, snapshot) {
-		//when changing page
-		if (prevProps.id !== this.props.id) {
-			this.setState({ sideOpen: prevState.sideOpen });
-			this.fetchData();
-		}
-	}
-
-	componentWillUnmount() {}
-
-	afterAction(redirect: boolean) {
+	const afterAction = (redirect: boolean) => {
 		if (redirect) {
-			this.props.redirect(`/main/${this.state.content.parent_id}`);
+			props.redirect(`/main/${content.parent_id}`);
 		}
 	}
 
-	getMainConfig(content) {
-		return this.props.getMainConfig(content);
+	if (!content) {
+		return <span></span>;
 	}
+	let contenttype = content.content_type;
+	let def = getDefinition(contenttype);
+	let mainConfig = props.getMainConfig(content);
+	let listContenttypes: string[] = mainConfig.list;
 
-	render() {
-		if (!this.state.content) {
-			return "";
-		}
-		let contenttype = this.state.content.content_type;
-		let def = getDefinition(contenttype);
-		let mainConfig = this.getMainConfig(this.state.content);
-		let listContenttypes: string[] = mainConfig["list"];
+	let newTypes = mainConfig.new;
+	return (
+		<div
+			key={content.id}
+			className={`contenttype-${content.content_type}`}
+		>
+			<div className="main-top">
+				{/* area for actions */}
+				<div className="content-actions">
+					{newTypes.length > 0 && (
+						<div className="action-create">
+							<label>Create</label>
+							{newTypes.map((contenttype: any) => {
+								return (
+									<Link
+										key={contenttype}
+										to={`/create/${content.id}/${contenttype}`}
+										data-place='bottom'
+										data-tip={""}
+									>
+										<i
+											className={`icon icon-contenttype icon-${contenttype}`}
+										/>
+									</Link>
+								);
+							})}
+							<ReactTooltip effect="solid" />
+							<div />
+						</div>
+					)}
 
-		let newTypes = mainConfig["new"];
-		return (
-			<div
-				key={this.state.content.id}
-				className={`contenttype-${this.state.content.content_type}`}
-			>
-				<div className="main-top">
-					{/* area for actions */}
-					<div className="content-actions">
-						{newTypes.length > 0 && (
-							<div className="action-create">
-								<label>Create</label>
-								{newTypes.map((contenttype: any) => {
-									return (
-										<Link
-											key={contenttype}
-											to={`/create/${this.state.content.id}/${contenttype}`}
-											data-place='bottom'
-											data-tip={""}
-										>
-											<i
-												className={`icon icon-contenttype icon-${contenttype}`}
-											/>
-										</Link>
-									);
-								})}
-								<ReactTooltip effect="solid" />
-								<div />
-							</div>
-						)}
+					<Actions
+						actionProps={{
+							from: content,
+							params: {
+								content: content,
+								afterAction: (redirect: boolean) =>
+									afterAction(redirect),
+							} as ContentActionParams,
+							fromview: "content",
+						}}
+						actionsConfig={mainConfig.actions}
+					/>
+				</div>
 
-						<Actions
-							actionProps={{
-								from: this.state.content,
-								params: {
-									content: this.state.content,
-									afterAction: (redirect: boolean) =>
-										this.afterAction(redirect),
-								} as ContentActionParams,
-								fromview: "content",
-							}}
-							actionsConfig={mainConfig.actions}
+				<h2>
+					<a href="/" onClick={(e: any) => e.preventDefault()}>
+						<i
+							data-tip={true}
+							data-for="contentype"
+							className={`icon icon-${content.content_type}`}
 						/>
-					</div>
+					</a>
+					&nbsp;
+					<ReactTooltip place="bottom" id="contentype">
+						{def.name}
+					</ReactTooltip>
+					{content.name} &nbsp;&nbsp;
+					{!(
+						contenttype === "folder" &&
+						content.folder_type === "site"
+					) && (
+						<Link
+							className="go-uppper"
+							title="Go upper"
+							to={`/main/${content.parent_id}`}
+						>
+							<i className="fas fa-chevron-circle-up" />
+						</Link>
+					)}
+				</h2>
 
-					<h2>
-						<a href="/" onClick={(e: any) => e.preventDefault()}>
+				{mainConfig["metainfo"] && (
+					<div>
+						<i style={{ fontSize: "0.85rem" }}>
+							modified by <Link
+								to={`/main/user/${content.author}`}
+							>{content.author_name}</Link>
+							{/* <Moment unix format="DD.MM.YYYY HH:mm">{this.state.content.modified}</Moment> */}
+						</i>
+						&nbsp;&nbsp;
+						<a href="/" onClick={(e=>e.preventDefault())}>
 							<i
 								data-tip={true}
-								data-for="contentype"
-								className={`icon icon-${this.state.content.content_type}`}
+								data-for="metainfo"
+								className="fas fa-info-circle"
 							/>
 						</a>
-						&nbsp;
-						<ReactTooltip place="bottom" id="contentype">
-							{def.name}
-						</ReactTooltip>
-						{this.state.content.name} &nbsp;&nbsp;
-						{!(
-							contenttype === "folder" &&
-							this.state.content.folder_type === "site"
-						) && (
-							<Link
-								className="go-uppper"
-								title="Go upper"
-								to={`/main/${this.state.content.parent_id}`}
-							>
-								<i className="fas fa-chevron-circle-up" />
-							</Link>
-						)}
-					</h2>
-
-					{mainConfig["metainfo"] && (
-						<div>
-							<i style={{ fontSize: "0.85rem" }}>
-								modified by <Link
-									to={`/main/user/${this.state.content.author}`}
-								>{this.state.content.author_name}</Link>
-								{/* <Moment unix format="DD.MM.YYYY HH:mm">{this.state.content.modified}</Moment> */}
-							</i>
-							&nbsp;&nbsp;
-							<a href="/" onClick={(e=>e.preventDefault())}>
-								<i
-									data-tip={true}
-									data-for="metainfo"
-									className="fas fa-info-circle"
-								/>
-							</a>
-							<ReactTooltip
-								id='metainfo'
-								clickable={true}
-								delayShow={200}
-								delayHide={500}
-								place="bottom"
-								effect='solid'
-							>
-								<MetaInfo content={this.state.content} />
-							</ReactTooltip>
-							&nbsp;&nbsp;
-						</div>
-					)}
-				</div>
-				<div className="main-main">
-					<div className="main-content">
-						{/* view content */}
-						{mainConfig && mainConfig["view"] && (
-							<div className="view-content">
-								<ViewContent content={this.state.content} />
-							</div>
-						)}						
-
-                        {mainConfig&&mainConfig.viewComponent&&(
-                            <React.Suspense fallback="...">
-                            {(() => {
-                                const Com = mainConfig.viewComponent;                               
-                                return (<Com content={this.state.content} />) as JSX.Element;
-                            })()}
-                            </React.Suspense>
-                        )}
-
-						{/* children list */}
-						{listContenttypes.length > 0 && (
-							<div className="list">
-								{listContenttypes.map((subtype) => {
-									let listConfig = this.props.getListConfig(
-										this.state.content,
-										subtype,
-									);
-									return (
-										<List
-										    key={subtype}
-											id={this.props.id}
-											contenttype={subtype}
-											{...listConfig}
-											row_actions={listConfig.row_actions}
-										/>
-									);
-								})}
-							</div>
-						)}
-					</div>
-
-					{/* side area for actions */}
-					{mainConfig && mainConfig.sideActions && (
-						<div
-							className={`side${this.state.sideOpen === true ? " open" : ""}${
-								this.state.sideOpen === false ? " closed" : ""
-							}${this.state.sideOpen === 0 ? " init-closed" : ""}`}
+						<ReactTooltip
+							id='metainfo'
+							clickable={true}
+							delayShow={200}
+							delayHide={500}
+							place="bottom"
+							effect='solid'
 						>
-							<div className="hider">
-								<a
-									href="/"
-									onClick={(e) => {
-										e.preventDefault();
-										this.setState({
-											sideOpen: this.state.sideOpen ? false : true,
-										});
-									}}
-								>
-									<i className="fas fa-caret-down" />
-								</a>
-							</div>
-							<div className="side-body">
-								{mainConfig.sideActions && (
-									<div className="slide-actions">
-										<Actions
-											actionProps={{
-												from: this.state.content,
-												fromview: "content",
-												params: {
-													content: this.state.content,
-													afterAction: (redirect: boolean) =>
-														this.afterAction(redirect),
-												} as ContentActionParams,
-											}}
-											actionsConfig={mainConfig.sideActions}
-										/>
-									</div>
-								)}
-							</div>
+							<MetaInfo content={content} />
+						</ReactTooltip>
+						&nbsp;&nbsp;
+					</div>
+				)}
+			</div>
+			<div className="main-main">
+				<div className="main-content">
+					{/* view content */}
+					{mainConfig && mainConfig["view"] && (
+						<div className="view-content">
+							<ViewContent content={content} />
+						</div>
+					)}						
+
+					{mainConfig&&mainConfig.viewComponent&&(
+						<React.Suspense fallback="...">
+						{(() => {
+							const Com = mainConfig.viewComponent;                               
+							return (<Com content={content} />) as JSX.Element;
+						})()}
+						</React.Suspense>
+					)}
+
+					{/* children list */}
+					{listContenttypes.length > 0 && (
+						<div className="list">
+							{listContenttypes.map((subtype) => {
+								let listConfig = props.getListConfig(
+									content,
+									subtype,
+								);
+								return (
+									<List
+										key={subtype}
+										id={props.id}
+										contenttype={subtype}
+										{...listConfig}
+										row_actions={listConfig.row_actions}
+									/>
+								);
+							})}
 						</div>
 					)}
 				</div>
+
+				{/* side area for actions */}
+				{mainConfig && mainConfig.sideActions && (
+					<div
+						className={`side${sideOpen === true ? " open" : ""}${
+							sideOpen === false ? " closed" : ""
+						}${sideOpen === 0 ? " init-closed" : ""}`}
+					>
+						<div className="hider">
+							<a
+								href="/"
+								onClick={(e) => {
+									e.preventDefault();
+									setSideOpen(sideOpen?false:true);
+								}}
+							>
+								<i className="fas fa-caret-down" />
+							</a>
+						</div>
+						<div className="side-body">
+							{mainConfig.sideActions && (
+								<div className="slide-actions">
+									<Actions
+										actionProps={{
+											from: content,
+											fromview: "content",
+											params: {
+												content: content,
+												afterAction: (redirect: boolean) =>
+													afterAction(redirect),
+											} as ContentActionParams,
+										}}
+										actionsConfig={mainConfig.sideActions}
+									/>
+								</div>
+							)}
+						</div>
+					</div>
+				)}
 			</div>
-		);
-	}
+		</div>
+	);
+	
 }
 
 class MetaInfo extends React.Component<{content:any}> {
