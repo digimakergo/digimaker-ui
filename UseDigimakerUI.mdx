@@ -21,6 +21,10 @@ REACT_APP_THUMB_PATH=images/thumbnail/{imagepath}
 
 ### DMInit
 All digimaker-ui's components should be inside DMInit(doesn't need to direct under). See properties of [DMInit](../DMInit) for different uses.
+<Hint type="info" variant="outer">
+You don't need DMInit if you only need to use rest api instead of component like List/Browse.
+</Hint>
+
 
 ## Use components
 You can use digimaker-ui compoents separately(eg. list & actions, browse, etc) or build a whole admin from it.
@@ -50,68 +54,81 @@ First we register all Main component like path /main/4
 //App.tsx
 <div>
 <div>{/*Left menu*/}</div>
-<Route path="/main/:id" component={Main} />
+<Route
+    path='/main/:id'
+    exact={true}
+    render={(route) => (
+        <Main
+            onLoad={(content)=>{          
+                setCurrent(content);
+            }}                                          
+            id={parseInt(route.match.params.id)}
+            getMainConfig={getMainConfig}
+            getListConfig={getListConfig}
+            redirect={(url: string) =>
+                commonAfterAction(route.history, 0, [url])}
+        />
+    )}
+/>
 </div>
 ```
 
 ### Main component
-In the Main component, it will fetch content based on id, and shows list of children based on configuration.
+In the Main component, it will fetch content based on id, and shows list of children based on configuration. digimaker-ui provides a default [Main](./Main) component, which list all content list from up to down, but you can customized your own(eg. different content types list shown as tabs).
 
-
-<Hint type="info" variant="outer">
-You can add actions above lists(even if every list has its actions), show content, or add side action. Also you can show lists as tabs.
-</Hint>
-
-```js
-//Main.tsx
-import Config from './Config';
-
-const Main = (props)=>{
-    const location = useLocation();
-    const [content, setContent] = '';
-
-    useEffect(() => {
-    util.FetchByID(props.match.params.id).then(data=>setContent(data));
-  }, [location]);
-
-
-    if(!content){
-        return <div>Loading</div>
-    }
-    return <div>
-        {Config.listTypes(content).map((contenttype)=>
-            <List id={content.id} contenttype={contenttype} {...Config.listConfig(content)} /> )}
-    </div>
-}
-```
-
-### Config file
-The config file will set rule of showing lists and each list's column, sorting, actions etc. 
+### Configuration for Main
+The configiguration sets rule of showing lists and each list's column, sorting, actions etc. 
 <Hint type="info" variant="outer">
 It's easy to show list based on parent's fields, eg. showing article if parent's `children_type` is article.
 </Hint>
 
 ```js
-//Config.ts
-const Config = {
-    listTypes: (content)=>{
-        if( content.content_type == 'folder' ){
-            return ["article"];
-        }
-        return ["folder"];
+//main settings
+const mainConfig = {
+    folder: {
+      actions: [
+        (actionProps:ActionProps)=><SetPriority {...actionProps} />
+      ]
+    },    
+    article: {
+      view: true,
+      metainfo:true,
+      actions: [      
+        (actionProps:ActionProps)=><Move {...actionProps} />
+      ],
     },
-    listConfig: (content)=>{
-        return {           
-            actions:[], //action above list 
-            columns: [ 'name', 'published' ],
-        }
-    }
-},
+    user: {
+      view: true,
+      viewComponent: UserRoles,    
+    },
+  };
 
-export default Config;
+const getMainConfig =(content:any)=>{
+    return mainConfig[content.content_type]
+}
+
+
+//list settings
+const getListConfig = (_parent: any, contenttype: string)=>{
+  const commonSettings = {
+    show_header: true,
+    show_table_header: true,
+    pagination: 10,
+    sort:[],
+    row_actions: [
+      {
+        link: '/edit/{_contenttype_id}?from=/main/{_from_id}',
+        name: 'Edit',
+        icon: 'icon-edit',
+      },
+      (actionProps:ActionProps)=><Delete {...actionProps} />
+    ]
+  }
+  return commonSettings;
+}
 ```
 
-### Edit/Create
+### Actions: edit/create
 
 There are typically 2 ways to achieve edit/create, url or dialog. Below is an example of routing path `/create/{parent}/{contenttype}` to create.
 

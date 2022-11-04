@@ -18,7 +18,7 @@ DMInit can be put into App.tsx directly.
 ## Basic usage
 ```js
 //set setting for inline/block mode
-<DMInit contenttypeSetting={(contenttype: string)=>{
+<DMInit viewSettings={(contenttype: string)=>{
     if( contenttype == 'image' ){
         return {inline_fields:["image"], block_fields:["name","image"],browselist:{viewmode: 'block', columns:["name"], sort_default:[["priority", "desc"]] }};
     }else{
