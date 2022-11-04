@@ -23,7 +23,7 @@ export interface BrowseProps {
   /** true means it's already triggered, otherwise it shows a button to trigger */
   trigger?:boolean;
 
-  /** when confirmed */
+  /** when confirmed. return false will prevent closing */
   onConfirm: any;
 
   /** when cancel */
@@ -96,8 +96,10 @@ class Dialog extends React.Component<BrowseProps, { contenttype:string, shown: b
   }
 
   submit() {
-    this.props.onConfirm(this.state.selected);
-    this.setState({ selected:this.props.selected, shown: false });    
+    const confirmSuccess = this.props.onConfirm(this.state.selected);
+    if( confirmSuccess !== false ){
+      this.setState({ selected:this.props.selected, shown: false });    
+    }
   }
 
 
@@ -163,12 +165,15 @@ class Dialog extends React.Component<BrowseProps, { contenttype:string, shown: b
   }
 
   unselect(index:any){
+    let data = this.state.selected;
     if( !this.props.multi ){
-      this.setState({selected: null});
+      data = null;
     }else{
-      let selected = this.state.selected;
-      selected.splice(index, 1);
-      this.setState({selected: selected});
+      data.splice(index, 1);
+    }
+    this.setState({selected:data});
+    if( this.props.inline ){
+      this.props.onConfirm(data);
     }
   }
 
