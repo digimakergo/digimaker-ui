@@ -7,6 +7,7 @@ By default it's using boostrap for styling ui, we are supporting other ui framew
 
 Components:
 - List(include block view)
+- Main(for building main page for admin site)
 - TreeNode
 - Browse
 - Util. eg. FileUpload
