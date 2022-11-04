@@ -4,6 +4,8 @@
 digimaker-ui is the ui components for Digimaker CMF, developed in React. It provides client features like create, edit, delete, actions and other editorial features.
 
 
+Documentation: [https://digimaker.org/doc/digimaker-ui](https://digimaker.org/doc/digimaker-ui)
+
 Components
 ---
 - List(include block view)

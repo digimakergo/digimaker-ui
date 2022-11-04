@@ -8,6 +8,7 @@ export default {
       { name: 'Actions', menu: [] },
       { name: 'Fieldtypes', menu: [] }
     ],
+    base: '/doc/digimaker-ui/',
     ignore:['README.md'],
     themeConfig: {
       footer: {
