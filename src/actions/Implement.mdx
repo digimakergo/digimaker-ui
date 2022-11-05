@@ -8,16 +8,55 @@ import { Playground, Props } from 'docz'
 import Delete from './Delete'
 import {ActionProps} from '../ActionsRender'
 
-# Implement
+# Implement action
 
-Example of implementing an action
+To implement an action, you need to create a component with `ActionProps`. Here is example from `Delete`
+
+```js
+import {ActionProps, ContentActionParams} from 'digimaker-ui';
+
+
+const Delete = (props:ActionProps) => {
+  const [shown, setShown] = React.useState(false);
+  const params = props.params as ContentActionParams;
+  //...
+}
+```
 
 <Props table={true} of={Delete} />
 
 
+### Action from content
+When `fromview` is `content`(from main) or `inline`(row_action in list)
 
-## Basic usage
+`ContentActionParams`
 
-<Playground>
+```js
+export interface ContentActionParams{
+   /** from object */
+   from?: any;//eg.{id:22}
 
-</Playground>
+   /** content on */
+   content:any; //todo: define 'any'
+   /** After action callback. redirect is useful when deleting itself. Note that redirect will be ignore in inline mode(list row) so it's safe to call true */
+   afterAction: (redirect?: boolean)=>void;
+}
+```
+
+### Action from list
+
+When `fromview` is `list` - from list's tool(above list)
+
+`ListActionParams`
+
+```js
+export interface ListActionParams{
+   /** selected content list */
+   selected: Array<any>; //todo: define any as content
+   /** config of the list, include eg. sort array */
+   listConfig: any; //todo: define
+
+   /** after action it will refresh list */
+   afterAction: (newConfig?:ListAfterActionConfig)=>void; //todo: define 'any'
+}
+```

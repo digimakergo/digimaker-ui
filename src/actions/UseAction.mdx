@@ -10,7 +10,29 @@ import {ActionsRender} from '../ActionsRender'
 
 # Use Actions
 
-Example of Delete action
+Here is rendering actions(shown as icons/buttons first) in `Main`
+```js
+import {ActionsRender} from 'digimaker-ui';
 
+//...
+// actionsConfig is a list of actions, supporting component and link
+<ActionsRender
+    actionProps={{
+        from: content,
+        params: {
+            content: content,
+            afterAction: (redirect: boolean) =>
+                afterAction(redirect),
+        } as ContentActionParams,
+        fromview: "content",
+    }}
+    actionsConfig={mainConfig.actions}
+/>
+//...
+```
+
+
+## Properties
+Here are properties of `ActionsRender`
 <Props table={true} of={ActionsRender} />
 
