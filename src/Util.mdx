@@ -1,6 +1,6 @@
 ---
 name: util
-route: /Util
+route: /util
 menu: Components
 ---
 
@@ -27,6 +27,8 @@ const def = util.getDefinition('article')
 | getFields(definition:any) |  Array | Get fields from a content type definition  |
 
 ### fetchWithAuth
+Fetch a request with internal access token. If access token expired, it automatically renew access token and refetch.
+
 ```js
 import {fetchWithAuth} from 'digimaker/util'
 ```
