@@ -6,3 +6,6 @@ export {default as Filter} from './Filter';
 export {default as Move} from './Move';
 export {default as SetPriority} from './SetPriority';
 export {default as SetToTop} from './SetToTop';
+export {default as AssignRole} from './user/AssignRole';
+export {default as UnassignRole} from './user/UnassignRole';
+export {default as DisableUser} from './user/DisableUser';
