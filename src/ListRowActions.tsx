@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import Moment from 'react-moment';
 import util from './util';
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
-import Actions from './Actions';
+import {ActionsRender} from './ActionsRender';
 
 /** props for ListRowActionsProps */
 interface ListRowActionsProps {
@@ -35,7 +35,7 @@ function ListRowActions({content, from, config, afterAction, visibleNumber}: Lis
 
   const renderActions = (actionConfig: any, iconOnly: boolean) => {
     return (
-      <Actions
+      <ActionsRender
         iconOnly={iconOnly}
         actionProps={{
           from: from,

@@ -3,7 +3,7 @@ import {FetchWithAuth} from '../../util';
 import util from '../../util';
 import Browse from '../../Browse';
 import {Dialog} from '../../util';
-import { ActionProps, ContentActionParams, ListActionParams } from '../../Actions';
+import { ActionProps, ContentActionParams, ListActionParams } from '../../ActionsRender';
 
 
 

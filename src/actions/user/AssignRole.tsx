@@ -2,7 +2,7 @@ import * as React from 'react';
 import {FetchWithAuth} from '../../util';
 import util from '../../util';
 import Browse from '../../Browse';
-import { ActionProps, ListActionParams } from '../../Actions';
+import { ActionProps, ListActionParams } from '../../ActionsRender';
 
 
 export default class AssignRole extends React.Component<ActionProps, {triggered:boolean}> {

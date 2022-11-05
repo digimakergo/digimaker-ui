@@ -2,7 +2,7 @@ import * as React from 'react';
 import {FetchWithAuth} from '../util';
 import Browse from '../Browse';
 import util from '../util';
-import { ActionProps, ContentActionParams} from '../Actions';
+import { ActionProps, ContentActionParams} from '../ActionsRender';
 
 export default class Move extends React.Component<ActionProps, {shown:boolean, operating:boolean}> {
 

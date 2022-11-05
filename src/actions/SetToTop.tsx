@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ActionProps, ContentActionParams } from '../Actions';
+import { ActionProps, ContentActionParams } from '../ActionsRender';
 import {FetchWithAuth} from '../util';
 
 export default class SetToTop extends React.Component<ActionProps, {}> {

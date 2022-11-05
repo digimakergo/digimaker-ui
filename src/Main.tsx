@@ -3,8 +3,8 @@ import {
 	Link,
 } from "react-router-dom";
 import List, { ListProps } from "./List";
-import { ActionConfigType, ContentActionParams } from "./Actions";
-import Actions from "./Actions";
+import { ActionConfigType, ContentActionParams } from "./ActionsRender";
+import {ActionsRender} from "./ActionsRender";
 import ViewContent from "./ViewContent";
 import { FetchWithAuth } from "./util";
 import ReactTooltip from "react-tooltip";
@@ -137,7 +137,7 @@ const Main = (props:MainProps) =>{
 						</div>
 					)}
 
-					<Actions
+					<ActionsRender
 						actionProps={{
 							from: content,
 							params: {
@@ -269,7 +269,7 @@ const Main = (props:MainProps) =>{
 						<div className="side-body">
 							{mainConfig.sideActions && (
 								<div className="slide-actions">
-									<Actions
+									<ActionsRender
 										actionProps={{
 											from: content,
 											fromview: "content",

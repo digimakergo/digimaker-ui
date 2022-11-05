@@ -3,7 +3,7 @@ import Moment from 'react-moment';
 import { RouteProps } from 'react-router';
 import RenderFields from '../RenderFields';
 
-export default class ViewContent extends React.Component<RouteProps,{version:any, error: string}> {
+export default class ViewVersion extends React.Component<RouteProps,{version:any, error: string}> {
 
 
   constructor(props: any) {

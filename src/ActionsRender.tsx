@@ -55,7 +55,7 @@ interface ActionsProps {
   iconOnly?: boolean;
 }
 
-export function Actions({actionsConfig, actionProps, iconOnly}: ActionsProps) {
+export function ActionsRender({actionsConfig, actionProps, iconOnly}: ActionsProps) {
   const renderLink = (config: any, i:number) => {
     let path = '';
     if (config.link) {
@@ -135,5 +135,3 @@ export function Actions({actionsConfig, actionProps, iconOnly}: ActionsProps) {
     </div>
   );
 }
-
-export default Actions;

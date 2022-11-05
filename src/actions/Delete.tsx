@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { FetchWithAuth, Dialog, getDefinition } from '../util';
-import {ActionProps, ContentActionParams, ListActionParams} from '../Actions';
+import {ActionProps, ContentActionParams} from '../ActionsRender';
 
 const Delete = (props:ActionProps) => {
   const [shown, setShown] = React.useState(false);

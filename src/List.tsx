@@ -1,7 +1,7 @@
 import React, { ReactNode, useEffect, useState } from 'react';
 import {FetchWithAuth, getDefinition, getFields, getCommonFieldName} from './util';
 import ListRowActions from './ListRowActions';
-import Actions, { ActionConfigType, ListAfterActionConfig } from './Actions';
+import { ActionsRender,ActionConfigType, ListAfterActionConfig } from './ActionsRender';
 import RenderProperties from './RenderProperties';
 import FieldtypeIcon from './FieldtypeIcon';
 import {DDCard} from './DDCard';
@@ -582,7 +582,7 @@ const List = ({id, contenttype, onLinkClick, onRenderRow, level = 1, sort_defaul
         )}
         {/*todo: give message if it's not selected(may depend on setting) */}
         {loading && <span className='loading' />}
-        <Actions
+        <ActionsRender
         actionProps={{
           fromview:'list',
           from: { id: id, list_contenttype: contenttype },
