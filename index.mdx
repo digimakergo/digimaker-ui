@@ -5,6 +5,7 @@ route: /
 
 import { Playground, Props } from 'docz'
 import README from './README.md' 
+import { Hint } from '@nejcm/docz-theme-extended';
 
 # digmaker-ui
 
@@ -27,7 +28,10 @@ Read [extend actions](./actions/Implement) and [implement your own field types](
 
 
 ### Common components
-
+```js
+// import example
+import {Main} from 'digimaker-ui';
+```
 |  Component |  Description  |   |
 |------|---|---|
 | [List](./List) | List contents  |   |
@@ -41,11 +45,27 @@ Read [extend actions](./actions/Implement) and [implement your own field types](
 
 
 ### Actions
-| Action | Description  |   |
+```js
+//import example
+import {Delete} from 'digimaker-ui/actions';
+```
+| Action | Description  | Note  |
 |------|---|---|
 | Delete | Delete content  |   |
+| Copy | Copy a content  |   |
 | Move | Move content  |   |
 | SetPriority | Set priority  |   |
 | SetToTop | Set to top  |   |
 | Filter | Filter above list  |   |
+|  **User** |   || 
+| DisableUser | Diable/Enable current user |   |
 
+### Action for routing
+<Hint type="info" variant="outer">
+Note: It's not possible to configure below to action, but with wrapper(eg. dialog to implemment `ActionProps`) it's possible.
+</Hint>
+
+| Action | Description  |   |
+|------|---|---|
+| Create | Create a content  |   |
+| Edit | Edit a content  | |
