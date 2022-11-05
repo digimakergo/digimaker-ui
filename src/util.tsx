@@ -10,7 +10,7 @@ const cookies = new Cookies();
 //todo: move this token into another file(auth).
 let accessToken: any = null; //access token, which is a promise<string>
 
-export function FetchWithAuth(url: string, reqObj?: any) {
+export const FetchWithAuth = (url: string, reqObj?: any) => {
   if( !(url.startsWith('/') || url.startsWith('http:') || url.startsWith('https:') ) ){
     url = process.env.REACT_APP_REMOTE_URL+'/'+url;
   }
@@ -55,6 +55,8 @@ export function FetchWithAuth(url: string, reqObj?: any) {
       })
     });
 }
+
+export const fetchWithAuth = FetchWithAuth;
 
 //get new/renewed/cached access token, return promise<token>
 //todo: use sigleton way to make sure it will only request once when accessToken is empty.
@@ -293,6 +295,9 @@ const util = {
  setDefinitionList:(list:any)=>{
    definitionList = list;
  },
+
+ getDefinition:getDefinition,
+ getFields: getFields,
 
  mergeSettings: (first, second)=>{
    let result = {};

@@ -8,6 +8,59 @@ import { Playground, Props } from 'docz'
 import util from './util';
 
 # util
+Functions under util object
+```js
+import util from 'digimaker/util'
+
+const def = util.getDefinition('article')
+```
+
+
+|  Function |  return  | Description  |
+|------|---|---|
+| getRefreshToken |  string | Get refresh token  |
+| setRefreshToken(token: string) | void  | Set refresh token. Typically used in login  |
+| setCookieKey(key string) | Set cookie key typically for refresh token  | Default cooke is 'refreshToken'  |
+| getCookieKey | Get cookie key  |   |
+| getViewSettings | ViewSettingsType in DMInit  | Get view settings set in DMInit  |
+| getDefinition(contenttype:string) |  any | Get definition of a content type  |
+| getFields(definition:any) |  Array | Get fields from a content type definition  |
+
+### fetchWithAuth
+```js
+import {fetchWithAuth} from 'digimaker/util'
+```
+| params |  type  | Description  |
+|------|---|---|
+|url|string|Can be absolute url(with http:// or https://) or relative(eg. 'content/list')|
+|requestObj|request object(optional)|For post: {method:'POST', body:JSON.stringify(dataObject)}|
+||||
+|return|dataJson object| format: {error: false, data: {}}, if error is true, data will be the error object |
+
+Example:
+```js
+import {fetchWithAuth} from 'digimaker/util'
+
+//GET
+fetchWithAuth('content/list/article?parent=3').then(data=>{
+    if(data.error===false){
+        setList(data.data)
+    }else{
+        //handle error 
+        console.log(data.data);
+    }
+}).catch(e=>throw e);
+
+//POST
+fetchWithAuth('content/create/article/3', {
+        method: 'POST',
+        body: JSON.stringify(dataObject),
+    }).then((data) => {
+        //handle
+    }).catch((e)=>{});
+
+```
+
 
 
 ## Basic usage
