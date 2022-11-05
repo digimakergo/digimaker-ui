@@ -153,7 +153,7 @@ function TreeNodeItem({data, selectedId, onClick, renderItem, onOpenClose}: Tree
   );
 }
 
-function TreeNode({selectedId, showRoot = false, renderItem, onClick, rootID, contenttype, onDataFetched}: TreeNodeProps) {
+function TreeNode({selectedId, showRoot = true, renderItem, onClick, rootID, contenttype, onDataFetched}: TreeNodeProps) {
   const [data, setData] = useState(null);
 
   const fetchData = () => {
