@@ -1,16 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Link, NavLink } from "react-router-dom";
 import Collapse from 'react-bootstrap/Collapse'
+import { FetchWithAuth } from './util';
 
 //TreeNode which render tree based on data from server.
 //selected: number|array<number> for selected id
 //renderItem is to render what's inside(eg. if you want to remove icon or output node id, or additional link ).
-export interface TreeNodeProps {
-  /** Data returned from content/treemenu  */
-  data: any;
-  
+export interface TreeNodeProps {  
   /** selected content id, can be multiple(eg. parent&child both selected) */
   selectedId?: number|Array<number>;
+
+  /** Root id of the tree */
+  rootID: number;
+
+  /** Content types of the tree */
+  contenttype: Array<string>;
+
+  /** Callback when tree data is fetched */
+  onDataFetched?:(data:any)=>void;
 
   /** Show root node or not */
   showRoot?: boolean;
@@ -19,7 +26,7 @@ export interface TreeNodeProps {
   renderItem?:  (node:any)=>JSX.Element;
 
   /** onClick event */
-  onClick?: (e:any, node:any)=>void;
+  onClick?: (e:any, nodeData:any)=>void;
 }
 
 interface TreeNodeItemProps {
@@ -146,7 +153,29 @@ function TreeNodeItem({data, selectedId, onClick, renderItem, onOpenClose}: Tree
   );
 }
 
-function TreeNode({data, selectedId, showRoot, renderItem, onClick}: TreeNodeProps) {
+function TreeNode({selectedId, showRoot = false, renderItem, onClick, rootID, contenttype, onDataFetched}: TreeNodeProps) {
+  const [data, setData] = useState(null);
+
+  const fetchData = () => {
+    FetchWithAuth('content/treemenu/' + rootID + '?type='+contenttype.join(','))
+      .then((data) => {
+        if( data.error === false ){
+           setData(data.data);
+           if( onDataFetched ){
+            onDataFetched(data.data);
+           }
+        }
+      })
+  }
+
+  useEffect(()=>{
+    fetchData();
+  },[rootID, contenttype]);
+
+  if( !data ){
+    return <span></span>
+  }
+
   return (
     <ul className='treemenu'>
       {showRoot && (

@@ -1,5 +1,6 @@
 0.2.0-beta.5
-- put all components export under digimaker-ui, digimaker-ui/actions, digimaker-ui/view
+- Fetch tree data inside TreeNode(so removed 'data; prop)
+- Put all components export under digimaker-ui, digimaker-ui/actions, digimaker-ui/view
 
 0.2.0-beta.4
 - Added Main for main page example

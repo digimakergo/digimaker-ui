@@ -55,11 +55,11 @@ export default Browse;
 
 //todo: add filter
 //Dialog of the browse
-class Dialog extends React.Component<BrowseProps, { contenttype:string, shown: boolean, showTree:boolean, data: any, list: any, parent: number, selected: any }> {
+class Dialog extends React.Component<BrowseProps, { contenttype:string, shown: boolean, showTree:boolean, list: any, parent: number, selected: any }> {
 
   constructor(props: any) {
     super(props);
-    this.state = { shown: props.trigger?true:false, contenttype:props.contenttype[0], showTree:false, data: '', list: '', parent: (this.props.parent||1), selected: props.selected };
+    this.state = { shown: props.trigger?true:false, contenttype:props.contenttype[0], showTree:false, list: '', parent: (this.props.parent||1), selected: props.selected };
   }
 
   componentDidUpdate(prevProps){   
@@ -69,18 +69,6 @@ class Dialog extends React.Component<BrowseProps, { contenttype:string, shown: b
     if(this.props.trigger != prevProps.trigger){
       this.setState({shown: true, selected:this.props.selected});
     }
-  }
-
-  componentDidMount() {
-    this.fetchData();
-  }
-
-  fetchData() {
-    //todo: make tree filter by config(in addition to type config).
-    FetchWithAuth(process.env.REACT_APP_REMOTE_URL + '/content/treemenu/'+this.state.parent+'?type=folder')
-      .then((data) => {
-        this.setState({ data: data.data });
-      })
   }
 
   show(e: any) {
@@ -196,7 +184,7 @@ class Dialog extends React.Component<BrowseProps, { contenttype:string, shown: b
     <div className="container browse-list">
       <div className="row">
         {this.state.showTree&&<div className="col-4">
-          <TreeNode data={this.state.data} showRoot={true} renderItem={(content: any) => { return this.renderNode(content) }} onClick={(e:any, content: any) => { e.preventDefault(); this.clickTree(content) }} />
+          <TreeNode rootID={this.state.parent} contenttype={['folder']} showRoot={true} renderItem={(content: any) => { return this.renderNode(content) }} onClick={(e:any, content: any) => { e.preventDefault(); this.clickTree(content) }} />
         </div>}
         <div className={this.state.showTree?"col-8":"col"}>
           <a href="#" onClick={(e:any)=>{e.preventDefault();this.setState({showTree:!this.state.showTree});}}>
