@@ -45,7 +45,6 @@ function TreeNodeItem({data, selectedId, onClick, renderItem, onOpenClose}: Tree
   const openClose = (e: React.SyntheticEvent<EventTarget>) => {
     e.preventDefault();
     setOpen(!open);
-    setOpen(!open);
   }
 
   const initSelected = () => {
