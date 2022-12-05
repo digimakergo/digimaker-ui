@@ -29,7 +29,7 @@ function RenderProperties({content, contenttype, mode, fields, as}: RenderProper
   const renderBaseAttr = (field: string) => {
     switch (field) {
       case 'name':
-        return <Link to={'/main/' + content.id}>{content.name}</Link>;
+        return content.location?<Link to={'/main/' + content.location.id}>{content.metadata.name}</Link>:content.name;
       case 'published':
         return (
           <Moment unix format='DD.MM.YYYY HH:mm'>
