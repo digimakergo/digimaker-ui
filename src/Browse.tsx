@@ -119,7 +119,7 @@ class Dialog extends React.Component<BrowseProps, { contenttype:string, shown: b
 
   renderNode(content: any) {
     let subtype = (content.fields && content.fields['subtype']) ? ('icon-subtype-' + content.fields['subtype']) : '';
-    return <span><i className={"nodeicon far icon-" + content.content_type + " " + subtype}></i>{content.name}</span>
+    return <span><i className={"nodeicon far icon-" + content.metadata.contenttype + " " + subtype}></i>{content.name}</span>
   }
 
   select(content: any) {

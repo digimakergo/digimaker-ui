@@ -89,7 +89,7 @@ export default class Edit extends React.Component<{id:number, contenttype?:strin
                         <h2>Edit {util.getName(content)}</h2>
                         {Com!=null?<Com />:''}
 
-                        <RenderFields mode='edit' type={content.content_type} data={content} validation={this.state.validation}  />
+                        <RenderFields mode='edit' type={content.metadata.contenttype} data={content} validation={this.state.validation}  />
                     </div>
                 </form>
             </div>

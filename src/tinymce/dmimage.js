@@ -20,7 +20,7 @@ tinymce.PluginManager.add('dmimage', function(editor, url) {
         var width = imgdata.width;
         var height = imgdata.height;
         var image = imgdata.image;
-        var dmdata = image.content_type + ';' + image.cuid+';'+ image.cid;
+        var dmdata = image.metadata.contenttype + ';' + image.cuid+';'+ image.cid;
         var prefix = '/var/'; //todo: read from environment
         editor.insertContent( "<img data-dm-content='"+ dmdata +"' "+ (width?"width='"+width+"' ":"") + (height?"height='"+height+"'":"") +" src='"+prefix+imgdata.image.image+"'>");
         api.close();

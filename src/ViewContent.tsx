@@ -18,7 +18,7 @@ const ViewContent = (props:ViewContentProps) => {
     let data:any = {};
     let content = props.content;
     return <div className="content-view">
-              <RenderFields type={content.content_type} validation='' mode='view' data={content} afterField={()=>{}} />
+              <RenderFields type={content.metadata.contenttype} validation='' mode='view' data={content} afterField={()=>{}} />
        </div>;
 }
 

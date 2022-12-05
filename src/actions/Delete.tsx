@@ -6,7 +6,7 @@ const Delete = (props:ActionProps) => {
   const [shown, setShown] = React.useState(false);
   const params = props.params as ContentActionParams;
   const selected = params.content;
-  const def = getDefinition(selected.content_type);
+  const def = getDefinition(selected.metadata.contenttype);
 
   const body = () => {
     if( def.has_location ){
@@ -26,7 +26,7 @@ const Delete = (props:ActionProps) => {
     if( def.has_location ){
       paramsStr = 'id='+idStr;
     }else{
-      paramsStr = 'cid='+idStr+'&type='+ selected.content_type
+      paramsStr = 'cid='+idStr+'&type='+ selected.metadata.contenttype
     }
     FetchWithAuth(process.env.REACT_APP_REMOTE_URL + '/content/delete?'+paramsStr)
       .then((data) => {

@@ -40,7 +40,7 @@ const mainConfig = {
   };
 
 const getMainConfig =(content:any)=>{
-    return mainConfig[content.content_type]
+    return mainConfig[content.metadata.contenttype]
 }
 
 //list settings

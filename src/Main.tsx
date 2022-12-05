@@ -110,7 +110,7 @@ const Main = (props:MainProps) =>{
 	return (
 		<div
 			key={content.id}
-			className={`contenttype-${content.content_type}`}
+			className={`contenttype-${content.metadata.contenttype}`}
 		>
 			<div className="main-top">
 				{/* area for actions */}
@@ -156,7 +156,7 @@ const Main = (props:MainProps) =>{
 						<i
 							data-tip={true}
 							data-for="contentype"
-							className={`icon icon-${content.content_type}`}
+							className={`icon icon-${content.metadata.contenttype}`}
 						/>
 					</a>
 					&nbsp;
@@ -305,7 +305,7 @@ class MetaInfo extends React.Component<{content:any}> {
               <Moment unix format="DD.MM.YYYY HH:mm">{this.props.content.modified}</Moment>
              </div>
              {this.props.content.version>0&&<div>Version: {this.props.content.version}</div>}
-             <div>Status: <span className={"status-"+this.props.content.content_type+" status-"+this.props.content.status}></span></div>
+             <div>Status: <span className={"status-"+this.props.content.metadata.contenttype+" status-"+this.props.content.status}></span></div>
              <div>UID: {this.props.content.uid}</div>
            </div>
       );

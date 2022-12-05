@@ -28,7 +28,7 @@ export default class SetToTop extends React.Component<ActionProps, {}> {
 
   setToTop(){
     let content = this.params.content;
-    FetchWithAuth(process.env.REACT_APP_REMOTE_URL + '/content/list/'+content.content_type+'?parent='+content.parent_id+'&sortby=priority%20desc&limit=1&offset=0')
+    FetchWithAuth(process.env.REACT_APP_REMOTE_URL + '/content/list/'+content.metadata.contenttype+'?parent='+content.parent_id+'&sortby=priority%20desc&limit=1&offset=0')
       .then((data:any)=>{
         if( data.error === false ){
           let priority = this.priortyStep;
