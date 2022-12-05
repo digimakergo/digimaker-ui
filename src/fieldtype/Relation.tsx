@@ -67,7 +67,7 @@ export default class Relation extends React.Component<{definition:any, validatio
             <label className="field-label">{this.props.definition.name}:</label>
             <div className="field-value">
             {mode=='browse'&&<>
-                  {this.state.content?<div>{this.state.content.id}, {this.state.content.name}</div>:''}
+                  {this.state.content?<div>{this.state.content.id}, {util.getName(this.state.content)}</div>:''}
                   <Browse multi={false} contenttype={[params['type']]} onConfirm={(selected:any)=>this.confirmDialog(selected)} selected={this.state.content} />
                   <input type="hidden" name={this.props.definition.identifier} value={this.state.content?this.state.content[params.value]:''} />
                   </>
@@ -91,7 +91,7 @@ export default class Relation extends React.Component<{definition:any, validatio
 
   inline(){
     //todo: use RenderProperties to render in inline mode.
-    return this.state.content?this.state.content.name:'';
+    return this.state.content?util.getName(this.state.content):'';
   }
 
   render(){

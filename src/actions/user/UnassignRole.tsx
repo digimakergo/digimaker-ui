@@ -29,7 +29,7 @@ export default class UnassignRole extends React.Component<ActionProps, {}> {
     return <Dialog title="Delete"
     key={this.props.counter}
     onSubmit={()=>this.submit()}>
-    Confirm to unassign {(this.props.params as ContentActionParams).content.name}?
+    Confirm to unassign {(this.props.params as ContentActionParams).content.metadata.name}?
     </Dialog>;
   }
 }

@@ -6,7 +6,7 @@ import List, { ListProps } from "./List";
 import { ActionConfigType, ContentActionParams } from "./ActionsRender";
 import {ActionsRender} from "./ActionsRender";
 import ViewContent from "./ViewContent";
-import { FetchWithAuth } from "./util";
+import util, { FetchWithAuth } from "./util";
 import ReactTooltip from "react-tooltip";
 import { getDefinition } from "./util";
 import Moment from "react-moment";
@@ -101,7 +101,7 @@ const Main = (props:MainProps) =>{
 	if (!content) {
 		return <span></span>;
 	}
-	let contenttype = content.content_type;
+	let contenttype = content.metadata.contenttype;
 	let def = getDefinition(contenttype);
 	let mainConfig = props.getMainConfig(content);
 	let listContenttypes: string[] = mainConfig.list;
@@ -163,7 +163,7 @@ const Main = (props:MainProps) =>{
 					<ReactTooltip place="bottom" id="contentype">
 						{def.name}
 					</ReactTooltip>
-					{content.name} &nbsp;&nbsp;
+					{util.getName(content)} &nbsp;&nbsp;
 					{!(
 						contenttype === "folder" &&
 						content.folder_type === "site"
