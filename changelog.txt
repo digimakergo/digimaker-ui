@@ -1,5 +1,5 @@
 0.2.1-beta.1
-- 2022-12-06: metadata way & welcome to 0.2.1-xxx not directly backward compatiable
+- 2022-12-06 Metadata way & welcome to 0.2.1-xxx not directly backward compatiable
 
 
 0.2.0-beta.5
