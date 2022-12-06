@@ -122,7 +122,7 @@ const Main = (props:MainProps) =>{
 								return (
 									<Link
 										key={contenttype}
-										to={`/create/${content.id}/${contenttype}`}
+										to={`/create/${content.location.id}/${contenttype}`}
 										data-place='bottom'
 										data-tip={""}
 									>
