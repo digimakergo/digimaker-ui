@@ -21,12 +21,11 @@ const Delete = (props:ActionProps) => {
   }
 
   const submit = () => {
-    let idStr = selected.id;
     let paramsStr = '';
     if( def.has_location ){
-      paramsStr = 'id='+idStr;
+      paramsStr = 'id='+selected.location.id;
     }else{
-      paramsStr = 'cid='+idStr+'&type='+ selected.metadata.contenttype
+      paramsStr = 'cid='+selected.id+'&type='+ selected.metadata.contenttype
     }
     FetchWithAuth(process.env.REACT_APP_REMOTE_URL + '/content/delete?'+paramsStr)
       .then((data) => {
