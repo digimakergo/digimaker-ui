@@ -11,7 +11,7 @@ const Delete = (props:ActionProps) => {
   const body = () => {
     if( def.has_location ){
       return <div><h4>Are you sure to delete {selected.name}(and its children if has)?</h4>
-          <ul><li>{selected.name}</li></ul>
+          <ul><li>{selected.metadata.name}</li></ul>
         </div>
     }else{
       return <div><h4>Are you sure to delete {def.name}?</h4>
