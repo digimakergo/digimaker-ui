@@ -1,4 +1,5 @@
 0.2.1-beta.1
+- 2022-12-19 DMinit supports datetime settings
 - 2022-12-06 Metadata way & welcome to 0.2.1-xxx not directly backward compatiable
 
 

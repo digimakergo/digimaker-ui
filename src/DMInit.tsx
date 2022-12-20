@@ -29,9 +29,16 @@ export interface ViewSettingsType{
   browselist: BrowseListProps;
 }
 
+interface dateTimeType{
+  format?:string
+  tz?:any
+  [propsName:string]:any
+}
+
 
 interface DMInitProps {
   viewSettings: (contenttype: string)=> ViewSettingsType;
+  dateTime?:dateTimeType
   children: JSX.Element|JSX.Element[];
 }
 
@@ -42,6 +49,7 @@ const DMInit = (props:DMInitProps)=>{
 
   useEffect(() => {
     util.getViewSettings = props.viewSettings;
+    util.dateTime={...util.dateTime,...props.dateTime};
     FetchWithAuth(process.env.REACT_APP_REMOTE_URL + '/contenttype/get')
         .then((data) => {
           let def = data.data;
