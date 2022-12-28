@@ -21,10 +21,10 @@ export interface ListProps {
   sort_default?: Array<Array<string>>;
 
   /** sortable columns(an arrow will appear on the column). eg {"published":"desc", "priority":"desc"}, where "desc" is the default order */
-  sort?: {string:string};
+  sort?: {[key:string]:string};
   
   /** columns which is the fields */
-  columns: string[];
+  columns: string[]|any[];
 
   /** show content type name as header, default false */
   show_header?: boolean;
@@ -52,6 +52,8 @@ export interface ListProps {
 
   /** onRenderRow, return classes(eg. "dm-row dm-row-image") */
   onRenderRow?: (content:any)=>string;
+
+  can_select?:boolean;
 }
 
 const List = ({id, contenttype, onLinkClick, onRenderRow, level = 1, sort_default = [['id', 'desc']], viewmode = 'list', ...props}: ListProps ) => {
@@ -65,7 +67,7 @@ const List = ({id, contenttype, onLinkClick, onRenderRow, level = 1, sort_defaul
     request_url: props.request_url || `content/list/${contenttype}`,
     sort_default,
     row_actions_visible: 0,
-    can_select: true,
+    can_select: props.can_select||false,
     sort: props.sort || [],
     columns: props.columns || [],
     show_header: props.show_header,
