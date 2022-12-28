@@ -26,20 +26,21 @@ function RenderProperties({content, contenttype, mode, fields, as}: RenderProper
     }
   }
 
-  const renderBaseAttr = (field: string) => {
+  const renderBaseAttr = (field: any) => {
     switch (field) {
       case 'name':
         return content.location?<Link to={'/main/' + content.location.id}>{content.metadata.name}</Link>:content.name;
       case 'published':
         return (
-          <Moment unix format='DD.MM.YYYY HH:mm'>
-            {content.published}
+          // unix format='DD.MM.YYYY HH:mm' 
+          <Moment  {...util.dateTime}>
+            {content.metadata.published}
           </Moment>
         );
       case 'modified':
         return (
-          <Moment unix format='DD.MM.YYYY HH:mm'>
-            {content.modified}
+          <Moment  {...util.dateTime}>
+            {content.metadata.modified}
           </Moment>
         );
       case 'priority':
@@ -58,6 +59,7 @@ function RenderProperties({content, contenttype, mode, fields, as}: RenderProper
   };
 
   const renderField = (field, fieldDef: any) => {
+    let newfield= typeof(field)==='string'?field:field.field
     if (fieldDef) {
       let fieldtypeStr = fieldDef.type;
       const Fieldtype: React.ReactType = FieldRegister.getFieldtype(
@@ -70,7 +72,7 @@ function RenderProperties({content, contenttype, mode, fields, as}: RenderProper
             key={content.id}
             className={
               'field-' +
-              field +
+              newfield+
               ' field-viewmode-inline' +
               ' fieldtype-' +
               fieldtypeStr
@@ -78,7 +80,7 @@ function RenderProperties({content, contenttype, mode, fields, as}: RenderProper
           >
             <Fieldtype
               definition={fieldDef}
-              data={content[field]}
+              data={content[newfield]}
               mode='inline'
             />
           </div>
@@ -89,21 +91,21 @@ function RenderProperties({content, contenttype, mode, fields, as}: RenderProper
             key={content.id}
             className={
               'field-' +
-              field +
+              newfield +
               ' field-viewmode-inline' +
               ' fieldtype-' +
               fieldtypeStr
             }
           >
-            {content[field]}
+            {content[newfield]}
           </div>
         );
       }
     } else {
       //location related properties
       return (
-        <div className={'content-baseattr-' + field}>
-          {renderBaseAttr(field)}
+        <div className={'content-baseattr-' + newfield}>
+          {field.render?field.render(content):renderBaseAttr(newfield)}
         </div>
       );
     }
@@ -114,8 +116,9 @@ function RenderProperties({content, contenttype, mode, fields, as}: RenderProper
     return (
       <>
         {fields.map((field: any) => {
+          let newfield= typeof(field)==='string'?field:field.field
           return (
-            <td key={field}>{renderField(field, contentFields[field])}</td>
+            <td key={newfield}>{renderField(field, contentFields[newfield])}</td>
           );
         })}
       </>
@@ -131,9 +134,10 @@ function RenderProperties({content, contenttype, mode, fields, as}: RenderProper
         }
       >
         {fields.map((field: any) => {
+           let newfield= typeof(field)==='string'?field:field.field
           return (
-            <React.Fragment key={field}>
-              {renderField(field, contentFields[field])}
+            <React.Fragment key={newfield}>
+              {renderField(field, contentFields[newfield])}
             </React.Fragment>
           );
         })}

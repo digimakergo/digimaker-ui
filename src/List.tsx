@@ -230,23 +230,24 @@ const List = ({id, contenttype, onLinkClick, onRenderRow, level = 1, sort_defaul
                 </th>
               )}
               {config.columns.map((column) => {
-                let sortable = config.sort[column] ? true : false;
+                let sortable = config.sort[column.field] ? true : false;
                 let sortOrder = '';
-                if (sortby[0][0] === column) {
+                if (sortby[0][0] === column.field) {
                   sortOrder = sortby[0][1];
-                } else if (sortby[1] && sortby[1][0] === column) {
+                } else if (sortby[1] && sortby[1][0] === column.field) {
                   sortOrder = `sort-second ${sortby[1][1]}`;
                 }
-                let columnName = fieldsDef[column]
-                  ? fieldsDef[column].name
-                  : getCommonFieldName(column);
+                // let columnName = fieldsDef[column]
+                //   ? fieldsDef[column].name
+                //   : getCommonFieldName(column);
+                let columnName = column.header?column.header:fieldsDef[column.field].name;
                 return (
                   <th key={column}>
                     {sortable ? (
                       <a
                         href='#'
                         onClick={(e) => {
-                          sort(e, column);
+                          sort(e, column.field);
                         }}
                         className={`column-sortable ${sortOrder}`}
                       >
