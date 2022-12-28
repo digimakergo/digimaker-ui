@@ -55,11 +55,14 @@ export default Browse;
 
 //todo: add filter
 //Dialog of the browse
-class Dialog extends React.Component<BrowseProps, { contenttype:string, shown: boolean, showTree:boolean, list: any, parent: number, selected: any }> {
+class Dialog extends React.Component<BrowseProps, { contenttype:string, shown: boolean, showTree:boolean, list: any, parent: number, selected: any,data:any,isAdding:Boolean}> {
 
   constructor(props: any) {
     super(props);
-    this.state = { shown: props.trigger?true:false, contenttype:props.contenttype[0], showTree:false, list: '', parent: (this.props.parent||1), selected: props.selected };
+    this.state = { shown: props.trigger?true:false, contenttype:props.contenttype[0], showTree:false, list: '', parent: (this.props.parent||1), selected: props.selected,
+    data:props.data||[],
+    isAdding:true,
+  };
   }
 
   componentDidUpdate(prevProps){   
@@ -166,6 +169,20 @@ class Dialog extends React.Component<BrowseProps, { contenttype:string, shown: b
       this.props.onConfirm(data);
     }
   }
+  uploaded(data:any){
+    console.log(data)
+    this.setState({data:data})
+  }
+
+  submitfile(state:any){
+    if(state==='1'){
+      this.setState({isAdding:false})
+    }
+    if(state==='2'){
+      this.setState({isAdding:true})
+      this.setState({data:[]})
+    }
+  }
 
   renderBody(){
     let browseList = util.getViewSettings(this.state.contenttype).browselist;
@@ -190,7 +207,14 @@ class Dialog extends React.Component<BrowseProps, { contenttype:string, shown: b
           <a href="#" onClick={(e:any)=>{e.preventDefault();this.setState({showTree:!this.state.showTree});}}>
             <i className={this.state.showTree?"fas fa-chevron-left":"fas fa-chevron-right"}></i>
           </a>
-          <List {...browseList} id={this.state.parent} key={this.state.parent+this.state.contenttype} onRenderRow={(content:any)=>this.selectedRowClass(content)} contenttype={this.state.contenttype} level={100} onLinkClick={(content) => this.select(content)} />
+          {this.state.isAdding&&<List {...browseList} id={this.state.parent} key={this.state.parent+this.state.contenttype} onRenderRow={(content:any)=>this.selectedRowClass(content)} contenttype={this.state.contenttype} level={100} onLinkClick={(content) => this.select(content)} />}
+          {util.browseAfterList&&util.browseAfterList({
+            content_type:'image',
+            data:this.state.data,
+            parent:this.state.parent,
+            onSuccess:(data)=>{this.uploaded(data)},
+            onSubmit:(state)=>{this.submitfile(state)}
+          })}
         </div>
       </div>
     </div></>

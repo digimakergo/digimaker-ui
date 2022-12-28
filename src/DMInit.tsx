@@ -40,6 +40,7 @@ interface DMInitProps {
   viewSettings: (contenttype: string)=> ViewSettingsType;
   dateTime?:dateTimeType
   children: JSX.Element|JSX.Element[];
+  browseAfterList?:any
 }
 
 //Init things before loading ui
@@ -50,6 +51,7 @@ const DMInit = (props:DMInitProps)=>{
   useEffect(() => {
     util.getViewSettings = props.viewSettings;
     util.dateTime={...util.dateTime,...props.dateTime};
+    util.browseAfterList=props.browseAfterList;
     FetchWithAuth(process.env.REACT_APP_REMOTE_URL + '/contenttype/get')
         .then((data) => {
           let def = data.data;
