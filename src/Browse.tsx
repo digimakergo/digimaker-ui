@@ -122,7 +122,7 @@ class Dialog extends React.Component<BrowseProps, { contenttype:string, shown: b
 
   renderNode(content: any) {
     let subtype = (content.fields && content.fields['subtype']) ? ('icon-subtype-' + content.fields['subtype']) : '';
-    return <span><i className={"nodeicon far icon-" + content.metadata.contenttype + " " + subtype}></i>{content.name}</span>
+    return <span><i className={"nodeicon far icon-" + (content.metadata?content.metadata.contenttype:'') + " " + subtype}></i>{content.name}</span>
   }
 
   select(content: any) {
@@ -207,7 +207,7 @@ class Dialog extends React.Component<BrowseProps, { contenttype:string, shown: b
           <a href="#" onClick={(e:any)=>{e.preventDefault();this.setState({showTree:!this.state.showTree});}}>
             <i className={this.state.showTree?"fas fa-chevron-left":"fas fa-chevron-right"}></i>
           </a>
-          {this.state.isAdding&&<List {...browseList} id={this.state.parent} key={this.state.parent+this.state.contenttype} onRenderRow={(content:any)=>this.selectedRowClass(content)} contenttype={this.state.contenttype} level={100} onLinkClick={(content) => this.select(content)} />}
+          {this.state.isAdding&&<List id={this.state.parent} {...browseList} key={this.state.parent+this.state.contenttype} onRenderRow={(content:any)=>this.selectedRowClass(content)} contenttype={this.state.contenttype} level={100} onLinkClick={(content) => this.select(content)} />}
           {util.browseAfterList&&util.browseAfterList({
             content_type:'image',
             data:this.state.data,
