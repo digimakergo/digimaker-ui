@@ -59,7 +59,7 @@ function RenderProperties({content, contenttype, mode, fields, as}: RenderProper
   };
 
   const renderField = (field, fieldDef: any) => {
-    let newfield= typeof(field)==='string'?field:field.field
+    let fieldIdentifier= typeof(field)==='string'?field:field.field;
     if (fieldDef) {
       let fieldtypeStr = fieldDef.type;
       const Fieldtype: React.ReactType = FieldRegister.getFieldtype(
@@ -72,7 +72,7 @@ function RenderProperties({content, contenttype, mode, fields, as}: RenderProper
             key={content.id}
             className={
               'field-' +
-              newfield+
+              fieldIdentifier+
               ' field-viewmode-inline' +
               ' fieldtype-' +
               fieldtypeStr
@@ -80,7 +80,7 @@ function RenderProperties({content, contenttype, mode, fields, as}: RenderProper
           >
             <Fieldtype
               definition={fieldDef}
-              data={content[newfield]}
+              data={content[fieldIdentifier]}
               mode='inline'
             />
           </div>
@@ -91,21 +91,21 @@ function RenderProperties({content, contenttype, mode, fields, as}: RenderProper
             key={content.id}
             className={
               'field-' +
-              newfield +
+              fieldIdentifier +
               ' field-viewmode-inline' +
               ' fieldtype-' +
               fieldtypeStr
             }
           >
-            {content[newfield]}
+            {content[fieldIdentifier]}
           </div>
         );
       }
     } else {
       //location related properties
       return (
-        <div className={'content-baseattr-' + newfield}>
-          {field.render?field.render(content):renderBaseAttr(newfield)}
+        <div className={'content-baseattr-' + fieldIdentifier}>
+          {field.render?field.render(content):renderBaseAttr(fieldIdentifier)}
         </div>
       );
     }
@@ -116,9 +116,9 @@ function RenderProperties({content, contenttype, mode, fields, as}: RenderProper
     return (
       <>
         {fields.map((field: any) => {
-          let newfield= typeof(field)==='string'?field:field.field
+          let fieldIdentifier= typeof(field)==='string'?field:field.field
           return (
-            <td key={newfield}>{renderField(field, contentFields[newfield])}</td>
+            <td key={fieldIdentifier}>{renderField(field, contentFields[fieldIdentifier])}</td>
           );
         })}
       </>
