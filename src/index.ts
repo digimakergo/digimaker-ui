@@ -7,6 +7,7 @@ export {default as FieldRegister} from './FieldRegister';
 export * from './FieldRegister';
 export {default as FileUpload} from './FileUpload';
 export * from './FileUpload';
+export {default as MultiUpload} from './MultiUpload';
 export {default as Main} from './Main';
 export * from './Main';
 export {default as List} from './List';
