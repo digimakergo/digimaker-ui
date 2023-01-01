@@ -105,7 +105,7 @@ export default class Datetime extends React.Component<{definition: any, validati
                   </span>}
                 &nbsp; <a href="#" onClick={(e)=>this.clear(e)}><i className="far fa-trash-alt"></i></a>
                 {this.state.error&&<span className='error'>{this.state.error}</span>}
-                {!this.state.error&&<input type="hidden" name={this.props.definition.identifier} value={this.state.datetime?this.state.datetime.format('YYYY-MM-DD HH:mm'):''} />}
+                {!this.state.error&&<input type="hidden" name={this.props.definition.identifier} value={this.state.datetime?this.state.datetime.format():''} />}
                 </div>
             </div>
         )
