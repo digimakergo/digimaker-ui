@@ -174,7 +174,7 @@ let config:any = null;
 
 //util for general operations
 const util = {
-  dateTime:{},
+  dateTime:{} as any,
   browseAfterList:null,
   //put replace variable with real value.eg. "this is {id}" with {'id': 5} will be "this is 5"
   washVariables:(str:string, values:any)=>{
