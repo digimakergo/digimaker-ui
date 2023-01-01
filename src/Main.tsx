@@ -124,7 +124,7 @@ const Main = (props:MainProps) =>{
 										key={contenttype}
 										to={`/create/${content.location.id}/${contenttype}`}
 										data-place='bottom'
-										data-tip={""}
+										data-tip={contenttype}
 									>
 										<i
 											className={`icon icon-contenttype icon-${contenttype}`}
@@ -171,7 +171,7 @@ const Main = (props:MainProps) =>{
 						<Link
 							className="go-uppper"
 							title="Go upper"
-							to={`/main/${content.parent_id}`}
+							to={`/main/${content.location.parent_id}`}
 						>
 							<i className="fas fa-chevron-circle-up" />
 						</Link>
