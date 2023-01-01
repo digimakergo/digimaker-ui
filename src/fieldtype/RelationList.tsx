@@ -34,9 +34,9 @@ export default class RelationList extends React.Component<{definition:any, valid
     FetchWithAuth(process.env.REACT_APP_REMOTE_URL + '/content/list/'+this.props.definition.parameters.type+'?cid='+ids.join(',')+'&limit=0')
         .then((data) => {
             let sortedList = [];
-            for( let cid of ids ){
+            for( let id of ids ){
               for(let item of data.data.list ){
-                  if( item.cid==cid ){
+                  if( item.id==id ){
                     sortedList.push(item)
                     continue;
                   }
@@ -67,7 +67,7 @@ export default class RelationList extends React.Component<{definition:any, valid
     let ids = [];
     let types = [];
     for( let item of this.state.list ){
-        ids.push(item.cid);
+        ids.push(item.id);
         types.push(relatedType);
     }
 
