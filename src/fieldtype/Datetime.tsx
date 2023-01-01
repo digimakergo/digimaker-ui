@@ -19,9 +19,10 @@ export default class Datetime extends React.Component<{definition: any, validati
           }else{
             datetime = moment(props.data)
           }
-        }
-        if( datetime.format('YYYY-MM-DD') == '1000-01-01' ){
-          datetime = null;
+
+          if( datetime.format('YYYY-MM-DD') == '1000-01-01' ){
+            datetime = null;
+          }
         }
 
         let dateOnly = (this.props.definition.parameters && this.props.definition.parameters['dateonly'])?true:false;
@@ -66,9 +67,9 @@ export default class Datetime extends React.Component<{definition: any, validati
 
       getDateFormat(){
         let format = "DD.MM.YYYY";
-        let configFormat = util.getConfig()['date_format'];
+        let configFormat = util.dateTime?util.dateTime.format:'';
         if( configFormat ){
-          format = configFormat;
+          format = configFormat.split(' ')[0];
         }
         return format;
       }
