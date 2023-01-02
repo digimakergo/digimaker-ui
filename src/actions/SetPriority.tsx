@@ -7,7 +7,7 @@ export default class SetPriority extends React.Component<ActionProps, {error:str
 
     constructor(props:ActionProps){
         super(props);
-        let priority = (props.params as ContentActionParams).content.priority;
+        let priority = (props.params as ContentActionParams).content.location.priority;
         this.state = {error:'', dialog:false, value:priority, newValue:priority};
     }
 
@@ -22,7 +22,7 @@ export default class SetPriority extends React.Component<ActionProps, {error:str
     }
 
     submit = ()=>{
-        FetchWithAuth(process.env.REACT_APP_REMOTE_URL + '/content/setpriority?params='+(this.props.params as ContentActionParams).content.id+','+this.state.value)
+        FetchWithAuth(process.env.REACT_APP_REMOTE_URL + '/content/setpriority?params='+(this.props.params as ContentActionParams).content.location.id+','+this.state.value)
         .then((data:any)=>{
             if( data.error === false ){
                 this.setState({dialog:false, newValue:this.state.value});
