@@ -2,60 +2,56 @@ import * as React from 'react';
 import { ActionProps, ContentActionParams } from '../ActionsRender';
 import {FetchWithAuth} from '../util';
 
-export default class SetToTop extends React.Component<ActionProps, {}> {
-  private priortyStep = 100;
-  private params: ContentActionParams;
+const SetToTop =( props:ActionProps) => {
+   let priortyStep = 100;
+   let params = props.params as ContentActionParams;
 
-  constructor(props: ActionProps) {
-      super(props);
-      this.params = props.params as ContentActionParams;
+
+  const removePriority = ()=>{
+    let content = params.content;
+    setPriority(content.location.id, 0);
   }
 
-
-  removePriority(){
-    let content = this.params.content;
-    this.setPriority(content.id, 0);
-  }
-
-  setPriority(id:number, priority:number){
+  const setPriority = (id:number, priority:number) =>{
     FetchWithAuth(process.env.REACT_APP_REMOTE_URL + '/content/setpriority?params='+id+','+priority)
       .then((data:any)=>{
           if( data.error === false ){
-            this.params.afterAction(true);
+            params.afterAction(true);
           }
       });
   }
 
-  setToTop(){
-    let content = this.params.content;
-    FetchWithAuth(process.env.REACT_APP_REMOTE_URL + '/content/list/'+content.metadata.contenttype+'?parent='+content.parent_id+'&sortby=priority%20desc&limit=1&offset=0')
+  const setToTop = ()=>{
+    let content = params.content;
+    FetchWithAuth(process.env.REACT_APP_REMOTE_URL + '/content/list/'+content.metadata.contenttype+'?parent='+content.location.parent_id+'&sortby=priority%20desc&limit=1&offset=0')
       .then((data:any)=>{
         if( data.error === false ){
-          let priority = this.priortyStep;
+          let priority = priortyStep;
           let list = data.data.list;
           if( list.length > 0 ){
-              let topPriority = list[0].priority;
-              priority = topPriority+this.priortyStep;
+              let topPriority = list[0].location.priority;
+              priority = topPriority+priortyStep;
           }
-          this.setPriority( content.id, priority );
+          setPriority( content.location.id, priority );
         }
       });
   }
 
-  click(e, priority:any){
+  const click = (e, priority:any) => {
       e.preventDefault();
       if( priority ){
-        this.removePriority();
+        removePriority();
       }else{
-        this.setToTop();
+        setToTop();
       }
   }
 
-  render(){
-    let priority = this.params.content.priority;
-    return (<div><a href="#" onClick={(e)=>this.click( e,priority )}>
+  let priority = params.content.location.priority;
+  return (<div><a href="#" onClick={(e)=>click( e,priority )}>
                 {priority!=0&&<><i className="fas fa-times"></i> Remove priority</>}
                 {priority==0&&<><i className="fas fa-long-arrow-alt-up"></i> Set top priority</>}
                 </a></div>)
-  }
 }
+
+
+export default SetToTop;
