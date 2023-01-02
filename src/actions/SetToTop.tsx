@@ -47,9 +47,9 @@ const SetToTop =( props:ActionProps) => {
   }
 
   let priority = params.content.location.priority;
-  return (<div><a href="#" onClick={(e)=>click( e,priority )}>
-                {priority!=0&&<><i className="fas fa-times"></i> Remove priority</>}
-                {priority==0&&<><i className="fas fa-long-arrow-alt-up"></i> Set top priority</>}
+  return (<div className='action-item'><a href="#" onClick={(e)=>click( e,priority )} style={{padding: '0px 5px'}}>
+                {priority!=0&&<><i className="fas fa-times" title='Remove priority'></i></>}
+                {priority==0&&<><i className="fas fa-long-arrow-alt-up" title='Set top priority'></i></>}
                 </a></div>)
 }
 
