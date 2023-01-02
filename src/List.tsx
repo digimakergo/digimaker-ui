@@ -305,7 +305,7 @@ const List = ({id, contenttype, onLinkClick, onRenderRow, level = 1, sort_defaul
       let item = newList[i];
       let id = item.id;
       if (id !== oldList[i].id) {
-        let newPriority = oldList[i].priority;
+        let newPriority = oldList[i].location.priority;
         change.push(`${id},${newPriority}`);
       }
     }
@@ -376,7 +376,7 @@ const List = ({id, contenttype, onLinkClick, onRenderRow, level = 1, sort_defaul
         : '';
       let canDD =
         config['can_dd'] &&
-        content.priority !== 0 &&
+        content.location.priority !== 0 &&
         sortby[0][0] === 'priority' &&
         sortby[0][1] === 'desc';
       if (canDD) {
