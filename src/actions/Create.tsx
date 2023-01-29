@@ -41,6 +41,10 @@ export default class Create extends React.Component<{parent:number, contenttype:
         });
     }
 
+    cancel(){
+      this.props.afterAction(2);
+    }
+
     render() {
         return (<div onKeyUp={this.keyUpHandler} className="container-new">
             <div>
@@ -53,11 +57,11 @@ export default class Create extends React.Component<{parent:number, contenttype:
                                     <button type="submit" className="btn btn-primary btn-sm"><i className="fas fa-paper-plane"></i> Submit</button>
                                 </div>
                                 <div>
-                                    <Link to={`/main/${this.props.parent}`}>
-                                        <button type="button" className="btn btn-sm btn-secondary">
+                                    {/* <Link to={`/main/${this.props.parent}`}> */}
+                                        <button type="button" className="btn btn-sm btn-secondary" onClick={()=>this.cancel()}>
                                             <i className="fas fa-window-close"></i> Cancel
                                     </button>
-                                    </Link>
+                                    {/* </Link> */}
                                 </div>
                             </div>
                         </div>                    

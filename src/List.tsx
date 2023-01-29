@@ -143,10 +143,15 @@ const List = ({id, contenttype, onLinkClick, onRenderRow, level = 1, sort_defaul
     FetchWithAuth(
       `${process.env.REACT_APP_REMOTE_URL}/${config.request_url}?parent=${id}&level=${config.level}&${sortbyStr}${limit}${filter}`
     ).then((data) => {
+      if( data.error === false ){
+        setCounter(counter + 1);
+        setList(data.data);
+      }else{
+        setList([]);
+        setCounter(0);
+      }
       resetActionState();
       setLoading(false);
-      setCounter(counter + 1);
-      setList(data.data);
     });
   };
 
@@ -590,9 +595,9 @@ const List = ({id, contenttype, onLinkClick, onRenderRow, level = 1, sort_defaul
           fromview:'list',
           from: { id: id, list_contenttype: contenttype },
           params:{
-            selected: list.list.filter((item) =>
+            selected: list.length>0?list.list.filter((item) =>
             selected.includes(item.id)
-          ),
+          ):[],
           listConfig:config,
           afterAction: (config?: ListAfterActionConfig ) =>
             afterAction(config)          
