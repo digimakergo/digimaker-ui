@@ -11,7 +11,7 @@ export interface BrowseListProps extends ListProps{
       viewmode?: "list"|"block";
 
       /** columns of the list */
-      columns: string[];
+      columns: any[];
   
       /** default sorting */
       sort_default?:string[][];    
