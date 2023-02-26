@@ -63,6 +63,7 @@ export default class RelationList extends React.Component<{definition:any, valid
       return <div className="alert alert-warning">Wrong setting on {def.name}</div>
     }
     let relatedType = def.parameters.type;
+    let parentID = def.parameters.parent_id;
 
     let ids = [];
     let types = [];
@@ -74,7 +75,7 @@ export default class RelationList extends React.Component<{definition:any, valid
     return  <>
             <label className="field-label">{this.props.definition.name}:</label>
             <div className="field-value">
-            <Browse multi={true} contenttype={[relatedType]} onConfirm={(selected:Array<any>)=>this.confirmDialog(selected)} selected={this.state.list} />
+            <Browse multi={true} contenttype={[relatedType]} parent={parentID} onConfirm={(selected:Array<any>)=>this.confirmDialog(selected)} selected={this.state.list} />
               <ReactSortable
                  className="list"
                  list={this.state.list}
