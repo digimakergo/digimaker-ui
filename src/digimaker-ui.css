@@ -1,3 +1,5 @@
+@import "~react-datetime/css/react-datetime.css";
+
 .field-label, .field-value{
    display: inline-block
 }

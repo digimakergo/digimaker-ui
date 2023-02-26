@@ -1,4 +1,3 @@
-import './digimaker-ui.css';
 import React, { ReactEventHandler, ReactHTMLElement } from 'react';
 import FieldRegister from './FieldRegister';
 import ReactTooltip from 'react-tooltip';

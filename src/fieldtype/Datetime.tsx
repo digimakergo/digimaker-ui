@@ -2,7 +2,6 @@ import * as React from 'react';
 import {useState} from 'react';
 import DateTime from 'react-datetime';
 import Moment from 'react-moment';
-import 'react-datetime/css/react-datetime.css'
 import moment from 'moment';
 import { timeStamp } from 'console';
 import util from '../util';
@@ -33,7 +32,7 @@ export default class Datetime extends React.Component<{definition: any, validati
         let datetime = this.state.datetime;
         switch( inputtype ){
           case "date":
-            if( !value.isValid() ){
+            if( typeof value == 'string' ){
               this.setState({error: 'invalid date'});
               return;
             }
