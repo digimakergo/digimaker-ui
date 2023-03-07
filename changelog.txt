@@ -1,3 +1,5 @@
+0.2.1-beta.2
+
 0.2.1-beta.1
 - 2023-03-04    added: parent in Select for dmimage
 - 2023-02-26 Removed css out(use @import "~digimaker-ui/digimaker-ui.css" in project instead) 
