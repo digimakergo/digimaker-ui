@@ -1,9 +1,10 @@
 0.2.1-beta.1
+- 2023-03-04    added: parent in Select for dmimage
 - 2023-02-26 Removed css out(use @import "~digimaker-ui/digimaker-ui.css" in project instead) 
 - 2023-02-26 Support parent_id in relationlist parameters
 - 2022-12-19 DMinit supports datetime settings
 - 2022-12-06 Metadata way & welcome to 0.2.1-xxx not directly backward compatiable
-
+- note: 0.2.1 is for new metadata way, old metadata using 0.2.0-x
 
 0.2.0-beta.5
 - Fetch tree data inside TreeNode(so removed 'data' prop)
