@@ -12,7 +12,7 @@
     "test@digimaker-ui": "./src"
   },
   "scripts": {
-    "dist": "rm -rf dist/* && cp ./package.json ./src/fieldtype.json README.md ./src/*.css ./dist && tsc",
+    "dist": "rm -rf dist/* && cp ./package.json ./src/fieldtype_settings.json README.md ./src/*.css ./dist && tsc",
     "test": "echo \"Error: no test specified\" && exit 1",
     "docz:dev": "docz dev",
     "docz:build": "docz build",
