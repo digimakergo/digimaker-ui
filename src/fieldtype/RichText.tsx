@@ -1,9 +1,9 @@
 import * as React from 'react';
 import ReactTooltip from 'react-tooltip';
 import { Editor } from '@tinymce/tinymce-react';
-import Fieldtype from '../fieldtype.json';
+import fieldtypeSettings from '../fieldtype_settings.json';
 
-var toolbars = Fieldtype.richtext.mode.standard
+var toolbars = fieldtypeSettings.richtext.mode.standard
 
 export default class RichText extends React.Component<{ definition: any, validation: any, data: any, mode: string }, {data:any}> {
 
@@ -21,11 +21,11 @@ export default class RichText extends React.Component<{ definition: any, validat
   componentDidMount() {
     if(this.props.definition.parameters &&this.props.definition.parameters.mode)
     {
-      toolbars= Fieldtype.richtext.mode[this.props.definition.parameters.mode];
+      toolbars= fieldtypeSettings.richtext.mode[this.props.definition.parameters.mode];
     }
     else
     {
-      toolbars=Fieldtype.richtext.mode.standard;
+      toolbars=fieldtypeSettings.richtext.mode.standard;
     }
 
     this.setState({data:this.props.data});
@@ -45,7 +45,7 @@ export default class RichText extends React.Component<{ definition: any, validat
               menubar: false,
               relative_urls: false,
               height:'300px',
-              plugins: Fieldtype.richtext.plugins,
+              plugins: fieldtypeSettings.richtext.plugins,
               external_plugins: {
                     'dmimage': process.env.PUBLIC_URL+'/tinymce/dmimage.min.js',
               },

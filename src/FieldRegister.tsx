@@ -1,4 +1,3 @@
-import Fieldtype from './fieldtype.json';
 import Checkbox  from './fieldtype/Checkbox'
 import File  from './fieldtype/File'
 import Image  from './fieldtype/Image'
