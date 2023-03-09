@@ -15,9 +15,6 @@ export interface BrowseListProps extends ListProps{
   
       /** default sorting */
       sort_default?:string[][];    
-  
-      /** sortable fields and sort */
-      sort?:{string:string};  
 }
 
 export interface ViewSettingsType{

@@ -8,11 +8,6 @@ import {DDCard} from './DDCard';
 import update from 'immutability-helper';
 
 export interface ListProps {
-  /** parent id of the list */
-  id: number;
-
-  /** list's content type */
-  contenttype: string;
 
   /** request url. useful when you use customized api */
   request_url?: string;
@@ -56,7 +51,15 @@ export interface ListProps {
   can_select?:boolean;
 }
 
-const List = ({id, contenttype, onLinkClick, onRenderRow, level = 1, sort_default = [['id', 'desc']], viewmode = 'list', ...props}: ListProps ) => {
+interface ListMandatoryProps{
+    /** parent id of the list */
+    id: number;
+
+    /** list's content type */
+    contenttype: string;
+}
+
+const List = ({id, contenttype, onLinkClick, onRenderRow, level = 1, sort_default = [['id', 'desc']], viewmode = 'list', ...props}: ListProps & ListMandatoryProps ) => {
   const [def, setDef] = useState(null);
   const [loading, setLoading] = useState(true);
   const [counter, setCounter] = useState(0);
