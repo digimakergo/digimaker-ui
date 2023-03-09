@@ -7,7 +7,7 @@ import { FieldtypeProps } from '../FieldRegister';
 //Supported mode: view, edit, inline(no definition needed).
 const Text = (props:FieldtypeProps) => {
     const raw = ()=>{
-      return props.data;
+      return props.data?props.data:'';
     }
 
     const view = ()=>{
