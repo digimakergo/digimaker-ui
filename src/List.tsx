@@ -33,6 +33,9 @@ export interface ListProps {
   /** Actions on each record */
   row_actions?: Partial<ActionConfigType>[];
 
+  /* Number of visible actions, by default unlimited */
+  row_actions_visible?:number,
+
   /** Level of under parent. */
   level?: number;
 
@@ -69,7 +72,7 @@ const List = ({id, contenttype, onLinkClick, onRenderRow, level = 1, sort_defaul
   const [config, setConfigObject] = useState({
     request_url: props.request_url || `content/list/${contenttype}`,
     sort_default,
-    row_actions_visible: 0,
+    row_actions_visible: props.row_actions_visible||0,
     can_select: props.can_select||false,
     sort: props.sort || [],
     columns: props.columns || [],
@@ -288,9 +291,9 @@ const List = ({id, contenttype, onLinkClick, onRenderRow, level = 1, sort_defaul
       listBeforeMove = list.list;
     }
     let newObj = list;
-    var list = list.list;
-    let value = list[dragIndex];
-    let newList = update(list, {
+    var currentList = list.list;
+    let value = currentList[dragIndex];
+    let newList = update(currentList, {
       $splice: [
         [dragIndex, 1],
         [hoverIndex, 0, value],
@@ -314,7 +317,7 @@ const List = ({id, contenttype, onLinkClick, onRenderRow, level = 1, sort_defaul
       let id = item.id;
       if (id !== oldList[i].id) {
         let newPriority = oldList[i].location.priority;
-        change.push(`${id},${newPriority}`);
+        change.push(`${item.location.id},${newPriority}`);
       }
     }
 

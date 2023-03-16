@@ -51,7 +51,7 @@ function ListRowActions({content, from, config, afterAction, visibleNumber}: Lis
     );
   };
 
-  visibleNumber = visibleNumber || 3;
+  visibleNumber = visibleNumber || 100;
 
   if (config.length < visibleNumber) {
     visibleNumber = config.length;

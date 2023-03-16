@@ -1,4 +1,6 @@
 0.2.1-beta.2
+ - 2023-03-16 fixed: drag&drop not working in list
+ - 2023-03-16 visible number in row actions changed to none by default(technically 100) & allow setting
  - 2023-03-09 fixed browselist column & sort
  - 2023-03-08 udpate: reorgainize richtext compact tool & renamed fieldtype.json to fieldtype_settings.json
 
