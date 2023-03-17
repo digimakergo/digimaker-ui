@@ -11,6 +11,7 @@ import RelationList from './fieldtype/RelationList'
 import Datetime from './fieldtype/Datetime';
 import Relation from './fieldtype/Relation';
 import Select from './fieldtype/Select';
+import Json from './fieldtype/Json'
 
 export interface FieldtypeProps{
     /** field definition */
@@ -69,9 +70,11 @@ export default class FieldRegister{
     FieldRegister.registerComponent( 'int', Int );
     FieldRegister.registerComponent( 'radio', Radio );
     FieldRegister.registerComponent( 'select', Select );    
+    FieldRegister.registerComponent( 'json', Json);
     FieldRegister.registerComponent( 'relationlist', RelationList );
     FieldRegister.registerComponent( 'password', Password );
     FieldRegister.registerComponent( 'output_h', OutputH );
     FieldRegister.registerComponent( 'datetime', Datetime);
     FieldRegister.registerComponent( 'relation', Relation);
+    
 })()
