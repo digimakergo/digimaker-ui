@@ -387,6 +387,7 @@ const List = ({id, contenttype, onLinkClick, onRenderRow, level = 1, sort_defaul
         : '';
       let canDD =
         config['can_dd'] &&
+        content.location &&
         content.location.priority !== 0 &&
         sortby[0][0] === 'priority' &&
         sortby[0][1] === 'desc';
