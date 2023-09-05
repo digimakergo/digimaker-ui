@@ -17,8 +17,11 @@ export default class Image extends React.Component<{definition:any, validation:a
 
     inline(){
       if(this.state.data){
-        let vars = {...util._vars, 'imagepath':this.state.data}; 
-        let thumbnailPath = util.washVariables(process.env.REACT_APP_THUMB_PATH, vars);
+        let thumbnailPath = this.state.data;
+        if( !( thumbnailPath.startsWith('http://') || thumbnailPath.startsWith('https://') ) ){
+           let vars = {...util._vars, 'imagepath':this.state.data}; 
+           thumbnailPath =  util.washVariables(process.env.REACT_APP_THUMB_PATH, vars);
+        }
         return <img className="fieldtype-image-img" src={thumbnailPath} />;
       }else{
         return '';
