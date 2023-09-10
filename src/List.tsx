@@ -101,11 +101,10 @@ const List = ({id, contenttype, onLinkClick, onRenderRow, level = 1, sort_defaul
   }
 
   //callback after an action is done.
-  const afterAction = ( config?: ListAfterActionConfig) => {
-      const configObj = { ...config };
+  const afterAction = ( afterConfig?: ListAfterActionConfig) => {
       setConfigObject({
-        ...configObj,
-        ...config
+        ...config,
+        ...afterConfig
       })
       refresh();
   }
