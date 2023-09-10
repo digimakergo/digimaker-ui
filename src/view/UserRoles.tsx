@@ -16,7 +16,7 @@ export default class UserRoles extends React.Component<{content:any},{browse:boo
   }
 
   fetchRoles(){
-    FetchWithAuth(process.env.REACT_APP_REMOTE_URL + '/user/roles/'+this.props.content.cid)
+    FetchWithAuth(process.env.REACT_APP_REMOTE_URL + '/user/roles/'+this.props.content.id)
         .then((data) => {
           this.setState({data:data.data});
         } );
