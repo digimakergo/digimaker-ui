@@ -29,13 +29,13 @@ export default class UserRoles extends React.Component<{content:any},{browse:boo
   confirmAdding(selected){
     let ids:any = [];
     for( let item of selected ){
-      let existing = this.state.data.find( (i)=>i.cid == item.cid );
+      let existing = this.state.data.find( (i)=>i.id == item.id );
       if( !existing ){
-        ids.push(item.cid);
+        ids.push(item.id);
       }
     }
 
-    FetchWithAuth(process.env.REACT_APP_REMOTE_URL + '/access/assign/'+this.props.content.cid+'/'+ids.join(','))
+    FetchWithAuth(process.env.REACT_APP_REMOTE_URL + '/access/assign/'+this.props.content.id+'/'+ids.join(','))
         .then((data) => {
           if( data.data === true ){
             this.fetchRoles();
@@ -48,7 +48,7 @@ export default class UserRoles extends React.Component<{content:any},{browse:boo
 
   unassignRole(e:any, roleId:any){
     e.preventDefault();
-    FetchWithAuth(process.env.REACT_APP_REMOTE_URL + '/access/unassign/'+this.props.content.cid+'/'+roleId)
+    FetchWithAuth(process.env.REACT_APP_REMOTE_URL + '/access/unassign/'+this.props.content.id+'/'+roleId)
         .then((data) => {
           if( data.data === true ){
             this.fetchRoles();
@@ -69,7 +69,7 @@ export default class UserRoles extends React.Component<{content:any},{browse:boo
           </h3>
           <ul>
           {this.state.data.map( (item)=><li>
-              <Link to={"/main/"+item.id}>{item.name}</Link> <a href="#" onClick={(e)=>this.unassignRole( e, item.cid )}><i className="icon icon-delete"></i></a>
+              <Link to={"/main/"+item.id}>{item.name}</Link> <a href="#" onClick={(e)=>this.unassignRole( e, item.id )}><i className="icon icon-delete"></i></a>
             </li> )}
           </ul>
       </div>;
