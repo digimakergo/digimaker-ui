@@ -33,7 +33,8 @@ export interface ActionProps{
   from?: {id: number, list_contenttype?:string};
   
   /** item counter when invoking the actions, starting from 0 */
-  counter?:number
+  counter?:number,
+  iconOnly?:boolean,
 }
 
 export interface ContentActionParams{
