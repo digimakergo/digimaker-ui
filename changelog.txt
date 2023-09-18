@@ -1,4 +1,5 @@
 0.2.1-beta.2
+ - 2023-09-18 updated: make browseAfterList easier to use.(eg. multiupload)
  - 2023-03-17 added json's list format
  - 2023-03-16 fixed: drag&drop not working in list
  - 2023-03-16 visible number in row actions changed to none by default(technically 100) & allow setting

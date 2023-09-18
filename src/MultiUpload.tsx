@@ -162,7 +162,7 @@ const MultiUpload = ({name, service, format, value, multi, onSuccess,onSubmit,pa
 
   return (
     <div className='file-upload'>
-      <button onClick={fileUploadBtn}>select files</button>
+      <button className='btn btn-light' onClick={fileUploadBtn}>Select files</button>
       <input
           id="fieldInput"
           type='file'
@@ -209,7 +209,7 @@ const MultiUpload = ({name, service, format, value, multi, onSuccess,onSubmit,pa
           type='hidden'
           value={filename}
         />
-        {uploadFiles.length>0&&<Button onClick={() => submitfile()} variant="primary" size="sm"><i className="fas fa-check-circle"></i> submit</Button>}
+        {uploadFiles.length>0&&<Button onClick={() => submitfile()} variant="primary" size="sm"><i className="fas fa-check-circle"></i> Submit</Button>}
     </div>
   )
 };

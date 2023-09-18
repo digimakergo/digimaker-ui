@@ -32,12 +32,17 @@ interface dateTimeType{
   [propsName:string]:any
 }
 
+export interface BrowseAfterListProps{
+  contenttype: string,
+  parent: number,
+  refresh: (selectedData:any)=>void
+}
 
 interface DMInitProps {
   viewSettings: (contenttype: string)=> ViewSettingsType;
   dateTime?:dateTimeType
   children: JSX.Element|JSX.Element[];
-  browseAfterList?:any
+  browseAfterList?:(props:BrowseAfterListProps)=>React.ReactNode
 }
 
 //Init things before loading ui

@@ -3,7 +3,7 @@ import Cookies from 'universal-cookie';
 import Registry from './Registry';
 import { Modal, Button} from 'react-bootstrap';
 import { useState } from 'react';
-import { ViewSettingsType } from './DMInit';
+import { BrowseAfterListProps, ViewSettingsType } from './DMInit';
 
 const cookies = new Cookies();
 
@@ -175,7 +175,7 @@ let config:any = null;
 //util for general operations
 const util = {
   dateTime:{} as any,
-  browseAfterList:null,
+  browseAfterList:null as (props: BrowseAfterListProps)=>React.ReactNode,
   //put replace variable with real value.eg. "this is {id}" with {'id': 5} will be "this is 5"
   washVariables:(str:string, values:any)=>{
    let variables = str.match(/{(\w+|_)}/g);

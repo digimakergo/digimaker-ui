@@ -42,6 +42,7 @@ const MultiUpload =(props:{parent:any,afterAction:any})=>{
                       multi={true} 
                       format="image/*" 
                       value={[]} 
+                      afterAction={props.afterAction}
                       parent={props.parent}
                      />
 
