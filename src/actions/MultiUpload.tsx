@@ -2,6 +2,7 @@ import React,{useState} from 'react';
 import {FetchWithAuth} from '../util';
 import util from '../util';
 import MultiUploadC from '../MultiUpload';
+import { i18n } from '../i18n';
 
 const MultiUpload =(props:{parent:any,afterAction:any})=>{
   const [validation,setValidation] = useState({})
@@ -25,7 +26,7 @@ const MultiUpload =(props:{parent:any,afterAction:any})=>{
                            
                             <div>
                               <button type="button" className="btn btn-sm btn-secondary" onClick={cancel}>
-                                  <i className="fas fa-window-close"></i> Cancel
+                                  <i className="fas fa-window-close"></i> {i18n.t('Cancel')}
                               </button>
                             </div>
                         </div>

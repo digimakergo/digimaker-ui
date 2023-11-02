@@ -5,6 +5,7 @@ import { Link, Redirect } from "react-router-dom";
 import RenderFields from '../RenderFields';
 import {FetchWithAuth} from '../util';
 import util from '../util';
+import { i18n } from '../i18n';
 
 
 export default class Create extends React.Component<{parent:number, contenttype:string, afterAction:any}, {validation:{}}> {
@@ -51,15 +52,15 @@ export default class Create extends React.Component<{parent:number, contenttype:
                 <form onSubmit={(e) => this.handleSubmit(e)}>
                     <div className="form-tool">
                         <div className="form-actions">
-                            <div className="action-title">Actions</div>
+                            <div className="action-title">{i18n.t('Actions')}</div>
                             <div className="action-body">
                                 <div>
-                                    <button type="submit" className="btn btn-primary btn-sm"><i className="fas fa-paper-plane"></i> Submit</button>
+                                    <button type="submit" className="btn btn-primary btn-sm"><i className="fas fa-paper-plane"></i> {i18n.t('Submit')}</button>
                                 </div>
                                 <div>
                                     {/* <Link to={`/main/${this.props.parent}`}> */}
                                         <button type="button" className="btn btn-sm btn-secondary" onClick={()=>this.cancel()}>
-                                            <i className="fas fa-window-close"></i> Cancel
+                                            <i className="fas fa-window-close"></i> {i18n.t('Cancel')}
                                     </button>
                                     {/* </Link> */}
                                 </div>

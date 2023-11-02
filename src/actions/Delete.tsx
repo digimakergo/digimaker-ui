@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { FetchWithAuth, Dialog, getDefinition } from '../util';
 import {ActionProps, ContentActionParams} from '../ActionsRender';
+import { i18n } from '../i18n';
 
 const Delete = (props:ActionProps) => {
   const [shown, setShown] = React.useState(false);
@@ -42,7 +43,7 @@ const Delete = (props:ActionProps) => {
 
   return (
     <div className='action-item'>
-    <a href="#" onClick={(e)=>{setShown(true); e.preventDefault()}}><i className="fas fa-trash"></i>{props.iconOnly?'':'Delete'}</a>
+    <a href="#" onClick={(e)=>{setShown(true); e.preventDefault()}}><i className="fas fa-trash"></i>{props.iconOnly?'':i18n.t('Delete')}</a>
     {shown&&<Dialog key={props.counter} title={"Delete "+def.name} onClose={()=>setShown(false)} onSubmit={submit}>
       {body()}
     </Dialog>}</div>

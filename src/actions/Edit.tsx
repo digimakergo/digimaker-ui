@@ -5,6 +5,7 @@ import { Link, Redirect } from "react-router-dom";
 import RenderFields from '../RenderFields';
 import Registry from '../Registry';
 import util, {FetchWithAuth} from '../util';
+import { i18n } from '../i18n';
 
 export default class Edit extends React.Component<{id:number, contenttype?:string, afterAction:any}, {content:any,validation:{}}> {
 
@@ -69,14 +70,14 @@ export default class Edit extends React.Component<{id:number, contenttype?:strin
                 <form onSubmit={(e) => this.handleSubmit(e)}>
                     <div className="form-tool">
                         <div className="form-actions">
-                            <div className="action-title">Actions</div>
+                            <div className="action-title">{i18n.t('Actions')}</div>
                             <div className="action-body">
                                 <div>
-                                    <button type="submit" className="btn btn-primary btn-sm"><i className="fas fa-paper-plane"></i> Submit</button>
+                                    <button type="submit" className="btn btn-primary btn-sm"><i className="fas fa-paper-plane"></i> {i18n.t('Submit')}</button>
                                 </div>
                                 <div>
                                     <button type="button" onClick={()=>this.cancel()} className="btn btn-sm btn-secondary">
-                                            <i className="fas fa-window-close"></i> Cancel
+                                            <i className="fas fa-window-close"></i> {i18n.t('Cancel')}
                                     </button>
                                 </div>
                             </div>
@@ -86,7 +87,7 @@ export default class Edit extends React.Component<{id:number, contenttype?:strin
                     </div>
 
                     <div className="form-main">
-                        <h2>Edit {util.getName(content)}</h2>
+                        <h2>{i18n.t('Edit')} {util.getName(content)}</h2>
                         {Com!=null?<Com />:''}
 
                         <RenderFields mode='edit' type={content.metadata.contenttype} data={content} validation={this.state.validation}  />

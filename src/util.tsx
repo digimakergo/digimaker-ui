@@ -175,6 +175,7 @@ let config:any = null;
 //util for general operations
 const util = {
   dateTime:{} as any,
+  lang:'eng-GB',
   browseAfterList:null as (props: BrowseAfterListProps)=>React.ReactNode,
   //put replace variable with real value.eg. "this is {id}" with {'id': 5} will be "this is 5"
   washVariables:(str:string, values:any)=>{

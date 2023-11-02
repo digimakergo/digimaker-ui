@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { ActionProps, ContentActionParams } from '../ActionsRender';
 import {FetchWithAuth} from '../util';
+import { i18n } from '../i18n';
 
 const SetToTop =( props:ActionProps) => {
    let priortyStep = 100;
@@ -48,8 +49,8 @@ const SetToTop =( props:ActionProps) => {
 
   let priority = params.content.location.priority;
   return (<div className='action-item'><a href="#" onClick={(e)=>click( e,priority )} style={{padding: '0px 5px'}}>
-                {priority!=0&&<><i className="fas fa-times" title='Remove priority'></i></>}
-                {priority==0&&<><i className="fas fa-long-arrow-alt-up" title='Set top priority'></i></>}
+                {priority!=0&&<><i className="fas fa-times" title={i18n.t('Remove priority')}></i></>}
+                {priority==0&&<><i className="fas fa-long-arrow-alt-up" title={i18n.t('Set top priority')}></i></>}
                 </a></div>)
 }
 

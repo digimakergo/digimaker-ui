@@ -42,6 +42,7 @@ interface DMInitProps {
   viewSettings: (contenttype: string)=> ViewSettingsType;
   dateTime?:dateTimeType
   children: JSX.Element|JSX.Element[];
+  lang?:string;
   browseAfterList?:(props:BrowseAfterListProps)=>React.ReactNode
 }
 
@@ -53,6 +54,9 @@ const DMInit = (props:DMInitProps)=>{
   useEffect(() => {
     util.getViewSettings = props.viewSettings;
     util.dateTime={...util.dateTime,...props.dateTime};
+    if(props.lang){
+      util.lang = props.lang;
+    }
     util.browseAfterList=props.browseAfterList;
     FetchWithAuth(process.env.REACT_APP_REMOTE_URL + '/contenttype/get')
         .then((data) => {
