@@ -6,7 +6,7 @@ import {getDefinition} from './util';
 import Registry from './Registry';
 import { ReactNode } from 'react';
 
-export type LinkActionConfigType = { link:string, name: string|ReactNode, newWindow?:boolean};
+export type LinkActionConfigType = { link:string, name: string|ReactNode, title?:string, newWindow?:boolean};
 export type ActionConfigType=LinkActionConfigType|((ActionProps)=>ReactNode);
 
 export interface ListActionParams{
@@ -79,6 +79,8 @@ export function ActionsRender({actionsConfig, actionProps, iconOnly}: ActionsPro
 
     let newWindow = config.new ? true : false;
 
+    let title = config.title?config.title:'';
+
     let linkText = (
       <>
         <i className={config.icon ? 'icon ' + config.icon : 'fas fa-tools'}></i>
@@ -89,10 +91,10 @@ export function ActionsRender({actionsConfig, actionProps, iconOnly}: ActionsPro
     return (
       <div className='action-item' key={i}>
         {!newWindow && (
-          <Link to={path}>{linkText}</Link>
+          <Link title={title} to={path}>{linkText}</Link>
         )}
         {newWindow && (
-          <a href={path} target='_blank' rel='noopener noreferrer'>
+          <a  title={title} href={path} target='_blank' rel='noopener noreferrer'>
             {linkText}
           </a>
         )}
