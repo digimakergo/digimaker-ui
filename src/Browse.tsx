@@ -23,6 +23,9 @@ export interface BrowseProps {
   /** true means it's already triggered, otherwise it shows a button to trigger */
   trigger?:boolean;
 
+  /** default show left folder tree or not */
+  showTree?:boolean;
+
   /** when confirmed. return false will prevent closing */
   onConfirm: any;
 
@@ -55,11 +58,11 @@ export default Browse;
 
 //todo: add filter
 //Dialog of the browse
-class Dialog extends React.Component<BrowseProps, { contenttype:string, shown: boolean, showTree:boolean, list: any, parent: number, selected: any,refreshCount:number}> {
+class Dialog extends React.Component<BrowseProps, { contenttype:string, shown: boolean, showTree:boolean, list: any, parent: number, listParent:number, selected: any,refreshCount:number}> {
 
   constructor(props: BrowseProps) {
     super(props);
-    this.state = { shown: props.trigger?true:false, contenttype:props.contenttype[0], showTree:false, list: '', parent: (this.props.parent||1), selected: props.selected,
+    this.state = { shown: props.trigger?true:false, contenttype:props.contenttype[0], showTree:props.showTree||false, list: '', parent: (this.props.parent||1), listParent:(this.props.parent||1), selected: props.selected,
     refreshCount:0,
   };
   }
@@ -96,7 +99,7 @@ class Dialog extends React.Component<BrowseProps, { contenttype:string, shown: b
 
 
   clickTree(content: any) {
-    this.setState({ parent: content.id });
+    this.setState({ listParent: content.id });
   }
 
   selectedRowClass(content:any){
@@ -195,10 +198,10 @@ class Dialog extends React.Component<BrowseProps, { contenttype:string, shown: b
           <a href="#" onClick={(e:any)=>{e.preventDefault();this.setState({showTree:!this.state.showTree});}}>
             <i className={this.state.showTree?"fas fa-chevron-left":"fas fa-chevron-right"}></i>
           </a>
-          <List id={this.state.parent} {...browseList} key={this.state.parent+this.state.contenttype+this.state.refreshCount} onRenderRow={(content:any)=>this.selectedRowClass(content)} contenttype={this.state.contenttype} level={100} onLinkClick={(content) => this.select(content)} />
+          <List id={this.state.listParent} {...browseList} key={this.state.listParent+this.state.contenttype+this.state.refreshCount} onRenderRow={(content:any)=>this.selectedRowClass(content)} contenttype={this.state.contenttype} level={100} onLinkClick={(content) => this.select(content)} />
           {util.browseAfterList&&util.browseAfterList({
             contenttype:this.state.contenttype,
-            parent:this.state.parent,
+            parent:this.state.listParent,
             refresh:(selectedData)=>{
               if(selectedData){
                 this.setState({selected:selectedData});
