@@ -21,6 +21,9 @@ export interface ListProps {
   /** columns which is the fields */
   columns: string[]|any[];
 
+  /** field for block mode */
+  blockFields: string[]|any[];
+  
   /** show content type name as header, default false */
   show_header?: boolean;
 
@@ -82,6 +85,7 @@ const List = ({id, contenttype, onLinkClick, onRenderRow, level = 1, sort_defaul
     row_actions: props.row_actions || [],
     actions: props.actions || [],
     pagination: props.pagination || 0,
+    blockFields: props.blockFields || [],
     level,
     viewmode,
     can_dd: true,
@@ -445,6 +449,7 @@ const List = ({id, contenttype, onLinkClick, onRenderRow, level = 1, sort_defaul
           <RenderProperties
             content={item}
             contenttype={contenttype}
+            fields={config.blockFields}
             mode='block'
           />
           {config['row_actions'].length > 0 && (
