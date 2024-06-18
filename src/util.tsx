@@ -211,8 +211,14 @@ const util = {
 
  _vars: {},
 
+ _getRefreshToken: null,
+
  getRefreshToken:()=>{
+  if(util._getRefreshToken){
+    return util._getRefreshToken();
+  }else{
     return cookies.get(util.cookieKey)
+  }
  },
 
  setRefreshToken:(token:string, path?:string)=>{

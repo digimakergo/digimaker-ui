@@ -43,6 +43,7 @@ interface DMInitProps {
   dateTime?:dateTimeType
   children: JSX.Element|JSX.Element[];
   lang?:string;
+  getRefreshToken?:()=>string;
   browseAfterList?:(props:BrowseAfterListProps)=>React.ReactNode
 }
 
@@ -50,13 +51,19 @@ interface DMInitProps {
 const DMInit = (props:DMInitProps)=>{
   const [inited, setInited] = useState(false);
   const [error, setError] = useState(false);
+  
 
   useEffect(() => {
-    util.getViewSettings = props.viewSettings;
+    util.getViewSettings = props.viewSettings;    
     util.dateTime={...util.dateTime,...props.dateTime};
     if(props.lang){
       util.lang = props.lang;
     }
+
+    if(props.getRefreshToken){
+      util._getRefreshToken = props.getRefreshToken;
+    }
+
     util.browseAfterList=props.browseAfterList;
     FetchWithAuth(process.env.REACT_APP_REMOTE_URL + '/contenttype/get')
         .then((data) => {
