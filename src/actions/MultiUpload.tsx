@@ -36,7 +36,7 @@ const MultiUpload =(props:{parent:any,afterAction:any})=>{
                 </div>
 
                 <div className="form-main">
-                    <h2>MultiUpload</h2>
+                    <h2>Image multiupload</h2>
                     <MultiUploadC 
                       name='multiUpload' 
                       service="content" 

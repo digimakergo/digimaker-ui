@@ -10,7 +10,7 @@ export const CopyFilepath = (props:ActionProps) => {
     const click = async (e)=>{
         e.preventDefault();
         const path = content.file;
-        let absPath = util.washVariables(process.env.REACT_APP_ASSET_URL as string, {imagepath:content.path})
+        let absPath = util.washVariables(process.env.REACT_APP_FILE_URL as string, {filepath:content.path})
         await copyTextToClipboard(absPath);
         setShowSuccess(true);
         setTimeout(()=>{
