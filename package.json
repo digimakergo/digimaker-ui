@@ -1,12 +1,13 @@
 {
   "name": "digimaker-ui",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "UI components for Digimaker CMF, including displaying, editing, field, content and related utils.",
   "main": "dist/index.js",
   "files": [
     "**/*.js",
     "*.css",
-    "fieldtype.json"
+    "fieldtype_settings.json"
+    "locale/*.json"
   ],
   "bin": {
     "test@digimaker-ui": "./src"
