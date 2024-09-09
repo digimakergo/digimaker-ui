@@ -6,7 +6,7 @@
   "files": [
     "**/*.js",
     "*.css",
-    "fieldtype_settings.json"
+    "fieldtype_settings.json",
     "locale/*.json"
   ],
   "bin": {
