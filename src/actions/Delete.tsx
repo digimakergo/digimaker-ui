@@ -28,7 +28,7 @@ const Delete = (props:ActionProps) => {
     }else{
       paramsStr = 'cid='+selected.id+'&type='+ selected.metadata.contenttype
     }
-    FetchWithAuth(process.env.REACT_APP_REMOTE_URL + '/content/delete?'+paramsStr)
+    FetchWithAuth('content/delete?'+paramsStr)
       .then((data) => {
         if( data.error === false ){
           if (props.fromview=='content') {

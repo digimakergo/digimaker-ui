@@ -2,9 +2,9 @@ import * as React from 'react';
 import Moment from 'react-moment';
 import { RouteProps } from 'react-router';
 import RenderFields from '../RenderFields';
+import { fetchWithAuth } from '../util';
 
 export default class ViewVersion extends React.Component<RouteProps,{version:any, error: string}> {
-
 
   constructor(props: any) {
       super(props);
@@ -13,18 +13,9 @@ export default class ViewVersion extends React.Component<RouteProps,{version:any
 
 
   fetchData(id, version) {
-      fetch(process.env.REACT_APP_REMOTE_URL + '/content/version/'+id+'/'+version)
-          .then((res)=>{
-            if( res.ok ){
-              return res.json()
-            }else{
-              res.text().then((text)=>{
-                  this.setState( {error: text} );
-              });
-            }
-          })
+      fetchWithAuth('content/version/'+id+'/'+version)         
           .then((data) => {
-              this.setState({ version: data});
+              this.setState({ version: data.data});
           })
   }
 

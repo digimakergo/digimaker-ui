@@ -22,7 +22,7 @@ export default class Relation extends React.Component<{definition:any, validatio
 
   fetchList(){
     let def = this.props.definition;
-    FetchWithAuth(process.env.REACT_APP_REMOTE_URL + '/relation/optionlist/'+this.props.contenttype+'/'+def.identifier)
+    FetchWithAuth('relation/optionlist/'+this.props.contenttype+'/'+def.identifier)
         .then((data) => {
             let list = data.data.list;
             let valueField = 'id';
@@ -49,7 +49,7 @@ export default class Relation extends React.Component<{definition:any, validatio
     if(!this.props.data){
       return;
     }
-    FetchWithAuth(process.env.REACT_APP_REMOTE_URL + '/content/list/'+def.parameters.type+'?cid='+this.props.data)
+    FetchWithAuth('content/list/'+def.parameters.type+'?cid='+this.props.data)
         .then((data) => {
             this.setState({content: data.data.list[0] });
         })

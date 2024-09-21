@@ -63,14 +63,14 @@ const Main = (props:MainProps) =>{
 
 	//fetch content
 	const fetchData = () => {
-		let url = "/content/get";
+		let url = "content/get";
 		if (props.contenttype) {
 			url = `${url}/${props.contenttype}/${props.id}`;
 		} else {
 			url = `${url}/${props.id}`;
 		}
 
-		FetchWithAuth(process.env.REACT_APP_REMOTE_URL + url)
+		FetchWithAuth( url)
 			.then((data) => {
 				let content = data.data;
 				if( props.onLoad ){

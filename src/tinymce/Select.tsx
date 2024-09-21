@@ -23,7 +23,7 @@ export default class Select extends React.Component<{data:string, browseConfig:a
     }    
 
     fetchData(data){
-        FetchWithAuth(process.env.REACT_APP_REMOTE_URL + '/content/get/'+data[0]+'/'+data[1])
+        FetchWithAuth('content/get/'+data[0]+'/'+data[1])
             .then((data) => {        
                 this.setState({selected: data.data});
                 this.sentData['image'] = data.data;

@@ -16,7 +16,7 @@ export default class UnassignRole extends React.Component<ActionProps, {}> {
   submit(){
       let params = this.props.params as ContentActionParams;
       let selected = params.content;
-      FetchWithAuth(process.env.REACT_APP_REMOTE_URL + '/access/unassign/'+selected.cid+'/'+selected.role_id)
+      FetchWithAuth('access/unassign/'+selected.cid+'/'+selected.role_id)
           .then((data) => {
             if( data.error === false ){
               params.afterAction();

@@ -28,7 +28,7 @@ export default class Create extends React.Component<{parent:number, contenttype:
         for (let key of Array.from(form.keys())) {
             dataObject[key] = form.get(key);
         };
-        FetchWithAuth(process.env.REACT_APP_REMOTE_URL + '/content/create/' + this.props.contenttype + '/' + this.props.parent, {
+        FetchWithAuth( 'content/create/' + this.props.contenttype + '/' + this.props.parent, {
             method: 'POST',
             body: JSON.stringify(dataObject),
         }).then((data) => {

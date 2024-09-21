@@ -37,9 +37,8 @@ const RenderFields = ({type, validation, data, editFields, language, mode, befor
     let languageParams = language
       ? '?language=' + language
       : '';
-    FetchWithAuth(
-      process.env.REACT_APP_REMOTE_URL +
-        '/contenttype/get/' +
+    FetchWithAuth(     
+        'contenttype/get/' +
         type.split('/')[0] +
         languageParams
     ).then((data) => {

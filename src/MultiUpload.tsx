@@ -143,7 +143,7 @@ const MultiUpload = ({name, service, format, value, multi, onSuccess,onSubmit,pa
         }
 
         let dataObject= contentData.contentObject;
-        FetchWithAuth(`${process.env.REACT_APP_REMOTE_URL}/content/create/${contentData.contentType}/${parent||461}`, {
+        FetchWithAuth(`content/create/${contentData.contentType}/${parent||461}`, {
           method: 'POST',
           body: JSON.stringify(dataObject),
         }).then((data) => {

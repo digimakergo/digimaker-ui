@@ -24,7 +24,7 @@ export default class DisableUser extends React.Component<ActionProps, {counter: 
       selected.map((item:any)=>{
         ids.push( item.cid );
       });
-      FetchWithAuth( process.env.REACT_APP_REMOTE_URL + '/user/enable/'+(enable?1:0)+'?id='+ids.join( ',' ) )
+      FetchWithAuth( 'user/enable/'+(enable?1:0)+'?id='+ids.join( ',' ) )
         .then((data)=>{
           if( data.error === false ){
             params.afterAction();

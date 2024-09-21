@@ -404,7 +404,7 @@ const util = {
    return util._settingCache[cacheKey];
  },
  fetchByID:(id:number )=>{  
-    return FetchWithAuth(`${process.env.REACT_APP_REMOTE_URL}/content/get/${id}`);
+    return FetchWithAuth(`content/get/${id}`);
 },
 
 }

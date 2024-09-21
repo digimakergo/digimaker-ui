@@ -24,7 +24,7 @@ export default class Move extends React.Component<ActionProps, {shown:boolean, o
         this.setState({operating: true});
         let params = this.props.params as ContentActionParams;
         let id = params.content.id;
-        FetchWithAuth(process.env.REACT_APP_REMOTE_URL + "/content/move/"+id+"/"+target.id)
+        FetchWithAuth("content/move/"+id+"/"+target.id)
             .then((data) => {
               if( data.error === false ){
                 this.setState({operating: false});

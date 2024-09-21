@@ -150,7 +150,7 @@ const List = ({id, contenttype, onLinkClick, onRenderRow, level = 1, sort_defaul
     }
     setLoading(true);
     FetchWithAuth(
-      `${process.env.REACT_APP_REMOTE_URL}/${config.request_url}?parent=${id}&level=${config.level}&${sortbyStr}${limit}${filter}`
+      `${config.request_url}?parent=${id}&level=${config.level}&${sortbyStr}${limit}${filter}`
     ).then((data) => {
       if( data.error === false ){
         setCounter(counter + 1);
@@ -329,7 +329,7 @@ const List = ({id, contenttype, onLinkClick, onRenderRow, level = 1, sort_defaul
     }
     //send to server
     FetchWithAuth(
-      `${process.env.REACT_APP_REMOTE_URL}/content/setpriority?params=${change.join('%3B')}`
+      `content/setpriority?params=${change.join('%3B')}`
     )
       .then((_data) => {
         listBeforeMove = null;

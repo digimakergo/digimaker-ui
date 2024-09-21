@@ -16,7 +16,7 @@ export default class UserRoles extends React.Component<{content:any},{browse:boo
   }
 
   fetchRoles(){
-    FetchWithAuth(process.env.REACT_APP_REMOTE_URL + '/user/roles/'+this.props.content.id)
+    FetchWithAuth('user/roles/'+this.props.content.id)
         .then((data) => {
           this.setState({data:data.data});
         } );
@@ -35,7 +35,7 @@ export default class UserRoles extends React.Component<{content:any},{browse:boo
       }
     }
 
-    FetchWithAuth(process.env.REACT_APP_REMOTE_URL + '/access/assign/'+this.props.content.id+'/'+ids.join(','))
+    FetchWithAuth('access/assign/'+this.props.content.id+'/'+ids.join(','))
         .then((data) => {
           if( data.data === true ){
             this.fetchRoles();
@@ -48,7 +48,7 @@ export default class UserRoles extends React.Component<{content:any},{browse:boo
 
   unassignRole(e:any, roleId:any){
     e.preventDefault();
-    FetchWithAuth(process.env.REACT_APP_REMOTE_URL + '/access/unassign/'+this.props.content.id+'/'+roleId)
+    FetchWithAuth('access/unassign/'+this.props.content.id+'/'+roleId)
         .then((data) => {
           if( data.data === true ){
             this.fetchRoles();

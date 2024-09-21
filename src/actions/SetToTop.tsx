@@ -14,7 +14,7 @@ const SetToTop =( props:ActionProps) => {
   }
 
   const setPriority = (id:number, priority:number) =>{
-    FetchWithAuth(process.env.REACT_APP_REMOTE_URL + '/content/setpriority?params='+id+','+priority)
+    FetchWithAuth('content/setpriority?params='+id+','+priority)
       .then((data:any)=>{
           if( data.error === false ){
             params.afterAction(true);
@@ -24,7 +24,7 @@ const SetToTop =( props:ActionProps) => {
 
   const setToTop = ()=>{
     let content = params.content;
-    FetchWithAuth(process.env.REACT_APP_REMOTE_URL + '/content/list/'+content.metadata.contenttype+'?parent='+content.location.parent_id+'&sortby=priority%20desc&limit=1&offset=0')
+    FetchWithAuth('content/list/'+content.metadata.contenttype+'?parent='+content.location.parent_id+'&sortby=priority%20desc&limit=1&offset=0')
       .then((data:any)=>{
         if( data.error === false ){
           let priority = priortyStep;

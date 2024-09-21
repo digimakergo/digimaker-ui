@@ -65,7 +65,7 @@ const DMInit = (props:DMInitProps)=>{
     }
 
     util.browseAfterList=props.browseAfterList;
-    FetchWithAuth(process.env.REACT_APP_REMOTE_URL + '/contenttype/get')
+    FetchWithAuth('contenttype/get')
         .then((data) => {
           let def = data.data;
           util.setDefinitionList( def );          
