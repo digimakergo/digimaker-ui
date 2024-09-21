@@ -3,6 +3,7 @@ import util, { FetchWithAuth, Dialog, getDefinition } from '../util';
 import {ActionProps, ContentActionParams} from '../ActionsRender';
 import { useState } from 'react';
 import { i18n } from '../i18n';
+import { serverConfig } from '../serverConfig';
 
 export const CopyFilepath = (props:ActionProps) => {
     const content = (props.params as ContentActionParams).content;
@@ -10,7 +11,7 @@ export const CopyFilepath = (props:ActionProps) => {
     const click = async (e)=>{
         e.preventDefault();
         const path = content.file;
-        let absPath = util.washVariables(process.env.REACT_APP_FILE_URL as string, {filepath:content.path})
+        let absPath = util.washVariables(serverConfig.fileUrl, {filepath:content.path})
         await copyTextToClipboard(absPath);
         setShowSuccess(true);
         setTimeout(()=>{

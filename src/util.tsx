@@ -4,6 +4,7 @@ import Registry from './Registry';
 import { Modal, Button} from 'react-bootstrap';
 import { useState } from 'react';
 import { BrowseAfterListProps, ViewSettingsType } from './DMInit';
+import { serverConfig } from './serverConfig';
 
 const cookies = new Cookies();
 
@@ -12,7 +13,7 @@ let accessToken: any = null; //access token, which is a promise<string>
 
 export const FetchWithAuth = (url: string, reqObj?: any) => {
   if( !(url.startsWith('/') || url.startsWith('http:') || url.startsWith('https:') ) ){
-    url = process.env.REACT_APP_REMOTE_URL+'/'+url;
+    url = serverConfig.remoteUrl+'/'+url;
   }
 
   return GetAccessToken()
@@ -68,7 +69,7 @@ export function GetAccessToken() {
           reject({code:'0001', message:'No token found.'});
         });
     }
-    accessToken = fetch(process.env.REACT_APP_REMOTE_URL + '/auth/token/access/renew?token=' + refreshToken)
+    accessToken = fetch(serverConfig.remoteUrl + '/auth/token/access/renew?token=' + refreshToken)
       .then(res => {
         if (!res.ok) {
           throw {code:'0001', message:"Can not proceed because of invalid authorization. Need to relogin?"};

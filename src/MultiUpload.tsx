@@ -2,6 +2,7 @@ import React from 'react';
 import { useEffect, useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import { FetchWithAuth } from './util';
+import { serverConfig } from './serverConfig';
 
 export interface FileUploadProps {
   /** Form field name, similar to input name attribute */
@@ -58,7 +59,7 @@ const MultiUpload = ({name, service, format, value, multi, onSuccess,onSubmit,pa
       file.uploadState=1;
       let p = new Promise((resolve, reject)=>{
         fetch(
-          process.env.REACT_APP_REMOTE_URL +
+          serverConfig.remoteUrl +
             '/util/uploadfile?service=' +
             service,
           {

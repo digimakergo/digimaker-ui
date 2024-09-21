@@ -3,6 +3,7 @@ import Moment from 'react-moment';
 import FileUpload from '../FileUpload'
 import ReactTooltip from 'react-tooltip';
 import util from '../util';
+import { serverConfig } from '../serverConfig';
 
 export default class Image extends React.Component<{definition:any, validation:any, mode: string, data:any},{data:any}> {
 
@@ -20,7 +21,7 @@ export default class Image extends React.Component<{definition:any, validation:a
         let thumbnailPath = this.state.data;
         if( !( thumbnailPath.startsWith('http://') || thumbnailPath.startsWith('https://') ) ){
            let vars = {...util._vars, 'imagepath':this.state.data}; 
-           thumbnailPath =  util.washVariables(process.env.REACT_APP_THUMB_PATH, vars);
+           thumbnailPath =  util.washVariables(serverConfig.imageThumbnailUrl, vars);
         }
         return <img className="fieldtype-image-img" src={thumbnailPath} />;
       }else{
@@ -52,7 +53,7 @@ export default class Image extends React.Component<{definition:any, validation:a
                                               onSuccess={(data)=>{this.updated(data)}} />
                 {this.state.data&&<>
                   {(this.state.data==this.props.data) && this.inline()}
-                  {(this.state.data!=this.props.data) && <img src={util.washVariables(process.env.REACT_APP_ASSET_URL, {...util._vars, 'imagepath':this.state.data} )} /> }
+                  {(this.state.data!=this.props.data) && <img src={util.washVariables(serverConfig.imageUrl, {...util._vars, 'imagepath':this.state.data} )} /> }
                 </>}
                 </div>
             </>

@@ -1,5 +1,6 @@
 import React from 'react';
 import { useEffect, useState } from 'react';
+import { serverConfig } from './serverConfig';
 
 export interface FileUploadProps {
   /** Form field name, similar to input name attribute */
@@ -39,7 +40,7 @@ const FileUpload = ({name, service, format, value, multi, onSuccess}: FileUpload
     data.append('file', file);
     setUploadState(1);
     fetch(
-      process.env.REACT_APP_REMOTE_URL +
+      serverConfig.remoteUrl +
         '/util/uploadfile?service=' +
         service,
       {

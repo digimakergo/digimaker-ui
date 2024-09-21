@@ -20,3 +20,4 @@ export {default as TreeNode} from './TreeNode';
 export * from './TreeNode';
 export {default as ViewContent} from './ViewContent';
 export * from './ViewContent';
+export * from './serverConfig';
