@@ -5,7 +5,7 @@ export const serverConfig = {
     fileUrl: process.env.REACT_APP_FILE_URL,// '/var/{filepath}',
 }
 
-export const setServerConfig = (c: typeof serverConfig)=>{
+export const setServerConfig = (c: typeof serverConfig)=>{    
     Object.keys(c).forEach(k=>{
         serverConfig[k] = c[k];
     })
