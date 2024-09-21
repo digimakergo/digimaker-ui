@@ -22,10 +22,11 @@ export interface FileUploadProps {
   onSuccess?: any;
   onSubmit?:any;
   parent?:any;
-  afterAction?:any
+  afterAction?:any;
+  getContentData?: (file:any)=>{contentObject:any, contentType:string}
 }
 
-const MultiUpload = ({name, service, format, value, multi, onSuccess,onSubmit,parent,afterAction}: FileUploadProps) => {
+const MultiUpload = ({name, service, format, value, multi, onSuccess,onSubmit,parent,afterAction, getContentData}: FileUploadProps) => {
   const [uploadState, setUploadState] = useState(0);
   const [filename, setFilename] = useState(value?value.map(file=>file.nameUploaded):[]);
   const [uploadFiles, setUploadFiles] = useState(value?value:[])
@@ -134,8 +135,15 @@ const MultiUpload = ({name, service, format, value, multi, onSuccess,onSubmit,pa
     let proms:Array<Promise<any>> = [];
     for (let i=0;i<files.length;i++){
       let p = new Promise((resolve, reject)=>{
-        let dataObject={'name': files[i].name.split('.')[0], 'image': files[i].nameUploaded}
-        FetchWithAuth(`${process.env.REACT_APP_REMOTE_URL}/content/create/image/${parent||461}`, {
+        let contentData:any = {};
+        if(getContentData){
+          contentData = getContentData(files[i]);
+        }else{
+          contentData = {contentObject: {'name': files[i].name.split('.')[0], 'image': files[i].nameUploaded}, contentType: 'image' };
+        }
+
+        let dataObject= contentData.contentObject;
+        FetchWithAuth(`${process.env.REACT_APP_REMOTE_URL}/content/create/${contentData.contentType}/${parent||461}`, {
           method: 'POST',
           body: JSON.stringify(dataObject),
         }).then((data) => {
