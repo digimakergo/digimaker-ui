@@ -212,16 +212,16 @@ const List = ({id, contenttype, onLinkClick, onRenderRow, level = 1, sort_defaul
     setSelected([...selected]);
   }
 
-  const selectAll = () => {
-    const tmplist = ((list as unknown) as {list: any}).list;
-    let selected: any = [];
-    for (let value of tmplist) {
-      let id = value.id;
+  const reverseSelect = () => {
+    const allList = list.list;
+    let newSelected = [];
+    for (let item of allList) {
+      let id = item.id;
       if (!selected.includes(id)) {
-        selected.push(id);
+        newSelected.push(id);
       }
     }
-    setSelected(selected);
+    setSelected(newSelected);
   }
 
   const linkClick = (e: React.SyntheticEvent<EventTarget>, content) => {
@@ -239,8 +239,8 @@ const List = ({id, contenttype, onLinkClick, onRenderRow, level = 1, sort_defaul
           {config['show_table_header'] && (
             <tr key={config.columns.join(',')}>
               {config.can_select && (
-                <th className='center' onClick={() => selectAll()}>
-                  <a href='#'>
+                <th className='center' onClick={() => reverseSelect()}>
+                  <a href='#' onClick={e=>e.preventDefault()}>
                     <i className='far fa-check-square' />
                   </a>
                 </th>
@@ -431,9 +431,6 @@ const List = ({id, contenttype, onLinkClick, onRenderRow, level = 1, sort_defaul
   }
 
   const renderBlocks = (list) => {
-    let blocks: any[] = [];
-    let rows: any[] = [];
-    let fieldsDef = getFields(def);
     let cells: any[] = [];
 
     for (let item of list) {
@@ -451,18 +448,29 @@ const List = ({id, contenttype, onLinkClick, onRenderRow, level = 1, sort_defaul
             contenttype={contenttype}
             fields={config.blockFields}
             mode='block'
-          />
-          {config['row_actions'].length > 0 && (
-            <span className='list-row-tool'>
-              <ListRowActions
+          />                    
+            <div className='list-row-tool'>
+              {config.can_select && (
+                <span
+                  onClick={() => select(item.id)}
+                  className='td-check center'
+                >
+                  <input
+                    type='checkbox'
+                    checked={selected.includes(item.id)}
+                    onChange={() =>{}}
+                    value='1'
+                  />
+                </span>
+              )}
+              {config['row_actions'].length > 0 && (<ListRowActions
                 visibleNumber={config['row_actions_visible']}
                 afterAction={(config?: ListAfterActionConfig ) => afterAction(config)}
                 content={item}
                 from={{ id }}
                 config={config['row_actions']}
-              />
-            </span>
-          )}
+              />)}
+            </div>          
         </div>
       );
     }
@@ -587,12 +595,12 @@ const List = ({id, contenttype, onLinkClick, onRenderRow, level = 1, sort_defaul
       }
     >
       <div className='content-list-tools'>
-        {!config.show_table_header && (
+        {config.can_select &&( !config.show_table_header || viewmode ==='block' ) && (
           <a
             href='#'
             onClick={(e) => {
               e.preventDefault();
-              selectAll();
+              reverseSelect();
             }}
           >
             <i className='fas fa-check-square' />
@@ -606,7 +614,7 @@ const List = ({id, contenttype, onLinkClick, onRenderRow, level = 1, sort_defaul
           fromview:'list',
           from: { id: id, list_contenttype: contenttype },
           params:{
-            selected: list.length>0?list.list.filter((item) =>
+            selected: selected.length>0?list.list.filter((item) =>
             selected.includes(item.id)
           ):[],
           listConfig:config,

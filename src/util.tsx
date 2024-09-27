@@ -135,26 +135,20 @@ export function getCommonFieldName(identifier:string) {
   return result;
 }
 
-export const Dialog = (props:{title:string, type?:string, onClose?:any, onSubmit?:any, children:any}) => {
-    const [shown, setShown] = useState(true);
-
+export const Dialog = (props:{title:string, type?:string, onClose:()=>void, onSubmit?:any, children:any}) => {
     const hide = ()=>{
-      if( props.onClose ){
         props.onClose();
-      }
-      setShown(false);
     };
 
     const submit = ()=>{
       if( props.onSubmit ){
         props.onSubmit();
       }
-      setShown(false);
     };
 
     return <Modal size="lg"
       aria-labelledby="contained-modal-title-vcenter"
-      centered show={shown} onHide={hide}>
+      centered show={true} onHide={hide}>
        <Modal.Header closeButton>
     <Modal.Title>{props.title}</Modal.Title>
        </Modal.Header>

@@ -7,10 +7,10 @@ import { ActionProps, ContentActionParams, ListActionParams } from '../../Action
 
 
 
-export default class UnassignRole extends React.Component<ActionProps, {}> {
+export default class UnassignRole extends React.Component<ActionProps, {shown:boolean}> {
   constructor(props: any) {
       super(props);
-      this.state ={};
+      this.state ={shown:true};
   }
 
   submit(){
@@ -19,6 +19,7 @@ export default class UnassignRole extends React.Component<ActionProps, {}> {
       FetchWithAuth('access/unassign/'+selected.cid+'/'+selected.role_id)
           .then((data) => {
             if( data.error === false ){
+              this.setState({shown: false});
               params.afterAction();
             }
           }).catch(err=>{
@@ -26,10 +27,10 @@ export default class UnassignRole extends React.Component<ActionProps, {}> {
   }
 
   render(){
-    return <Dialog title="Delete"
-    key={this.props.counter}
-    onSubmit={()=>this.submit()}>
+    return <span>{this.state.shown&&<Dialog title="Delete"
+    onSubmit={()=>this.submit()}
+    onClose={()=>this.setState({shown:false})}>
     Confirm to unassign {(this.props.params as ContentActionParams).content.metadata.name}?
-    </Dialog>;
+    </Dialog>}</span>;
   }
 }
