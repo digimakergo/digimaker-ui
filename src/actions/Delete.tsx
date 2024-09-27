@@ -72,7 +72,7 @@ const Delete = (props:ActionProps) => {
 
   return (
     <div className='action-item'>
-    <a href="#" title={i18n.t('Delete')} onClick={confirm}><i className="fas fa-trash"></i>{props.iconOnly?'':i18n.t('Delete')}</a>
+    <a href="#" title={i18n.t('Delete')} onClick={confirm}><i className="fas fa-trash"></i>{props.iconOnly?'':i18n.t('Delete')} {fromView==='list'?i18n.t('selected'):''}</a>
     {shown&&<Dialog key={props.counter} title={"Delete "+def.name} onClose={()=>setShown(false)} onSubmit={submit}>
       {body()}
     </Dialog>}</div>

@@ -449,7 +449,14 @@ const List = ({id, contenttype, onLinkClick, onRenderRow, level = 1, sort_defaul
             fields={config.blockFields}
             mode='block'
           />                    
-            <div className='list-row-tool'>
+            <div className='list-row-tool'>              
+              {config['row_actions'].length > 0 && (<ListRowActions
+                visibleNumber={config['row_actions_visible']}
+                afterAction={(config?: ListAfterActionConfig ) => afterAction(config)}
+                content={item}
+                from={{ id }}
+                config={config['row_actions']}
+              />)}
               {config.can_select && (
                 <span
                   onClick={() => select(item.id)}
@@ -463,13 +470,6 @@ const List = ({id, contenttype, onLinkClick, onRenderRow, level = 1, sort_defaul
                   />
                 </span>
               )}
-              {config['row_actions'].length > 0 && (<ListRowActions
-                visibleNumber={config['row_actions_visible']}
-                afterAction={(config?: ListAfterActionConfig ) => afterAction(config)}
-                content={item}
-                from={{ id }}
-                config={config['row_actions']}
-              />)}
             </div>          
         </div>
       );
