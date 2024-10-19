@@ -43,13 +43,13 @@ export default class RichText extends React.Component<{ definition: any, validat
             onChange={(e, editor)=>this.setState({data:editor.getContent()})}
             init={{
               menubar: false,
-              relative_urls: false,
+              relative_urls: true,
               height:'300px',
               plugins: fieldtypeSettings.richtext.plugins,
               external_plugins: {
                     'dmimage': process.env.PUBLIC_URL+'/tinymce/dmimage.min.js',
               },
-              branding: false,           
+              branding: false,                         
               toolbar: toolbars,
               content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }'
             }}
