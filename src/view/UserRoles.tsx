@@ -69,7 +69,7 @@ export default class UserRoles extends React.Component<{content:any},{browse:boo
           </h3>
           <ul>
           {this.state.data.map( (item)=><li>
-              <Link to={"/main/"+item.id}>{item.name}</Link> <a href="#" onClick={(e)=>this.unassignRole( e, item.id )}><i className="icon icon-delete"></i></a>
+              <Link to={"/main/"+item.id}>{item.name||item.metadata.name}</Link> <a href="#" onClick={(e)=>this.unassignRole( e, item.id )}><i className="icon icon-delete"></i></a>
             </li> )}
           </ul>
       </div>;

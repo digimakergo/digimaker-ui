@@ -77,11 +77,19 @@ function RenderProperties({content, contenttype, mode, fields, as}: RenderProper
               fieldtypeStr
             }
           >
-            <Fieldtype
+            {fieldtypeStr==='relation'?<Fieldtype
               definition={fieldDef}
               data={content[fieldIdentifier]}
               mode='inline'
-            />
+              render={field.render}
+            />:
+            (field.render?
+              field.render(content)
+            :<Fieldtype
+                definition={fieldDef}
+                data={content[fieldIdentifier]}
+                mode='inline'
+             />)}
           </div>
         );
       } else {

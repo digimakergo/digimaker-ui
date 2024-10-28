@@ -5,7 +5,7 @@ import Select from 'react-select'
 import util, {FetchWithAuth} from '../util';
 
 
-export default class Relation extends React.Component<{definition:any, validation:any, data:any, formdata:any, mode:string, contenttype?:any},{list:any, selected:any, content:any}> {
+export default class Relation extends React.Component<{definition:any, validation:any, data:any, formdata:any, mode:string, contenttype?:any,render?:(content)=>any},{list:any, selected:any, content:any}> {
   constructor(props: any) {
       super(props);
       this.state = {list:[], selected:this.props.data, content:''};
@@ -90,7 +90,9 @@ export default class Relation extends React.Component<{definition:any, validatio
   }
 
   inline(){
-    //todo: use RenderProperties to render in inline mode.
+    if(this.props.render){
+      return this.props.render(this.state.content);
+    }
     return this.state.content?util.getName(this.state.content):'';
   }
 
