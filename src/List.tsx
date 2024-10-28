@@ -109,8 +109,7 @@ const List = ({id, contenttype, onLinkClick, onRenderRow, level = 1, sort_defaul
       setConfigObject({
         ...config,
         ...afterConfig
-      })
-      refresh();
+      })    
   }
 
   const resetActionState = () => {
@@ -200,7 +199,7 @@ const List = ({id, contenttype, onLinkClick, onRenderRow, level = 1, sort_defaul
     fetchData();
     let data = getDefinition(contenttype);
     setDef(data);
-  }, [sortby, currentPage]);
+  }, [sortby, currentPage, config]);
 
   const select = (id) => {
     if (selected.includes(id)) {
