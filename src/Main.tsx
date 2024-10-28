@@ -164,10 +164,10 @@ const Main = (props:MainProps) =>{
 						{def.name}
 					</ReactTooltip>
 					{util.getName(content)} &nbsp;&nbsp;
-					{!(
+					{(!(
 						contenttype === "folder" &&
-						content.folder_type === "site"
-					) && (
+						content.folder_type === "site"						
+					    ) && content.location ) && (
 						<Link
 							className="go-uppper"
 							title="Go upper"
@@ -182,8 +182,8 @@ const Main = (props:MainProps) =>{
 					<div>
 						<i style={{ fontSize: "0.85rem" }}>
 							modified by <Link
-								to={`/main/user/${content.author}`}
-							>{content.author_name}</Link>
+								to={`/main/user/${content.metadata.author}`}
+							>{content.metadata.author_name}</Link>
 							{/* <Moment unix format="DD.MM.YYYY HH:mm">{this.state.content.modified}</Moment> */}
 						</i>
 						&nbsp;&nbsp;
@@ -297,16 +297,16 @@ class MetaInfo extends React.Component<{content:any}> {
       return (
            <div>
              <div>ID: {this.props.content.id}</div>
-             <div>CID: {this.props.content.cid}</div>
+             <div>LID: {this.props.content.location.id}</div>
              <div>Published:  &nbsp;
-              <Moment unix format="DD.MM.YYYY HH:mm">{this.props.content.published}</Moment>
+              <Moment format="DD.MM.YYYY HH:mm">{this.props.content.metadata.published}</Moment>
              </div>
              <div>Modified: &nbsp;
-              <Moment unix format="DD.MM.YYYY HH:mm">{this.props.content.modified}</Moment>
+              <Moment format="DD.MM.YYYY HH:mm">{this.props.content.metadata.modified}</Moment>
              </div>
-             {this.props.content.version>0&&<div>Version: {this.props.content.version}</div>}
+             {this.props.content.version>0&&<div>Version: {this.props.content.metadata.version}</div>}
              <div>Status: <span className={"status-"+this.props.content.metadata.contenttype+" status-"+this.props.content.status}></span></div>
-             <div>UID: {this.props.content.uid}</div>
+             <div>UID: {this.props.content.metadata.cuid}</div>
            </div>
       );
     }
