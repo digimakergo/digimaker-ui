@@ -24,6 +24,7 @@ const Text = (props:FieldtypeProps) => {
               <label className="field-label" htmlFor={props.definition.identifier}>{props.definition.name}
                   {props.definition.description&&<i className="icon-info" data-for={props.definition.identifier+'-desciption'} data-tip=""></i>}
                   {props.definition.description&&<ReactTooltip id={props.definition.identifier+'-desciption'} effect="solid" place="right" html={true} clickable={true} multiline={true} delayHide={500} className="tip">{props.definition.description}</ReactTooltip>}
+                  {props.afterLabel&&props.afterLabel(def, props.data)}
               :</label>
               {(def.parameters&&def.parameters.multiline)?
                 <textarea id={name} className="field-value form-control" name={name} defaultValue={props.data} />

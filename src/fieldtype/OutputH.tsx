@@ -1,7 +1,8 @@
 import * as React from 'react';
 import ReactTooltip from 'react-tooltip';
+import { FieldtypeProps } from '../FieldRegister';
 
-export default class OutputH extends React.Component<{ definition: any, validation: any, data: any, formdata: any }, {}> {
+export default class OutputH extends React.Component<FieldtypeProps, {}> {
 
   constructor(props: any) {
     super(props);
@@ -16,6 +17,7 @@ export default class OutputH extends React.Component<{ definition: any, validati
     return <div className={className}><div dangerouslySetInnerHTML={{__html: def.name}} />
     {def.description && <i className="icon-info" data-for={def.identifier+'-description'} data-tip="" />}
     {def.description &&<ReactTooltip id={def.identifier+'-description'} html={true} effect="solid" place="right" clickable={true} multiline={true} delayHide={500} className="tip">{def.description}</ReactTooltip>}
+    {this.props.afterLabel&&this.props.afterLabel(def, this.props.data)}
     </div>
     }
 }

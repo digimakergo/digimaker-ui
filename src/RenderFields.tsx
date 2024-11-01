@@ -27,9 +27,11 @@ interface RenderFieldsProps {
 
   /** after rendering one field */
   afterField?: any;
+
+  afterLabel?:any
 }
 
-const RenderFields = ({type, validation, data, editFields, language, mode, beforeField, afterField}: RenderFieldsProps) => {
+const RenderFields = ({type, validation, data, editFields, language, mode, beforeField, afterField, afterLabel}: RenderFieldsProps) => {
   const [definition, setDefinition] = React.useState('');
   const [typeArr, setTypeArr] = React.useState([]);
 
@@ -62,6 +64,9 @@ const RenderFields = ({type, validation, data, editFields, language, mode, befor
   };
 
   const renderField = (field: any, containerLevel?: number) => {
+    if(!containerLevel){
+      containerLevel = 1;
+    }
     if (field.children) {
       return (
         <div
@@ -96,6 +101,8 @@ const RenderFields = ({type, validation, data, editFields, language, mode, befor
                 {field.description}
               </ReactTooltip>
             )}
+            {afterLabel &&
+              afterLabel(field, data, null)}
             {afterField &&
               afterField(field, data, null)}
           </div>
@@ -126,7 +133,8 @@ const RenderFields = ({type, validation, data, editFields, language, mode, befor
           : null;
         const AfterElement: React.ReactType = afterField
           ? afterField(field, data, null)
-          : null;
+          : null;      
+        
         let required = false;
         if (field.required && mode == 'edit') {
           required = true;
@@ -187,6 +195,7 @@ const RenderFields = ({type, validation, data, editFields, language, mode, befor
                 }
                 formValidation={validationResult}
                 mode={mode}
+                afterLabel={afterLabel}
               />
               {AfterElement}
               {errorMessage && (

@@ -3,9 +3,10 @@ import ReactTooltip from 'react-tooltip';
 import Browse from '../Browse';
 import Select from 'react-select'
 import {FetchWithAuth} from '../util';
+import { FieldtypeProps } from '../FieldRegister';
 
 
-export default class FieldtypeSelect extends React.Component<{definition:any, validation:any, data:any, formdata:any, mode:string, contenttype?:any},{selected:any, options:Array<any>, isMulti:boolean}> {
+export default class FieldtypeSelect extends React.Component<FieldtypeProps,{selected:any, options:Array<any>, isMulti:boolean}> {
   constructor(props: any) {
       super(props);
       let isMulti = this.props.definition.parameters.multi?true:false;
@@ -74,6 +75,7 @@ export default class FieldtypeSelect extends React.Component<{definition:any, va
             <label className="field-label">{this.props.definition.name}
             {this.props.definition.description&&<i className="icon-info" data-for={this.props.definition.identifier+'-desciption'} data-tip=""></i>}
             {this.props.definition.description&&<ReactTooltip id={this.props.definition.identifier+'-desciption'} effect="solid" place="right" html={true} clickable={true} multiline={true} delayHide={500} className="tip">{this.props.definition.description}</ReactTooltip>}
+            {this.props.afterLabel&&this.props.afterLabel(def, this.props.data)}
             :</label>
             <div className="field-value">
                 <Select className="fieldtype-relation-select" 

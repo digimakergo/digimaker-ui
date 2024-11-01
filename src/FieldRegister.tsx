@@ -33,7 +33,9 @@ export interface FieldtypeProps{
     formdata:any;
 
     /** whole validation */
-    formValidation:any;             
+    formValidation:any;          
+    
+    afterLabel?:(fieldDef:any, data)=>React.ReactNode
 }
 
 export default class FieldRegister{

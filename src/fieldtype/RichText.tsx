@@ -2,10 +2,11 @@ import * as React from 'react';
 import ReactTooltip from 'react-tooltip';
 import { Editor } from '@tinymce/tinymce-react';
 import fieldtypeSettings from '../fieldtype_settings.json';
+import { FieldtypeProps } from '../FieldRegister';
 
 var toolbars = fieldtypeSettings.richtext.mode.standard
 
-export default class RichText extends React.Component<{ definition: any, validation: any, data: any, mode: string }, {data:any}> {
+export default class RichText extends React.Component<FieldtypeProps, {data:any}> {
 
 
   private editorRef;
@@ -37,6 +38,7 @@ export default class RichText extends React.Component<{ definition: any, validat
           {this.props.definition.name}
           {this.props.definition.description && <i className="icon-info" data-for={this.props.definition.identifier+'-desciption'} data-tip=""></i>}
           {this.props.definition.description&&<ReactTooltip id={this.props.definition.identifier+'-desciption'} effect="solid" place="right" html={true} clickable={true} multiline={true} delayHide={500} className="tip">{this.props.definition.description}</ReactTooltip>}
+          {this.props.afterLabel&&this.props.afterLabel(this.props.definition, this.props.data)}
           : </label>
           <Editor
             initialValue={this.props.data}                   

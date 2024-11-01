@@ -1,6 +1,7 @@
 import * as React from 'react';
+import { FieldtypeProps } from '../FieldRegister';
 
-export default class Password extends React.Component<{ definition: any, validation: any, data: any, formdata: any, mode: string }, {input:any, error: string}> {
+export default class Password extends React.Component<FieldtypeProps, {input:any, error: string}> {
 
   constructor(props: any) {
     super(props);
@@ -38,6 +39,7 @@ export default class Password extends React.Component<{ definition: any, validat
           <label className="field-label">{def.name}</label>
           <div className="field-value">
           {def.description&&<div className="field-desc">{def.description}</div>}
+          {this.props.afterLabel&&this.props.afterLabel(def, this.props.data)}
           {this.props.validation&&<div className="block alert alert-warning">{this.props.validation}</div>}
           <input type="password" className="form-control" value={this.state.input[0]} onChange={(e)=>{this.input(e)}} />
           {this.state.error==''&&this.state.input[0]!=''&&<input type="hidden" name={def.identifier} value={this.state.input[0]} />}

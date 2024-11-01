@@ -5,10 +5,11 @@ import Moment from 'react-moment';
 import moment from 'moment';
 import { timeStamp } from 'console';
 import util from '../util';
+import { FieldtypeProps } from '../FieldRegister';
 
 let defaultValue = 0;
 
-export default class Datetime extends React.Component<{definition: any, validation: any, data: any, mode: string },{datetime, dateOnly:boolean, error:string}> {
+export default class Datetime extends React.Component<FieldtypeProps,{datetime, dateOnly:boolean, error:string}> {
     constructor(props:any) {
         super(props);
         let datetime = null;
@@ -95,7 +96,9 @@ export default class Datetime extends React.Component<{definition: any, validati
       edit(){
         return (
             <div>
-            <label className="field-label">{this.props.definition.name}</label>
+            <label className="field-label">{this.props.definition.name}
+            {this.props.afterLabel&&this.props.afterLabel(this.props.definition, this.props.data)}
+            </label>
             <div className="field-value">
                 <DateTime className='fieldtype-datetime-date' closeOnSelect={true} value={this.state.datetime?this.state.datetime:''} timeFormat={false} dateFormat={this.getDateFormat()} onChange={value => this.updateValue('date',value)}/>
                 {!this.state.dateOnly&&<span> &nbsp;

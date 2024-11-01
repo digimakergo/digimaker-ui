@@ -2,8 +2,9 @@ import * as React from 'react';
 import Moment from 'react-moment';
 import ReactTooltip from 'react-tooltip'
 import FileUpload from '../FileUpload'
+import { FieldtypeProps } from '../FieldRegister';
 
-export default class File extends React.Component<{definition:any, validation:any, data:any, mode:string},{}> {
+export default class File extends React.Component<FieldtypeProps,{}> {
 
 constructor(props:any) {
       super(props);
@@ -28,6 +29,7 @@ constructor(props:any) {
             <>
                 <label className="field-label" htmlFor={this.props.definition.identifier}>{this.props.definition.name}
                     {this.props.definition.description&&<i className="icon-info" data-tip={this.props.definition.description}></i>}
+                    {this.props.afterLabel&&this.props.afterLabel(this.props.definition, this.props.data)}
                 :</label>
                 <ReactTooltip effect="solid" place="right" clickable={true} multiline={true} delayHide={500} className="tip" />
 

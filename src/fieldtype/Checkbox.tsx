@@ -1,8 +1,9 @@
 import * as React from 'react';
 import Moment from 'react-moment';
 import ReactTooltip from 'react-tooltip';
+import { FieldtypeProps } from '../FieldRegister';
 
-export default class Checkbox extends React.Component<{definition:any, validation:any, data:any, mode?:string},{checked:boolean}> {
+export default class Checkbox extends React.Component<FieldtypeProps,{checked:boolean}> {
 
 constructor(props:any) {
       super(props);
@@ -20,6 +21,7 @@ constructor(props:any) {
               <div className="field-label">{this.props.definition.name}
               {this.props.definition.description&&<i className="icon-info" data-for={this.props.definition.identifier+'-desciption'} data-tip=""></i>}</div>
               {this.props.definition.description&&<ReactTooltip id={this.props.definition.identifier+'-desciption'} effect="solid" place="right" html={true} clickable={true} multiline={true} delayHide={500} className="tip">{this.props.definition.description}</ReactTooltip>}
+              {this.props.afterLabel&&this.props.afterLabel(this.props.definition, this.props.data)}
               <div className="field-value">
                 <input type="checkbox"
                     id={this.props.definition.identifier}

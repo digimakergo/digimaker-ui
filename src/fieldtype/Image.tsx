@@ -4,8 +4,9 @@ import FileUpload from '../FileUpload'
 import ReactTooltip from 'react-tooltip';
 import util from '../util';
 import { serverConfig } from '../serverConfig';
+import { FieldtypeProps } from '../FieldRegister';
 
-export default class Image extends React.Component<{definition:any, validation:any, mode: string, data:any},{data:any}> {
+export default class Image extends React.Component<FieldtypeProps,{data:any}> {
 
   constructor(props:any) {
       super(props);
@@ -43,6 +44,7 @@ export default class Image extends React.Component<{definition:any, validation:a
                 <label className="field-label" htmlFor={this.props.definition.identifier}>{this.props.definition.name}
                     {this.props.definition.description&&<i className="icon-info" data-for={this.props.definition.identifier+'-desciption'} data-tip=""></i>}
                     {this.props.definition.description&&<ReactTooltip id={this.props.definition.identifier+'-desciption'} effect="solid" place="right" html={true} clickable={true} multiline={true} delayHide={500} className="tip">{this.props.definition.description}</ReactTooltip>}
+                    {this.props.afterLabel&&this.props.afterLabel(this.props.definition, this.props.data)}
                 :</label>
 
                 <div className="field-value">

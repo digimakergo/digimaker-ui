@@ -1,8 +1,9 @@
 import * as React from 'react';
 import Moment from 'react-moment';
 import ReactTooltip from 'react-tooltip';
+import { FieldtypeProps } from '../FieldRegister';
 
-export default class Number extends React.Component<{definition:any, validation:any, data:any, mode:string},{selected:boolean}> {
+export default class Number extends React.Component<FieldtypeProps,{selected:boolean}> {
 
 constructor(props:any) {
       super(props);
@@ -44,6 +45,7 @@ constructor(props:any) {
               <label className="field-label" htmlFor={this.props.definition.identifier}>{this.props.definition.name}
                   {this.props.definition.description&&<i className="icon-info" data-for={this.props.definition.identifier+'-desciption'} data-tip=""></i>}
                   {this.props.definition.description&&<ReactTooltip id={this.props.definition.identifier+'-desciption'} effect="solid" place="right" html={true} clickable={true} multiline={true} delayHide={500} className="tip">{this.props.definition.description}</ReactTooltip>}
+                  {this.props.afterLabel&&this.props.afterLabel(def, this.props.data)}
               :</label>
               <div className="field-value">
               {this.props.validation&&<div className="error">{this.props.validation}</div>}
