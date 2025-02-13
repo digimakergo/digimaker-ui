@@ -158,13 +158,15 @@ const RenderFields = ({type, validation, data, editFields, language, mode, befor
             validationPassed = false;
           }
         }
+
+        let currentMode = mode;
         if (mode == 'edit') {
           if (
             editFields &&
             !editFields.includes('*') &&
             !editFields.includes(fieldIdentifier)
           ) {
-            mode = 'view';
+            currentMode = 'view';
           }
         }
         return (
@@ -175,7 +177,7 @@ const RenderFields = ({type, validation, data, editFields, language, mode, befor
                 'field-id-' +
                 field.identifier +
                 ' field-mode-' +
-                mode +
+                currentMode +
                 ' fieldtype-' +
                 typeStr +
                 (required ? ' required' : '') +
@@ -194,7 +196,7 @@ const RenderFields = ({type, validation, data, editFields, language, mode, befor
                     : ''
                 }
                 formValidation={validationResult}
-                mode={mode}
+                mode={currentMode}
                 afterLabel={afterLabel}
               />
               {AfterElement}
@@ -269,7 +271,7 @@ const RenderFields = ({type, validation, data, editFields, language, mode, befor
         <div className={'content-fields content-fields-' + mode}>
           {validation && validation.message && (
             <div className='validation-failed validation-failed-error'>
-              validation.message
+              {validation.message}
             </div>
           )}
           {fields.map((field) => {
