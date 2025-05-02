@@ -55,8 +55,9 @@ const List = (props:FieldtypeProps) =>{
         }
 
         const deleteRow = (i)=>{
-            let newData = data.filter((row, index)=>index !==i);
-            setData(newData);
+            const newData = [...data];
+            newData.splice(i, 1);
+            setData(newData)
         }
 
         return <div>                    
@@ -69,7 +70,7 @@ const List = (props:FieldtypeProps) =>{
                         </tr>
                     </thead>
                    <tbody>
-                    {data.map((item,i)=><tr>
+                    {data.map((item,i)=><tr key={i+''+data.length}>
                         {params.fields.map(field=><td>
                             {props.mode=='edit'?<input className='form-control' type='text' onChange={(e)=>changeValue(i, field.identifier, e.target.value)} defaultValue={item[field.identifier]} />:item[field.identifier]}
                         </td>)}
