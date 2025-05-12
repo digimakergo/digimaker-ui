@@ -37,7 +37,9 @@ constructor(props:any) {
                 <FileUpload name={this.props.definition.identifier}
                                               service="content"
                                               format={params.format?params.format:"*"}
-                                              value={this.props.data} />
+                                              value={this.props.data}
+                                               maxSize={params?.max_size} />
+                                              
                 </div>
             </>
         )

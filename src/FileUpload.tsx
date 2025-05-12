@@ -17,11 +17,13 @@ export interface FileUploadProps {
   /** support multi select */
   multi?: boolean;
 
+  maxSize?:number;
+
   /** success callback. fileInfo{nameUploaded - uploaded name} object as parameter */
   onSuccess?: any;
 }
 
-const FileUpload = ({name, service, format, value, multi, onSuccess}: FileUploadProps) => {
+const FileUpload = ({name, service, format, value, multi, onSuccess, maxSize}: FileUploadProps) => {
   const [uploadState, setUploadState] = useState(0);
   const [filename, setFilename] = useState('');
   const [error, setError] = useState('');
@@ -37,6 +39,11 @@ const FileUpload = ({name, service, format, value, multi, onSuccess}: FileUpload
       return;
     }
     let file = files[0];
+
+    if(maxSize && file.size>=maxSize*1024*1024){
+      window.alert('File size can not be more than '+maxSize+'MB');
+      return;
+    }
     data.append('file', file);
     setUploadState(1);
     fetch(
