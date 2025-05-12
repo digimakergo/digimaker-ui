@@ -140,7 +140,9 @@ const MultiUpload = ({name, service, format, value, multi, onSuccess,onSubmit,pa
         if(getContentData){
           contentData = getContentData(files[i]);
         }else{
-          contentData = {contentObject: {'name': files[i].name.split('.')[0], 'image': files[i].nameUploaded}, contentType: 'image' };
+          const fileFullName = files[i].name as string;
+          const name = fileFullName.substring(0, fileFullName.lastIndexOf('.')-1)
+          contentData = {contentObject: {'name': name, 'image': files[i].nameUploaded}, contentType: 'image' };
         }
 
         let dataObject= contentData.contentObject;
