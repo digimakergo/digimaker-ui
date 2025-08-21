@@ -6,14 +6,13 @@
   "files": [
     "**/*.js",
     "*.css",
-    "fieldtype_settings.json",
     "locale/*.json"
   ],
   "bin": {
     "test@digimaker-ui": "./src"
   },
   "scripts": {
-    "dist": "rm -rf dist/* && cp ./package.json ./src/fieldtype_settings.json README.md ./src/*.css ./dist && tsc",
+    "dist": "rm -rf dist/* && cp ./package.json README.md ./src/*.css ./dist && tsc",
     "test": "echo \"Error: no test specified\" && exit 1",
     "docz:dev": "docz dev",
     "docz:build": "docz build",
