@@ -1,7 +1,7 @@
 import * as React from 'react';
 import ReactTooltip from 'react-tooltip';
 import { Editor } from '@tinymce/tinymce-react';
-import fieldtypeSettings from '../fieldtype_settings.json';
+import {fieldtypeSettings} from '../fieldtype_settings';
 import { FieldtypeProps } from '../FieldRegister';
 
 var toolbars = fieldtypeSettings.richtext.mode.standard

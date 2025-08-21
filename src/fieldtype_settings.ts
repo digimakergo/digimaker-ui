@@ -1,4 +1,4 @@
-{   
+export const fieldtypeSettings = {   
     "richtext":{
        "plugins":[
             "advlist autolink link image lists charmap print preview hr anchor pagebreak",

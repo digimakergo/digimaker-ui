@@ -129,10 +129,13 @@ const MultiUpload = ({name, service, format, value, multi, onSuccess,onSubmit,pa
   }
 
   const submitfile = ()=>{
-    if(onSubmit){
-      onSubmit('1')
-    }
     let files=[...uploadFiles];
+    if(onSubmit){
+      const defaultUpload = onSubmit('1', files );
+      if(defaultUpload===false){
+        return;
+      }
+    }
     let proms:Array<Promise<any>> = [];
     for (let i=0;i<files.length;i++){
       let p = new Promise((resolve, reject)=>{

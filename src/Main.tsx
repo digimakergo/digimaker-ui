@@ -9,7 +9,8 @@ import ViewContent from "./ViewContent";
 import util, { FetchWithAuth } from "./util";
 import ReactTooltip from "react-tooltip";
 import { getDefinition } from "./util";
-import Moment from "react-moment";
+import Moment from 'react-moment';
+
 import { useEffect } from "react";
 
 export interface MainSettings {
